@@ -203,7 +203,6 @@ const ContactSection = () => {
                 setName(v);
                 setErrors((e) => ({ ...e, name: "" }));
               }}
-              autoFocus
               isRtl={isRtl}
             />
             {errors.name && (
@@ -218,7 +217,6 @@ const ContactSection = () => {
             label={t("contact.country")}
             value={country}
             onChange={setCountry}
-            autoFocus
             isRtl={isRtl}
           />
         );

@@ -13,22 +13,12 @@ const HeroSection = () => {
 
   const fullText = t("hero.ai.message");
 
-  // Typewriter effect
+  // Typewriter effect (removed for instant display)
   useEffect(() => {
-    setTypedText("");
-    setShowCTAs(false);
+    setTypedText(fullText);
+    setShowCTAs(true);
     setAiResponse("");
     setActiveButton(null);
-    let i = 0;
-    const interval = setInterval(() => {
-      i++;
-      setTypedText(fullText.slice(0, i));
-      if (i >= fullText.length) {
-        clearInterval(interval);
-        setTimeout(() => setShowCTAs(true), 400);
-      }
-    }, 40);
-    return () => clearInterval(interval);
   }, [fullText]);
 
   const buttons = [

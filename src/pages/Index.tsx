@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import SideNav from "@/components/SideNav";
 import HeroSection from "@/components/HeroSection";
@@ -12,12 +12,9 @@ import FAQSection from "@/components/FAQSection";
 import BlogSection from "@/components/BlogSection";
 import ContactSection from "@/components/ContactSection";
 import FooterSection from "@/components/FooterSection";
-import CinematicIntro from "@/components/CinematicIntro";
 import ChatbotWidget from "@/components/ChatbotWidget";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-const INTRO_KEY = "surimi_intro_seen";
 
 // Cinematic section wrapper with fade + slide-up on scroll entry
 const SectionReveal = ({ children, id }: { children: React.ReactNode; id?: string }) => (
@@ -34,23 +31,10 @@ const SectionReveal = ({ children, id }: { children: React.ReactNode; id?: strin
 
 const Index = () => {
   const { lang } = useLanguage();
-  const [showIntro, setShowIntro] = useState(false);
-
-  useEffect(() => {
-    if (!sessionStorage.getItem(INTRO_KEY)) {
-      setShowIntro(true);
-    }
-  }, []);
-
-  const handleIntroComplete = () => {
-    sessionStorage.setItem(INTRO_KEY, "1");
-    setShowIntro(false);
-  };
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <ScrollProgressBar />
-      {showIntro && <CinematicIntro onComplete={handleIntroComplete} />}
       <SideNav />
       <main className={lang === "ar" ? "md:mr-16" : "md:ml-16"}>
         <HeroSection />

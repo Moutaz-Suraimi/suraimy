@@ -1069,15 +1069,26 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [lang, setLang] = useState<Language>(() => {
-    const browserLang = navigator.language;
-    if (browserLang.startsWith("ar")) return "ar";
+    // استخدمنا مفتاح جديد لتجاوز أي تخزين سابق في المتصفح 
+    const savedLang = localStorage.getItem("surimi_lang_v2") as Language;
+    if (savedLang && ["ar", "en", "zh"].includes(savedLang)) {
+      return savedLang;
+    }
+    
+    // فحص لغة المتصفح
+    const browserLang = navigator.language || "";
+    // إذا أردت أن يكون الموقع بالعربية "دائماً" حتى لو كان متصفح الزائر بالإنجليزية، 
+    // يمكننا حذف هذا السطر. حالياً سيتحول للإنجليزية إذا كان متصفحك بالإنجليزية.
+    if (browserLang.startsWith("en")) return "en";
     if (browserLang.startsWith("zh")) return "zh";
-    return "en";
+    
+    return "ar"; // العربية هي اللغة الافتراضية لأي لغات أخرى
   });
 
   const dir = lang === "ar" ? "rtl" : "ltr";
 
   useEffect(() => {
+    localStorage.setItem("surimi_lang_v2", lang);
     document.documentElement.dir = dir;
     document.documentElement.lang = lang;
   }, [lang, dir]);
