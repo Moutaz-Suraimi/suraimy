@@ -143,6 +143,31 @@ const projects: Project[] = [
     ],
     tech: ["React", "Vite", "Tailwind CSS", "DXN"],
   },
+  {
+    id: 8,
+    category: "website",
+    emoji: "🏛️",
+    gradient: "from-[hsl(220,85%,35%)] to-[hsl(240,85%,25%)]",
+    image: "/img/ettmad.png",
+    url: "https://ettmad.com/",
+    title: { 
+      ar: "إعتماد | للتعقيب والخدمات العامة", 
+      en: "Ettmad | Public & Government Services", 
+      zh: "Ettmad | 公共及政府服务" 
+    },
+    subtitle: { ar: "خدمات حكومية", en: "Gov. Services", zh: "政府服务" },
+    description: { 
+      ar: "نتولى معاملاتك الحكومية بسرعة واحترافية وبدقة متناهية — قوى، التجارة، مدد، بلدي، والجوازات.", 
+      en: "We handle your government transactions quickly, professionally, and with precision — Qiwa, Commerce, Mudud, Balady, and Passports.", 
+      zh: "我们快速、专业、极其准确地处理您的政府事务——包括 Qiwa、商业、Mudud、Balady 和护照业务。" 
+    },
+    results: [
+      { ar: "إنجاز المعاملات بدقة وسرعة", en: "Quick & accurate processing", zh: "快速准确的处理" },
+      { ar: "توفير الوقت والجهد للعملاء", en: "Saves time and effort", zh: "节省时间和精力" },
+      { ar: "دعم مخصص للمنشآت والأفراد", en: "Dedicated support", zh: "专属服务支持" },
+    ],
+    tech: ["Web Design", "Corporate Platform", "Service Portal"],
+  },
 ];
 
 // ─── LIGHTBOX MODAL ────────────────────────────────────────────────────────────
