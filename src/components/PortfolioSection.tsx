@@ -28,6 +28,7 @@ interface Project {
   gradient: string;
   emoji: string;
   image?: string;
+  url?: string;
 }
 
 const projects: Project[] = [
@@ -131,6 +132,7 @@ const projects: Project[] = [
     emoji: "🌟",
     gradient: "from-[hsl(265,90%,35%)] to-[hsl(275,85%,25%)]",
     image: "/img/Screenshot 2026-03-16 035203.png",
+    url: "https://somaya-amin.vercel.app/",
     title: { ar: "سمية أمين | رحلة نحو الحرية المالية (DXN)", en: "Somaya Amin | Journey to Financial Freedom", zh: "Somaya Amin | 通向财务自由之旅 (DXN)" },
     subtitle: { ar: "منصة تسويق", en: "Marketing Platform", zh: "营销平台" },
     description: { ar: "انضم إلى فريق سمية أمين علي النزيلي في DXN وابدأ مشروعك نحو الحرية المالية. توفير تدريب ودعم مستمر.", en: "Join Somaya Amin Ali Al Nozaily's DXN team and start your journey towards financial freedom. Continuous training and support.", zh: "加入 Somaya Amin Ali Al Nozaily 的 DXN 团队，开启您的财务自由之旅。持续提供培训和支持。" },
@@ -260,15 +262,30 @@ const LightboxModal = ({
           </div>
 
           {/* CTA */}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={openWhatsApp}
-            className="w-full py-3.5 rounded-2xl gradient-purple text-primary-foreground font-semibold flex items-center justify-center gap-2 neon-glow text-sm"
-          >
-            <MessageCircle className="w-4 h-4" />
-            {t("portfolio.cta")}
-          </motion.button>
+          <div className="flex gap-3">
+            {project.url && (
+              <motion.a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                className="py-3.5 px-6 rounded-2xl bg-secondary/80 text-secondary-foreground font-semibold flex items-center justify-center gap-2 border border-border/50 text-sm hover:bg-secondary/100 transition-colors whitespace-nowrap"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span className="hidden sm:inline">{lang === "ar" ? "زيارة الموقع" : lang === "zh" ? "访问网站" : "Visit Website"}</span>
+              </motion.a>
+            )}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={openWhatsApp}
+              className="w-full py-3.5 rounded-2xl gradient-purple text-primary-foreground font-semibold flex items-center justify-center gap-2 neon-glow text-sm"
+            >
+              <MessageCircle className="w-4 h-4" />
+              {t("portfolio.cta")}
+            </motion.button>
+          </div>
         </div>
       </motion.div>
     </motion.div>

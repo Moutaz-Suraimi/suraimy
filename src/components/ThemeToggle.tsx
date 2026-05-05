@@ -3,13 +3,17 @@ import { motion } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 
 const ThemeToggle = () => {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("surimi_theme");
-    if (saved === "light") {
+    if (saved === "dark") {
+      setIsDark(true);
+      document.documentElement.classList.remove("light");
+    } else {
       setIsDark(false);
       document.documentElement.classList.add("light");
+      if (!saved) localStorage.setItem("surimi_theme", "light");
     }
   }, []);
 
