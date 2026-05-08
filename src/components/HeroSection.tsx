@@ -137,7 +137,7 @@ const HeroSection = () => {
           transition={{ delay: 0.5, duration: 0.6 }}
           className="text-xs md:text-sm tracking-[0.3em] uppercase text-muted-foreground mb-6"
         >
-          الصُرَيْمي ميديا — Surimi Media
+          Suriix — Suriix
         </motion.p>
 
         {/* AI typewriter message */}

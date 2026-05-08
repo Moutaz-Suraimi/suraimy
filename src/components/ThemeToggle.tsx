@@ -6,14 +6,14 @@ const ThemeToggle = () => {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("surimi_theme");
+    const saved = localStorage.getItem("suriix_theme");
     if (saved === "dark") {
       setIsDark(true);
       document.documentElement.classList.remove("light");
     } else {
       setIsDark(false);
       document.documentElement.classList.add("light");
-      if (!saved) localStorage.setItem("surimi_theme", "light");
+      if (!saved) localStorage.setItem("suriix_theme", "light");
     }
   }, []);
 
@@ -22,10 +22,10 @@ const ThemeToggle = () => {
     setIsDark(newDark);
     if (newDark) {
       document.documentElement.classList.remove("light");
-      localStorage.setItem("surimi_theme", "dark");
+      localStorage.setItem("suriix_theme", "dark");
     } else {
       document.documentElement.classList.add("light");
-      localStorage.setItem("surimi_theme", "light");
+      localStorage.setItem("suriix_theme", "light");
     }
   };
 

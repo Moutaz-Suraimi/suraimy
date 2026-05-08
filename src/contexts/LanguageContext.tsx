@@ -26,9 +26,9 @@ export const translations: Translations = {
     zh: "隐私政策",
   },
   "legal.privacy.content": {
-    ar: `نحن في الصريمي ميديا نلتزم بحماية خصوصية عملائنا. نقوم بجمع البيانات الشخصية التالية فقط عند الحاجة: الاسم، رقم الهاتف، البريد الإلكتروني، الدولة، تفاصيل المشروع، وأي ملفات أو معلومات يرسلها العميل. تُستخدم هذه البيانات لتقديم الخدمات المطلوبة، والتواصل مع العميل، وتحسين جودة خدماتنا. لا نقوم ببيع أو مشاركة بيانات العملاء مع أي طرف ثالث، إلا إذا تطلب القانون ذلك أو بموافقة العميل الصريحة. نحرص على حماية بياناتك باستخدام إجراءات أمان مناسبة.`,
-    en: `At Surimi Media, we are committed to protecting our clients' privacy. We only collect the following personal data when necessary: name, phone number, email, country, project details, and any files or information provided by the client. This data is used to deliver requested services, communicate with the client, and improve our service quality. We do not sell or share client data with any third party, except as required by law or with the client's explicit consent. We take appropriate security measures to protect your data.`,
-    zh: `在Surimi Media，我们致力于保护客户隐私。我们仅在必要时收集以下个人数据：姓名、电话、电子邮件、国家、项目信息及客户提供的任何文件或资料。这些数据仅用于提供所需服务、与客户沟通及提升服务质量。我们不会向第三方出售或共享客户数据，除非法律要求或客户明确同意。我们采取适当的安全措施保护您的数据。`,
+    ar: `نحن في Suriix نلتزم بحماية خصوصية عملائنا. نقوم بجمع البيانات الشخصية التالية فقط عند الحاجة: الاسم، رقم الهاتف، البريد الإلكتروني، الدولة، تفاصيل المشروع، وأي ملفات أو معلومات يرسلها العميل. تُستخدم هذه البيانات لتقديم الخدمات المطلوبة، والتواصل مع العميل، وتحسين جودة خدماتنا. لا نقوم ببيع أو مشاركة بيانات العملاء مع أي طرف ثالث، إلا إذا تطلب القانون ذلك أو بموافقة العميل الصريحة. نحرص على حماية بياناتك باستخدام إجراءات أمان مناسبة.`,
+    en: `At Suriix, we are committed to protecting our clients' privacy. We only collect the following personal data when necessary: name, phone number, email, country, project details, and any files or information provided by the client. This data is used to deliver requested services, communicate with the client, and improve our service quality. We do not sell or share client data with any third party, except as required by law or with the client's explicit consent. We take appropriate security measures to protect your data.`,
+    zh: `在Suriix，我们致力于保护客户隐私。我们仅在必要时收集以下个人数据：姓名、电话、电子邮件、国家、项目信息及客户提供的任何文件或资料。这些数据仅用于提供所需服务、与客户沟通及提升服务质量。我们不会向第三方出售或共享客户数据，除非法律要求或客户明确同意。我们采取适当的安全措施保护您的数据。`,
   },
   "legal.terms.title": {
     ar: "شروط الخدمة",
@@ -36,9 +36,9 @@ export const translations: Translations = {
     zh: "服务条款",
   },
   "legal.terms.content": {
-    ar: `تُقدَّم خدمات الصريمي ميديا بناءً على المتطلبات المتفق عليها مع العميل. أي أعمال إضافية خارج نطاق الاتفاق الأصلي تتطلب تكلفة إضافية. تعتمد مدة تنفيذ الخدمات على نوع الخدمة وتعقيدها. لا تضمن الشركة تحقيق نتائج محددة من الإعلانات المدفوعة مثل المبيعات أو الوصول أو التحويلات. يتحمل العميل مسؤولية تقديم معلومات صحيحة وكاملة لضمان جودة الخدمة.`,
-    en: `Surimi Media services are provided based on the requirements agreed upon with the client. Any additional work outside the original agreement requires extra cost. Service delivery timelines depend on the type and complexity of the service. The company does not guarantee specific results from paid ads such as sales, reach, or conversions. The client is responsible for providing accurate and complete information to ensure service quality.`,
-    zh: `Surimi Media的服务根据与客户达成的要求提供。任何超出原协议范围的额外工作需另行收费。服务交付时间取决于服务类型和复杂性。公司不保证付费广告带来特定结果，如销售、覆盖或转化。客户有责任提供准确完整的信息以确保服务质量。`,
+    ar: `تُقدَّم خدمات Suriix بناءً على المتطلبات المتفق عليها مع العميل. أي أعمال إضافية خارج نطاق الاتفاق الأصلي تتطلب تكلفة إضافية. تعتمد مدة تنفيذ الخدمات على نوع الخدمة وتعقيدها. لا تضمن الشركة تحقيق نتائج محددة من الإعلانات المدفوعة مثل المبيعات أو الوصول أو التحويلات. يتحمل العميل مسؤولية تقديم معلومات صحيحة وكاملة لضمان جودة الخدمة.`,
+    en: `Suriix services are provided based on the requirements agreed upon with the client. Any additional work outside the original agreement requires extra cost. Service delivery timelines depend on the type and complexity of the service. The company does not guarantee specific results from paid ads such as sales, reach, or conversions. The client is responsible for providing accurate and complete information to ensure service quality.`,
+    zh: `Suriix的服务根据与客户达成的要求提供。任何超出原协议范围的额外工作需另行收费。服务交付时间取决于服务类型和复杂性。公司不保证付费广告带来特定结果，如销售、覆盖或转化。客户有责任提供准确完整的信息以确保服务质量。`,
   },
   "legal.refund.title": {
     ar: "سياسة استرجاع الأموال",
@@ -86,9 +86,9 @@ export const translations: Translations = {
     zh: "立即开始您的项目",
   },
   "hero.ai.message": {
-    ar: "أنا الذكاء الرقمي لصُرَيمي…\nأخبرني، ماذا تريد أن تفعل اليوم؟",
-    en: "I am Surimi's digital intelligence…\nTell me, what do you want to do today?",
-    zh: "我是Surimi的数字智能…\n告诉我，你今天想做什么？",
+    ar: "أنا الذكاء الرقمي لـ Suriix…\nأخبرني، ماذا تريد أن تفعل اليوم؟",
+    en: "I am Suriix's digital intelligence…\nTell me, what do you want to do today?",
+    zh: "我是Suriix的数字智能…\n告诉我，你今天想做什么？",
   },
   "hero.ai.build": {
     ar: "ممتاز! سأريك كيف نبني مشاريع رقمية مذهلة ←",
@@ -306,9 +306,9 @@ export const translations: Translations = {
     zh: "当然可以！联系我们，我们将为您的需求设计定制套餐",
   },
   "faq.q4": {
-    ar: "ما الذي يميز الصريمي ميديا عن الوكالات الأخرى؟",
-    en: "What makes Surimi Media different from other agencies?",
-    zh: "是什么让 Surimi Media 与其他代理商与众不同？",
+    ar: "ما الذي يميز Suriix عن الوكالات الأخرى؟",
+    en: "What makes Suriix different from other agencies?",
+    zh: "是什么让 Suriix 与其他代理商与众不同？",
   },
   "faq.a4": {
     ar: "نحن لا نقدم خدمات فقط، بل نكون شريكاً استراتيجياً لنجاحك. نركز الاستراتيجيات المبنية على البيانات، والتصميم المبتكر، وتقديم نتائج ملموسة تنمي أعمالك من التأسيس إلى البيع والتوسع.",
@@ -982,8 +982,8 @@ export const translations: Translations = {
   // Chatbot
   "chatbot.title": {
     ar: "مساعد صُرَيمي",
-    en: "Surimi Assistant",
-    zh: "Surimi助手",
+    en: "Suriix Assistant",
+    zh: "Suriix助手",
   },
   "chatbot.online": { ar: "متصل الآن", en: "Online now", zh: "在线" },
   "chatbot.welcome": {
@@ -1070,7 +1070,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [lang, setLang] = useState<Language>(() => {
     // استخدمنا مفتاح جديد لتجاوز أي تخزين سابق في المتصفح 
-    const savedLang = localStorage.getItem("surimi_lang_v2") as Language;
+    const savedLang = localStorage.getItem("suriix_lang_v2") as Language;
     if (savedLang && ["ar", "en", "zh"].includes(savedLang)) {
       return savedLang;
     }
@@ -1088,7 +1088,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
   const dir = lang === "ar" ? "rtl" : "ltr";
 
   useEffect(() => {
-    localStorage.setItem("surimi_lang_v2", lang);
+    localStorage.setItem("suriix_lang_v2", lang);
     document.documentElement.dir = dir;
     document.documentElement.lang = lang;
   }, [lang, dir]);

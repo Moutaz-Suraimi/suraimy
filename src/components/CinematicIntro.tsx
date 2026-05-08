@@ -27,11 +27,11 @@ const generateParticles = (): Particle[] =>
 const introText: Record<string, { line1: string; line2: string }> = {
   ar: {
     line1: "مرحباً بك…",
-    line2: "لقد دخلت الآن عالم الصُرَيْمي الرقمي",
+    line2: "لقد دخلت الآن عالم Suriix الرقمي",
   },
   en: {
     line1: "Welcome…",
-    line2: "You have entered the digital world of Surimi Media",
+    line2: "You have entered the digital world of Suriix",
   },
   zh: {
     line1: "欢迎…",
@@ -160,10 +160,10 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
                   transition={{ duration: 1.2, ease: "easeOut" }}
                 >
                   <h1 className="text-4xl md:text-6xl font-bold gradient-text neon-text mb-2">
-                    الصُرَيْمي ميديا
+                    Suriix
                   </h1>
                   <p className="text-sm md:text-base tracking-[0.3em] text-muted-foreground uppercase">
-                    Surimi Media
+                    Suriix
                   </p>
                 </motion.div>
               )}

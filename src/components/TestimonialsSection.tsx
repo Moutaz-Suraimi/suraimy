@@ -19,9 +19,9 @@ const testimonials: Testimonial[] = [
       zh: "电商创始人",
     },
     text: {
-      ar: "فريق الصُرَيْمي حوّل فكرتي إلى متجر إلكتروني ناجح. المبيعات تضاعفت خلال 3 أشهر!",
-      en: "Surimi team turned my idea into a successful online store. Sales doubled in 3 months!",
-      zh: "Surimi团队将我的想法变成了成功的在线商店。销售额在3个月内翻了一番！",
+      ar: "فريق Suriix حوّل فكرتي إلى متجر إلكتروني ناجح. المبيعات تضاعفت خلال 3 أشهر!",
+      en: "Suriix team turned my idea into a successful online store. Sales doubled in 3 months!",
+      zh: "Suriix团队将我的想法变成了成功的在线商店。销售额在3个月内翻了一番！",
     },
     rating: 5,
   },

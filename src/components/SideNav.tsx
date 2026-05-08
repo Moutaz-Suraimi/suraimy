@@ -90,6 +90,9 @@ const SideNav = () => {
         className="fixed top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-2 p-2 glass-strong rounded-2xl neon-border"
         style={{ [isRtl ? "right" : "left"]: "1rem" }}
       >
+        <div className="flex items-center justify-center mb-4 p-2">
+          <img src="/img/suriix2.png" alt="Suriix Logo" className="w-10 h-10 object-cover rounded-full border-2 border-primary/40 pulse-glow bg-white/5" />
+        </div>
         {navItems.map((item) => (
           <div
             key={item.key}
@@ -127,11 +130,15 @@ const SideNav = () => {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, x: isRtl ? 100 : -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: isRtl ? 100 : -100 }}
-            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl flex flex-col items-center justify-center gap-4 md:hidden"
+             initial={{ opacity: 0, x: isRtl ? 100 : -100 }}
+             animate={{ opacity: 1, x: 0 }}
+             exit={{ opacity: 0, x: isRtl ? 100 : -100 }}
+             className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl flex flex-col items-center justify-center gap-4 md:hidden"
           >
+            <div className="flex flex-col items-center gap-3 mb-8 mt-4">
+              <img src="/img/suriix2.png" alt="Suriix Logo" className="w-20 h-20 object-cover rounded-full border-2 border-primary/40 pulse-glow bg-white/5" />
+              <p className="gradient-text font-bold text-3xl">Suriix</p>
+            </div>
             {navItems.map((item) => (
               <button
                 key={item.key}
