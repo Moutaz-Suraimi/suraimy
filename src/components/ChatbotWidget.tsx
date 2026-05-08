@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Bot, Sparkles } from "lucide-react";
+import { MessageCircle, X, Send, Headset, Sparkles } from "lucide-react";
 
 const WHATSAPP_NUMBER = "967780930635";
 
@@ -56,42 +56,45 @@ const ChatbotWidget = () => {
     const t = text.toLowerCase();
     
     if (lang === "ar") {
+      if (t.includes("سلام") || t.includes("مرحبا") || t.includes("أهلا") || t.includes("يا هلا") || t.includes("السلام")) {
+        return "يا أهلاً ومرحباً بك في Suriix! 🌟 يسعدني جداً تواصلك معنا. كيف يمكنني إفادتك اليوم؟ أنا هنا للإجابة على كافة استفساراتك وتوجيهك لأفضل الحلول.";
+      }
       if (t.includes("سعر") || t.includes("اسعار") || t.includes("بكم") || t.includes("باقة") || t.includes("تكلفة")) {
-        return "أسعارنا مصممة لتناسب مختلف الاحتياجات: \n• مواقع الشركات تبدأ من 300$\n• المتاجر الإلكترونية المتكاملة من 1000$\n• باقة النمو والتسويق تبدأ من 200$\nهل تبحث عن خدمة محددة؟";
+        return "بكل سرور! أسعارنا مدروسة بعناية لضمان حصولك على أعلى جودة:\n• نبدأ تصميم المواقع الاحترافية من 300$\n• والمتاجر الإلكترونية المتكاملة من 1000$\n• وباقات التسويق الشاملة من 200$\nهل يوجد باقة معينة لفتت انتباهك لأشرح لك تفاصيلها؟ 😊";
       }
       if (t.includes("خدمات") || t.includes("تقدمون") || t.includes("ايش تسوون") || t.includes("تصميم")) {
-        return "في Suriix نحن نبني ونكبر أعمالك! نقدم خدمات:\n1. تصميم وبرمجة المواقع (WordPress وغيرها)\n2. تصميم المتاجر الإلكترونية لزيادة المبيعات\n3. تحسين محركات البحث SEO\n4. إدارة الحملات الإعلانية\nهل ترغب بتفاصيل إحدى هذه الخدمات؟";
+        return "من دواعي سروري! نحن وكالة ذكاء رقمي متكاملة نقوم بـ:\n1. تصميم وبرمجة المواقع.\n2. إطلاق المتاجر الإلكترونية.\n3. تحسين محركات البحث (SEO).\n4. إدارة الحملات التسويقية.\nأي من هذه المجالات يثير اهتمامك لعملك القادم؟ 🚀";
       }
       if (t.includes("مدة") || t.includes("كم ياخذ") || t.includes("وقت") || t.includes("متى")) {
-        return "متوسط مدة تنفيذ المشاريع يتراوح بين 5 إلى 30 يوم عمل، ويعتمد ذلك على حجم المشروع وميزاته المطلوبة. نحن نحرص على تسليم العمل بأعلى جودة وفي وقت قياسي.";
+        return "نسعى دائماً لإنجاز العمل بأسرع وقت مع الالتزام التام بمعايير الجودة الممتازة. عادةً، ننجز المشاريع خلال 5 إلى 30 يوم عمل حسب متطلبات مشروعك الخاصة. هل هناك موعد محدد تسعى للإطلاق فيه؟";
       }
-      if (t.includes("دعم") || t.includes("مساعدة") || t.includes("بعد التسليم")) {
-        return "بالتأكيد! نحن في Suriix نقدم خدمات الدعم الفني والصيانة المستمرة بعد تسليم المشروع لضمان استقرار ونمو عملك الرقمي.";
+      if (t.includes("دعم") || t.includes("مساعدة") || t.includes("ضمان") || t.includes("بعد التسليم")) {
+        return "بالتأكيد، لا تقلق أبداً! علاقتنا بك تبدأ فعلياً بعد تسليم المشروع. نحن نوفر فريق دعم فني وصيانة متكامل لضمان استقرار وازدهار عملك الرقمي بشكل مستمر 🛡️.";
       }
-      if (t.includes("تواصل") || t.includes("رقم") || t.includes("واتس") || t.includes("كيف")) {
-        return "يمكنك التواصل المباشر مع فريق خبرائنا مجاناً عبر الواتساب على الرقم: 967780930635+";
+      if (t.includes("تواصل") || t.includes("رقم") || t.includes("واتس") || t.includes("كيف") || t.includes("بكلمك")) {
+        return "يسعدنا جداً تواصلك المباشر معنا! يمكنك التحدث فوراً مع أحد مستشارينا عبر الواتساب على الرقم: 967780930635+ وسنكون في خدمتك.";
       }
-      if (t.includes("سلام") || t.includes("مرحبا") || t.includes("أهلا") || t.includes("يا هلا")) {
-        return "أهلاً بك في Suriix! أنا الذكاء الاصطناعي المساعد للموقع. أستطيع إجابتك حول خدماتنا، باقاتنا، وكيفية بناء وتطوير مشروعك الرقمي. كيف يمكنني مساعدتك؟";
-      }
-      return "أنا هنا للإجابة بناءً على معلومات الموقع المتاحة. لاستفسارك هذا وللحصول على استشارة دقيقة، أنصحك بالتحدث مع خبيرنا التقني بالنقر على الزر أدناه للانتقال للواتساب!";
+      return "سؤال رائع جداً! 💡 لحرصنا الشديد على تقديم أدق إجابة وخدمتك بأفضل شكل ممكن، يسعدني أن أقوم بتوصيلك بأحد خبرائنا البشريين. فقط اضغط على 'تحدث مع خبير حقيقي' بالأسفل وسيقومون بمساعدتك فوراً! ✨";
     }
 
     // English logic
+    if (t.includes("hello") || t.includes("hi") || t.includes("hey") || t.includes("greetings") || t.includes("good")) {
+      return "Hello and a warm welcome to Suriix! 🌟 It's a genuine pleasure to connect with you. How can I assist you today? I'm here to ensure you get all the help you need.";
+    }
     if (t.includes("price") || t.includes("cost") || t.includes("package") || t.includes("how much")) {
-      return "Our pricing is transparent:\n• Corporate Websites start at $300\n• Full E-Commerce goes from $1,000\n• Starter Growth/SEO deals from $200.\nWhich one are you interested in?";
+      return "I would be more than happy to share our pricing! Our packages are designed to give you maximum value:\n• Corporate Websites start at $300\n• Full E-Commerce Stores from $1,000\n• Growth & SEO plans from $200.\nWould you like more details on a specific plan? 😊";
     }
     if (t.includes("service") || t.includes("offer") || t.includes("do you") || t.includes("build")) {
-      return "At Suriix we offer:\n1. Custom Website Development\n2. E-Commerce Solutions\n3. SEO & Digital Marketing\n4. Brand Identity & Strategy\nLet me know if you need details on any of these!";
+      return "It would be my pleasure to explain! We are a full-suite digital agency offering:\n1. Custom Website Development\n2. E-Commerce Solutions\n3. SEO & Digital Marketing\n4. Brand Identity\nWhich of these are you looking to start with? 🚀";
     }
     if (t.includes("time") || t.includes("long") || t.includes("when") || t.includes("duration")) {
-      return "Most projects are completed within 5 to 30 business days, depending on complexity. We prioritize quality alongside speed.";
+      return "We deeply value your time alongside our premium quality. Most projects are successfully delivered within 5 to 30 business days based on your specific requirements. Are you looking to launch soon?";
     }
-    if (t.includes("hello") || t.includes("hi") || t.includes("hey")) {
-      return "Hello! Welcome to Suriix. I am the digital intelligence assistant here. You can ask me about our services, pricing, and work!";
+    if (t.includes("support") || t.includes("help") || t.includes("guarantee") || t.includes("after")) {
+        return "Absolutely! We firmly believe our partnership truly begins after your project goes live. We provide dedicated, ongoing technical support to ensure your digital business thrives continuously 🛡️.";
     }
     
-    return "I am trained on Suriix website data. For this particular inquiry, I highly recommend talking directly with our experts via WhatsApp!";
+    return "That's a fantastic question! ✨ To make sure you get the absolute best guidance and a highly tailored response, I'd love to connect you directly with one of our human experts via the WhatsApp button below!";
   };
 
   const handleSend = () => {
@@ -150,7 +153,7 @@ const ChatbotWidget = () => {
             <div className="flex items-center justify-between px-4 py-3 border-b border-border/30 gradient-purple">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-                  <Bot className="w-4 h-4 text-primary-foreground" />
+                  <Headset className="w-4 h-4 text-primary-foreground" />
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-primary-foreground">
