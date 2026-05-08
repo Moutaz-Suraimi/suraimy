@@ -283,19 +283,9 @@ const PackageCard = ({
       )}
 
       {/* Package name */}
-      <h4 className={`text-lg font-bold text-foreground mb-3 ${isRequested ? "pe-24" : ""}`}>
+      <h4 className={`text-xl font-black gradient-text mb-6 mt-2 ${isRequested ? "pe-24" : ""}`}>
         {t(pkg.nameKey)}
       </h4>
-
-      {/* Pricing */}
-      <div className="mb-4 flex flex-col gap-1">
-        <span className="text-xl font-black gradient-text">
-           {lang === "ar" ? "سعر مخصص" : lang === "zh" ? "定制价格" : "Custom Quote"}
-        </span>
-        <p className="text-xs text-muted-foreground mt-0.5">
-           {lang === "ar" ? "تواصل معنا لتحديد التكلفة بدقة" : lang === "zh" ? "联系我们以确定确切成本" : "Contact us for exact pricing"}
-        </p>
-      </div>
 
       {/* Features */}
       <ul className="space-y-2 mb-4 flex-1">
@@ -463,19 +453,6 @@ const CompareTable = ({ pathData, lang }: { pathData: PathData; lang: LangKey })
               ))}
             </tr>
           ))}
-          {/* Pricing row */}
-          <tr className="bg-primary/5 border-t border-primary/20">
-            <td className="py-4 px-5 text-xs font-bold text-foreground">
-              {lang === "ar" ? "السعر" : lang === "zh" ? "价格" : "Pricing"}
-            </td>
-            {pathData.packages.map((pkg, i) => (
-              <td key={i} className="py-4 px-4 text-center">
-                <span className={`text-sm font-black ${i === 1 ? "gradient-text" : "text-foreground"}`}>
-                  {lang === "ar" ? "حسب الطلب" : lang === "zh" ? "根据要求" : "On Request"}
-                </span>
-              </td>
-            ))}
-          </tr>
         </tbody>
       </table>
     </div>
