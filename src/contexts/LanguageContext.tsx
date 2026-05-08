@@ -183,9 +183,9 @@ export const translations: Translations = {
 
   // Packages
   "packages.title": {
-    ar: "الباقات والأسعار",
-    en: "Packages & Pricing",
-    zh: "套餐与定价",
+    ar: "الباقات",
+    en: "Packages",
+    zh: "套餐",
   },
   "packages.websites": {
     ar: "باقات المواقع",
