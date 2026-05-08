@@ -181,26 +181,31 @@ const SideNav = () => {
              initial={{ opacity: 0, x: isRtl ? 100 : -100 }}
              animate={{ opacity: 1, x: 0 }}
              exit={{ opacity: 0, x: isRtl ? 100 : -100 }}
-             className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl flex flex-col items-center justify-center gap-4 md:hidden"
+             className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl flex flex-col items-center md:hidden pt-[80px]"
           >
-            <div className="flex flex-col items-center gap-3 mb-8 mt-4">
-              <img src="/img/suriix2.png" alt="Suriix Logo" className="w-24 h-24 object-cover rounded-full overflow-hidden border-2 border-primary/50 pulse-glow shadow-lg" />
-              <p className="gradient-text font-bold text-3xl tracking-wide">Suriix</p>
+            <div className="flex flex-col items-center gap-2 mb-4 mt-2 shrink-0">
+              <img src="/img/suriix2.png" alt="Suriix Logo" className="w-16 h-16 object-cover rounded-full overflow-hidden border-2 border-primary/50 pulse-glow shadow-md" />
+              <p className="gradient-text font-bold text-2xl tracking-wide">Suriix</p>
             </div>
-            {navItems.map((item) => (
-              <button
-                key={item.key}
-                onClick={() => handleClick(item.href)}
-                className={`flex items-center gap-3 px-6 py-3 rounded-xl text-lg transition-all ${
-                  active === item.href
-                    ? "text-primary neon-glow bg-primary/10"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <item.icon className="w-5 h-5" />
-                {t(item.key)}
-              </button>
-            ))}
+            
+            <div className="w-full flex-1 overflow-y-auto px-6 pb-8 pt-2 flex flex-col gap-1.5 custom-scrollbar items-center">
+              <div className="w-full max-w-xs flex flex-col gap-1.5">
+                {navItems.map((item) => (
+                  <button
+                    key={item.key}
+                    onClick={() => handleClick(item.href)}
+                    className={`flex items-center gap-3 px-5 py-2.5 rounded-xl text-base font-medium transition-all ${
+                      active === item.href
+                        ? "text-primary neon-glow bg-primary/10"
+                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/40"
+                    }`}
+                  >
+                    <item.icon className="w-5 h-5" />
+                    {t(item.key)}
+                  </button>
+                ))}
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
