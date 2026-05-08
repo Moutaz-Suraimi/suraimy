@@ -41,17 +41,65 @@ const SideNav = () => {
 
   return (
     <>
-      {/* Mobile toggle */}
-      <button
-        onClick={() => setMobileOpen(!mobileOpen)}
-        className="fixed top-4 z-50 p-3 glass rounded-lg neon-border md:hidden"
-        style={{ [isRtl ? "right" : "left"]: "1rem" }}
-      >
-        {mobileOpen ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5 text-foreground" />}
-      </button>
+      {/* Unified Mobile Top Navbar */}
+      <div className="fixed top-0 left-0 right-0 h-[72px] z-50 md:hidden glass-strong border-b border-border/40 flex items-center px-4 shadow-sm">
+        
+        {/* Toggle Button */}
+        <div className="flex-1 flex justify-start">
+          <button 
+            onClick={() => setMobileOpen(!mobileOpen)} 
+            className="p-2.5 rounded-xl bg-secondary/50 hover:bg-primary/20 transition-colors border border-border/50"
+          >
+             {mobileOpen ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5 text-foreground" />}
+          </button>
+        </div>
 
-      {/* Language switcher - top corner */}
-      <div className="fixed top-4 z-50 flex items-center gap-2" style={{ [isRtl ? "left" : "right"]: "1rem" }}>
+        {/* Center Logo */}
+        <div className="flex items-center gap-2.5 shrink-0 pointer-events-none">
+          <img src="/img/suriix2.png" alt="Suriix Logo" className="w-10 h-10 object-cover rounded-full border-2 border-primary/40 overflow-hidden shadow-sm" />
+          <span className="font-bold text-xl gradient-text tracking-wide">Suriix</span>
+        </div>
+
+        {/* Language & Theme Controls */}
+        <div className="flex-1 flex justify-end items-center gap-1.5">
+          <ThemeToggle />
+          <div className="relative">
+            <button 
+              onClick={cycleLang} 
+              className="p-2.5 rounded-xl bg-secondary/50 border border-border/50 hover:bg-primary/20 text-sm font-semibold flex items-center gap-1.5 transition-colors"
+            >
+              <Globe className="w-4 h-4" />
+              <span className="hidden sm:inline-block">{langLabels[lang]}</span>
+              <span className="sm:hidden uppercase">{lang}</span>
+            </button>
+            <AnimatePresence>
+              {langMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                  className="absolute top-14 end-0 glass-strong border border-border/50 rounded-xl overflow-hidden min-w-[120px] shadow-xl z-50"
+                >
+                  {langOrder.map((l) => (
+                    <button
+                      key={l}
+                      onClick={() => { setLang(l); setLangMenuOpen(false); }}
+                      className={`w-full px-4 py-3 text-sm text-start font-medium transition-colors ${
+                        lang === l ? "text-primary bg-primary/10" : "text-foreground hover:bg-secondary/50"
+                      }`}
+                    >
+                      {langLabels[l]}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Language switcher - top corner */}
+      <div className="fixed top-4 z-50 hidden md:flex items-center gap-2" style={{ [isRtl ? "left" : "right"]: "1rem" }}>
         <ThemeToggle />
         <button
           onClick={cycleLang}
@@ -90,8 +138,8 @@ const SideNav = () => {
         className="fixed top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-2 p-2 glass-strong rounded-2xl neon-border"
         style={{ [isRtl ? "right" : "left"]: "1rem" }}
       >
-        <div className="flex items-center justify-center mb-4 p-2">
-          <img src="/img/suriix2.png" alt="Suriix Logo" className="w-10 h-10 object-cover rounded-full border-2 border-primary/40 pulse-glow bg-white/5" />
+        <div className="flex flex-col items-center justify-center mb-6 p-2 mt-2">
+          <img src="/img/suriix2.png" alt="Suriix Logo" className="w-16 h-16 object-cover rounded-full overflow-hidden border-2 border-primary/50 pulse-glow shadow-lg" />
         </div>
         {navItems.map((item) => (
           <div
@@ -136,8 +184,8 @@ const SideNav = () => {
              className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl flex flex-col items-center justify-center gap-4 md:hidden"
           >
             <div className="flex flex-col items-center gap-3 mb-8 mt-4">
-              <img src="/img/suriix2.png" alt="Suriix Logo" className="w-20 h-20 object-cover rounded-full border-2 border-primary/40 pulse-glow bg-white/5" />
-              <p className="gradient-text font-bold text-3xl">Suriix</p>
+              <img src="/img/suriix2.png" alt="Suriix Logo" className="w-24 h-24 object-cover rounded-full overflow-hidden border-2 border-primary/50 pulse-glow shadow-lg" />
+              <p className="gradient-text font-bold text-3xl tracking-wide">Suriix</p>
             </div>
             {navItems.map((item) => (
               <button

@@ -47,11 +47,14 @@ const FooterSection = () => {
         </div>
 
         <div className="border-t border-border/20 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <img src="/img/suriix2.png" alt="Suriix Logo" className="w-10 h-10 object-cover rounded-full border border-primary/20 bg-white/5" />
-            <p className="gradient-text font-bold text-xl">Suriix</p>
+          <div className="flex items-center gap-3">
+            <img src="/img/suriix2.png" alt="Suriix Logo" className="w-16 h-16 object-cover rounded-full overflow-hidden border-2 border-primary/40 shadow-md" />
+            <div>
+               <p className="gradient-text font-bold text-2xl tracking-wide leading-tight">Suriix</p>
+               <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest hidden sm:block">Digital Agency</p>
+            </div>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground flex items-center justify-center">
             © {new Date().getFullYear()} Suriix. {t("footer.rights")}
           </p>
         </div>
