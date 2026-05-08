@@ -60,7 +60,7 @@ const ChatbotWidget = () => {
         return "يا أهلاً ومرحباً بك في Suriix! 🌟 يسعدني جداً تواصلك معنا. كيف يمكنني إفادتك اليوم؟ أنا هنا للإجابة على كافة استفساراتك وتوجيهك لأفضل الحلول.";
       }
       if (t.includes("سعر") || t.includes("اسعار") || t.includes("بكم") || t.includes("باقة") || t.includes("تكلفة")) {
-        return "بكل سرور! أسعارنا مدروسة بعناية لضمان حصولك على أعلى جودة:\n• نبدأ تصميم المواقع الاحترافية من 300$\n• والمتاجر الإلكترونية المتكاملة من 1000$\n• وباقات التسويق الشاملة من 200$\nهل يوجد باقة معينة لفتت انتباهك لأشرح لك تفاصيلها؟ 😊";
+        return "بكل سرور! في Suriix نقدم باقات بأسعار مخصصة بناءً على متطلبات مشروعك بدقة، لضمان حصولك على أعلى جودة وأفضل عائد على استثمارك.\nتواصل معنا لندرس فكرتك ونوفر لك عرض سعر مثالي! 😊";
       }
       if (t.includes("خدمات") || t.includes("تقدمون") || t.includes("ايش تسوون") || t.includes("تصميم")) {
         return "من دواعي سروري! نحن وكالة ذكاء رقمي متكاملة نقوم بـ:\n1. تصميم وبرمجة المواقع.\n2. إطلاق المتاجر الإلكترونية.\n3. تحسين محركات البحث (SEO).\n4. إدارة الحملات التسويقية.\nأي من هذه المجالات يثير اهتمامك لعملك القادم؟ 🚀";
@@ -82,7 +82,7 @@ const ChatbotWidget = () => {
       return "Hello and a warm welcome to Suriix! 🌟 It's a genuine pleasure to connect with you. How can I assist you today? I'm here to ensure you get all the help you need.";
     }
     if (t.includes("price") || t.includes("cost") || t.includes("package") || t.includes("how much")) {
-      return "I would be more than happy to share our pricing! Our packages are designed to give you maximum value:\n• Corporate Websites start at $300\n• Full E-Commerce Stores from $1,000\n• Growth & SEO plans from $200.\nWould you like more details on a specific plan? 😊";
+      return "I would be more than happy to discuss pricing! We offer custom-tailored packages based smoothly on your exact project requirements to ensure you get the maximum value possible.\nReach out to us so we can tailor a quote for your vision! 😊";
     }
     if (t.includes("service") || t.includes("offer") || t.includes("do you") || t.includes("build")) {
       return "It would be my pleasure to explain! We are a full-suite digital agency offering:\n1. Custom Website Development\n2. E-Commerce Solutions\n3. SEO & Digital Marketing\n4. Brand Identity\nWhich of these are you looking to start with? 🚀";

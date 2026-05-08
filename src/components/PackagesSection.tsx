@@ -288,13 +288,12 @@ const PackageCard = ({
       </h4>
 
       {/* Pricing */}
-      <div className="mb-4">
-        <div className="flex items-baseline gap-2 flex-wrap">
-          <span className="text-xs text-muted-foreground">{t("packages.from")}</span>
-          <span className="text-3xl font-black gradient-text">${pkg.priceUSD}</span>
-        </div>
+      <div className="mb-4 flex flex-col gap-1">
+        <span className="text-xl font-black gradient-text">
+           {lang === "ar" ? "سعر مخصص" : lang === "zh" ? "定制价格" : "Custom Quote"}
+        </span>
         <p className="text-xs text-muted-foreground mt-0.5">
-          {pkg.priceYER.toLocaleString()} {t("packages.yer")}
+           {lang === "ar" ? "تواصل معنا لتحديد التكلفة بدقة" : lang === "zh" ? "联系我们以确定确切成本" : "Contact us for exact pricing"}
         </p>
       </div>
 
@@ -467,14 +466,13 @@ const CompareTable = ({ pathData, lang }: { pathData: PathData; lang: LangKey })
           {/* Pricing row */}
           <tr className="bg-primary/5 border-t border-primary/20">
             <td className="py-4 px-5 text-xs font-bold text-foreground">
-              {lang === "ar" ? "السعر" : lang === "zh" ? "价格" : "Price"}
+              {lang === "ar" ? "السعر" : lang === "zh" ? "价格" : "Pricing"}
             </td>
             {pathData.packages.map((pkg, i) => (
               <td key={i} className="py-4 px-4 text-center">
-                <span className={`text-base font-black ${i === 1 ? "gradient-text" : "text-foreground"}`}>
-                  ${pkg.priceUSD}
+                <span className={`text-sm font-black ${i === 1 ? "gradient-text" : "text-foreground"}`}>
+                  {lang === "ar" ? "حسب الطلب" : lang === "zh" ? "根据要求" : "On Request"}
                 </span>
-                <p className="text-[9px] text-muted-foreground mt-0.5">{pkg.priceYER.toLocaleString()} {t("packages.yer")}</p>
               </td>
             ))}
           </tr>
