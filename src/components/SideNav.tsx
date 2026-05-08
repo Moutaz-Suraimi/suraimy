@@ -183,24 +183,24 @@ const SideNav = () => {
              exit={{ opacity: 0, x: isRtl ? 100 : -100 }}
              className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl flex flex-col items-center md:hidden pt-[80px]"
           >
-            <div className="flex flex-col items-center gap-1 mb-3 mt-1 shrink-0">
-              <img src="/img/suriix2.png" alt="Suriix Logo" className="w-[85px] h-[85px] object-contain rounded-full border-2 border-primary/30 pulse-glow shadow-md bg-white/5" />
-              <p className="gradient-text font-bold text-xl tracking-wide">Suriix</p>
+            <div className="flex flex-col items-center gap-2 mb-4 mt-2 shrink-0">
+              <img src="/img/suriix2.png" alt="Suriix Logo" className="w-20 h-20 object-cover rounded-full overflow-hidden border-2 border-primary/50 pulse-glow shadow-lg" />
+              <p className="gradient-text font-bold text-2xl tracking-wide">Suriix</p>
             </div>
             
-            <div className="w-full flex-1 overflow-y-auto px-4 pb-4 pt-1 flex flex-col gap-1 custom-scrollbar items-center">
+            <div className="w-full flex-1 overflow-y-auto px-4 pb-4 pt-1 flex flex-col gap-1.5 custom-scrollbar items-center">
               <div className="w-full max-w-[280px] flex flex-col gap-1">
                 {navItems.map((item) => (
                   <button
                     key={item.key}
                     onClick={() => handleClick(item.href)}
-                    className={`flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                    className={`flex items-center gap-3 px-5 py-3 rounded-xl text-base font-medium transition-all duration-300 ${
                       active === item.href
-                        ? "text-primary neon-glow bg-primary/10 border border-primary/20"
-                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/40 border border-transparent"
+                        ? "bg-primary/20 text-primary neon-glow"
+                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                     }`}
                   >
-                    <item.icon className="w-4 h-4 shrink-0" />
+                    <item.icon className="w-5 h-5 shrink-0" />
                     {t(item.key)}
                   </button>
                 ))}
