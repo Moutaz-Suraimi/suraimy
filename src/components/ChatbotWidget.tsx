@@ -1,14 +1,67 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Headset, Sparkles } from "lucide-react";
+import { MessageCircle, X, Send, Headset, Sparkles, Loader2 } from "lucide-react";
 
 const WHATSAPP_NUMBER = "967780930635";
+const API_KEY = "AIzaSyAxomC0O_S8El-VVNBz9Rk6_GLdjU70fg4";
 
 interface Message {
   role: "bot" | "user";
   text: string;
 }
+
+const systemPrompt = `أنت مساعد ذكي وموظف مبيعات رسمي لشركة Suriix.
+
+🎯 هدفك الأساسي:
+تحويل الزائر إلى عميل مهتم ثم دفعه للتواصل عبر واتساب.
+
+📌 تخصصك:
+- تصميم وتطوير المواقع
+- تصميم الهوية البصرية
+- الخدمات الرقمية
+
+🧠 أسلوبك:
+- مختصر (لا تكتب فقرات طويلة)
+- احترافي وواثق
+- ودود بدون مبالغة
+- واضح وسهل الفهم
+
+📦 الباقات:
+1. باقة Start:
+مناسبة للمشاريع الصغيرة، صفحة واحدة، تصميم متجاوب
+
+2. باقة Growth:
+موقع حتى 5 صفحات + تصميم احترافي + تحسين تجربة المستخدم
+
+3. باقة Premium:
+حل كامل مخصص للشركات + SEO + أداء عالي + دعم
+
+📌 قواعد مهمة:
+- لا تخرج عن خدمات Suriix
+- لا تتكلم عن السياسة أو الدين أو مواضيع خارج العمل
+- لا تعطي أسعار إذا لم يتم تحديدها
+- لا تخترع معلومات غير موجودة
+- إذا ما عرفت الجواب قل: "أحتاج تفاصيل أكثر عشان أفيدك بشكل أدق"
+
+📈 طريقة البيع:
+- اسأل العميل عن احتياجه (نوع المشروع)
+- اقترح باقة مناسبة
+- وضّح الفائدة وليس فقط الميزة
+- حاول دائمًا إنهاء الرد بدعوة للتواصل
+
+💬 أمثلة أسلوب الرد:
+- "ممكن توضح لي نوع مشروعك عشان أحدد لك الباقة الأنسب؟"
+- "أنصحك بباقة Growth لأنها تعطيك موقع متكامل يساعدك تبدأ بشكل قوي"
+- "تقدر تتواصل معنا مباشرة عبر واتساب ونجهز لك كل التفاصيل"
+
+🚫 ممنوع:
+- الرد الطويل
+- الخروج عن الموضوع
+- استخدام لغة معقدة
+
+🔥 النهاية:
+أي رد لازم يقرب العميل من اتخاذ خطوة (سؤال / اقتراح / تواصل).`;
 
 const ChatbotWidget = () => {
   const { t, lang } = useLanguage();
@@ -16,101 +69,101 @@ const ChatbotWidget = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [hasOpened, setHasOpened] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const quickReplies = [
-    { key: "chatbot.quick.pricing", section: "packages" },
-    { key: "chatbot.quick.portfolio", section: "portfolio" },
-    { key: "chatbot.quick.contact", section: "contact" },
-    { key: "chatbot.quick.services", section: "solutions" },
+    { key: "chatbot.quick.pricing" },
+    { key: "chatbot.quick.portfolio" },
+    { key: "chatbot.quick.contact" },
+    { key: "chatbot.quick.services" },
   ];
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading]);
 
   const handleOpen = () => {
     setIsOpen(true);
     if (!hasOpened) {
       setHasOpened(true);
-      setMessages([{ role: "bot", text: t("chatbot.welcome") }]);
+      setMessages([{ role: "bot", text: lang === 'ar' ? "مرحباً بك في Suriix! كيف يمكنني مساعدتك اليوم؟" : "Welcome to Suriix! How can I help you today?" }]);
     }
   };
 
-  const handleQuickReply = (key: string, section: string) => {
-    const userText = t(key);
+  const generateAIResponse = async (userText: string, chatHistory: Message[]): Promise<string> => {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+
+      const contents = chatHistory.map((msg) => ({
+        role: msg.role === "bot" ? "model" : "user",
+        parts: [{ text: msg.text }],
+      }));
+      
+      contents.push({
+        role: "user",
+        parts: [{ text: userText }],
+      });
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          systemInstruction: {
+            parts: [{ text: systemPrompt }],
+          },
+          contents: contents,
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 250,
+          }
+        }),
+      });
+
+      const data = await response.json();
+      if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+        return data.candidates[0].content.parts[0].text;
+      }
+      return lang === 'ar' ? "عذراً، حدث خطأ في النظام. يرجى التواصل معنا عبر واتساب." : "Sorry, a system error occurred. Please contact us via WhatsApp.";
+    } catch (error) {
+      console.error("AI Error:", error);
+      return lang === 'ar' ? "عذراً، أواجه مشكلة في الاتصال حالياً. يرجى مراسلتنا عبر الواتساب." : "Sorry, I'm having connection issues right now. Please message us on WhatsApp.";
+    }
+  };
+
+  const processUserMessage = async (userText: string) => {
+    if (!userText.trim() || isLoading) return;
+    
+    setInput("");
+    const currentHistory = [...messages];
+    
     setMessages((prev) => [...prev, { role: "user", text: userText }]);
+    setIsLoading(true);
 
-    // Bot response
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { role: "bot", text: t(`chatbot.reply.${section}`) },
-      ]);
-    }, 600);
-
-    // Scroll to section
-    setTimeout(() => {
-      const el = document.getElementById(section);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-      setIsOpen(false);
-    }, 1500);
-  };
-
-  const generateAIResponse = (text: string, lang: string): string => {
-    const t = text.toLowerCase();
+    const response = await generateAIResponse(userText, currentHistory);
     
-    if (lang === "ar") {
-      if (t.includes("سلام") || t.includes("مرحبا") || t.includes("أهلا") || t.includes("يا هلا") || t.includes("السلام")) {
-        return "يا أهلاً ومرحباً بك في Suriix! 🌟 يسعدني جداً تواصلك معنا. كيف يمكنني إفادتك اليوم؟ أنا هنا للإجابة على كافة استفساراتك وتوجيهك لأفضل الحلول.";
-      }
-      if (t.includes("سعر") || t.includes("اسعار") || t.includes("بكم") || t.includes("باقة") || t.includes("تكلفة")) {
-        return "بكل سرور! في Suriix نقدم باقات بأسعار مخصصة بناءً على متطلبات مشروعك بدقة، لضمان حصولك على أعلى جودة وأفضل عائد على استثمارك.\nتواصل معنا لندرس فكرتك ونوفر لك عرض سعر مثالي! 😊";
-      }
-      if (t.includes("خدمات") || t.includes("تقدمون") || t.includes("ايش تسوون") || t.includes("تصميم")) {
-        return "من دواعي سروري! نحن وكالة ذكاء رقمي متكاملة نقوم بـ:\n1. تصميم وبرمجة المواقع.\n2. إطلاق المتاجر الإلكترونية.\n3. تحسين محركات البحث (SEO).\n4. إدارة الحملات التسويقية.\nأي من هذه المجالات يثير اهتمامك لعملك القادم؟ 🚀";
-      }
-      if (t.includes("مدة") || t.includes("كم ياخذ") || t.includes("وقت") || t.includes("متى")) {
-        return "نسعى دائماً لإنجاز العمل بأسرع وقت مع الالتزام التام بمعايير الجودة الممتازة. عادةً، ننجز المشاريع خلال 5 إلى 30 يوم عمل حسب متطلبات مشروعك الخاصة. هل هناك موعد محدد تسعى للإطلاق فيه؟";
-      }
-      if (t.includes("دعم") || t.includes("مساعدة") || t.includes("ضمان") || t.includes("بعد التسليم")) {
-        return "بالتأكيد، لا تقلق أبداً! علاقتنا بك تبدأ فعلياً بعد تسليم المشروع. نحن نوفر فريق دعم فني وصيانة متكامل لضمان استقرار وازدهار عملك الرقمي بشكل مستمر 🛡️.";
-      }
-      if (t.includes("تواصل") || t.includes("رقم") || t.includes("واتس") || t.includes("كيف") || t.includes("بكلمك")) {
-        return "يسعدنا جداً تواصلك المباشر معنا! يمكنك التحدث فوراً مع أحد مستشارينا عبر الواتساب على الرقم: 967780930635+ وسنكون في خدمتك.";
-      }
-      return "سؤال رائع جداً! 💡 لحرصنا الشديد على تقديم أدق إجابة وخدمتك بأفضل شكل ممكن، يسعدني أن أقوم بتوصيلك بأحد خبرائنا البشريين. فقط اضغط على 'تحدث مع خبير حقيقي' بالأسفل وسيقومون بمساعدتك فوراً! ✨";
-    }
-
-    // English logic
-    if (t.includes("hello") || t.includes("hi") || t.includes("hey") || t.includes("greetings") || t.includes("good")) {
-      return "Hello and a warm welcome to Suriix! 🌟 It's a genuine pleasure to connect with you. How can I assist you today? I'm here to ensure you get all the help you need.";
-    }
-    if (t.includes("price") || t.includes("cost") || t.includes("package") || t.includes("how much")) {
-      return "I would be more than happy to discuss pricing! We offer custom-tailored packages based smoothly on your exact project requirements to ensure you get the maximum value possible.\nReach out to us so we can tailor a quote for your vision! 😊";
-    }
-    if (t.includes("service") || t.includes("offer") || t.includes("do you") || t.includes("build")) {
-      return "It would be my pleasure to explain! We are a full-suite digital agency offering:\n1. Custom Website Development\n2. E-Commerce Solutions\n3. SEO & Digital Marketing\n4. Brand Identity\nWhich of these are you looking to start with? 🚀";
-    }
-    if (t.includes("time") || t.includes("long") || t.includes("when") || t.includes("duration")) {
-      return "We deeply value your time alongside our premium quality. Most projects are successfully delivered within 5 to 30 business days based on your specific requirements. Are you looking to launch soon?";
-    }
-    if (t.includes("support") || t.includes("help") || t.includes("guarantee") || t.includes("after")) {
-        return "Absolutely! We firmly believe our partnership truly begins after your project goes live. We provide dedicated, ongoing technical support to ensure your digital business thrives continuously 🛡️.";
-    }
-    
-    return "That's a fantastic question! ✨ To make sure you get the absolute best guidance and a highly tailored response, I'd love to connect you directly with one of our human experts via the WhatsApp button below!";
+    setMessages((prev) => [
+      ...prev,
+      { role: "bot", text: response },
+    ]);
+    setIsLoading(false);
   };
 
   const handleSend = () => {
-    if (!input.trim()) return;
-    const userText = input.trim();
-    setInput("");
-    setMessages((prev) => [...prev, { role: "user", text: userText }]);
+    processUserMessage(input);
+  };
 
-    // AI thinking effect
-    setTimeout(() => {
-      const response = generateAIResponse(userText, lang);
-      setMessages((prev) => [
-        ...prev,
-        { role: "bot", text: response },
-      ]);
-    }, 800);
+  const handleQuickReply = (key: string) => {
+    // If the translation key exists, use it. Otherwise use a fallback (we only care to trigger the AI).
+    const fallbackText = lang === 'ar' ? "أخبرني المزيد" : "Tell me more";
+    const userText = t(key) !== key ? t(key) : fallbackText;
+    processUserMessage(userText);
   };
 
   const isRtl = lang === "ar";
@@ -131,7 +184,7 @@ const ChatbotWidget = () => {
             style={{ [isRtl ? "left" : "right"]: "1.5rem" }}
           >
             <MessageCircle className="w-6 h-6" />
-            {/* Pulse indicator — mirrors for RTL */}
+            {/* Pulse indicator */}
             <span className={`absolute -top-1 ${isRtl ? "-left-1" : "-right-1"} w-4 h-4 rounded-full bg-accent animate-ping`} />
             <span className={`absolute -top-1 ${isRtl ? "-left-1" : "-right-1"} w-4 h-4 rounded-full bg-accent`} />
           </motion.button>
@@ -146,7 +199,7 @@ const ChatbotWidget = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.9 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed bottom-6 z-50 w-[340px] max-h-[480px] flex flex-col glass-strong rounded-2xl neon-border overflow-hidden"
+            className="fixed bottom-6 z-50 w-[340px] max-h-[500px] flex flex-col glass-strong rounded-2xl neon-border overflow-hidden shadow-2xl"
             style={{ [isRtl ? "left" : "right"]: "1.5rem" }}
           >
             {/* Header */}
@@ -157,7 +210,7 @@ const ChatbotWidget = () => {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-primary-foreground">
-                    {t("chatbot.title")}
+                    {lang === 'ar' ? 'مساعد Suriix' : lang === 'zh' ? 'Suriix 助手' : 'Suriix Assistant'}
                   </p>
                   <p className="text-[10px] text-primary-foreground/70 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-accent inline-block" />
@@ -174,7 +227,7 @@ const ChatbotWidget = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[200px] max-h-[300px] custom-scrollbar">
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[250px] max-h-[350px] custom-scrollbar">
               {messages.map((msg, i) => (
                 <motion.div
                   key={i}
@@ -197,6 +250,18 @@ const ChatbotWidget = () => {
                   </div>
                 </motion.div>
               ))}
+              {isLoading && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex justify-start"
+                >
+                  <div className="px-3 py-2 rounded-xl glass neon-border text-foreground rounded-bl-sm">
+                    <Loader2 className="w-4 h-4 text-primary animate-spin" />
+                  </div>
+                </motion.div>
+              )}
+              <div ref={messagesEndRef} />
             </div>
 
             {/* Quick action: Talk to Human */}
@@ -210,18 +275,22 @@ const ChatbotWidget = () => {
                </button>
             </div>
 
-            {/* Quick replies */}
-            <div className="px-4 pb-2 flex flex-wrap gap-1.5">
-              {quickReplies.map((qr) => (
-                <button
-                  key={qr.key}
-                  onClick={() => handleQuickReply(qr.key, qr.section)}
-                  className="px-3 py-1.5 rounded-full text-xs glass neon-border text-primary hover:bg-primary/10 transition-colors"
-                >
-                  {t(qr.key)}
-                </button>
-              ))}
-            </div>
+            {/* Quick replies (only show if few messages to save space) */}
+            {messages.length < 3 && !isLoading && (
+              <div className="px-4 pb-2 flex flex-wrap gap-1.5">
+                {quickReplies.map((qr) => (
+                  t(qr.key) !== qr.key ? (
+                    <button
+                      key={qr.key}
+                      onClick={() => handleQuickReply(qr.key)}
+                      className="px-3 py-1.5 rounded-full text-xs glass neon-border text-primary hover:bg-primary/10 transition-colors"
+                    >
+                      {t(qr.key)}
+                    </button>
+                  ) : null
+                ))}
+              </div>
+            )}
 
             {/* Input */}
             <div className="px-4 pb-4 pt-1">
@@ -231,11 +300,13 @@ const ChatbotWidget = () => {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
                   placeholder={t("chatbot.placeholder")}
-                  className="flex-1 px-3 py-2 rounded-xl bg-secondary/50 border border-border/50 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:border-primary/50"
+                  disabled={isLoading}
+                  className="flex-1 px-3 py-2 rounded-xl bg-secondary/50 border border-border/50 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:border-primary/50 disabled:opacity-50"
                 />
                 <button
                   onClick={handleSend}
-                  className="p-2 rounded-xl gradient-purple text-primary-foreground hover:opacity-90 transition-opacity"
+                  disabled={isLoading}
+                  className="p-2 rounded-xl gradient-purple text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
                   <Send className="w-4 h-4" />
                 </button>
