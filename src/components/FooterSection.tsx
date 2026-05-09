@@ -48,9 +48,7 @@ const FooterSection = () => {
 
         <div className="border-t border-border/20 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-16 h-16 rounded-full border-2 border-primary/40 shadow-md flex items-center justify-center p-2.5 shrink-0 bg-black overflow-hidden">
-              <img src="/img/suriix2.png" alt="Suriix Logo" className="w-full h-full object-contain" />
-            </div>
+            <img src="/img/suriix_final.png" alt="Suriix Logo" className="w-16 h-16 object-cover rounded-full" />
             <div>
                <p className="gradient-text font-bold text-2xl tracking-wide leading-tight">Suriix</p>
                <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest hidden sm:block">Digital Agency</p>
