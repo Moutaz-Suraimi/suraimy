@@ -160,7 +160,9 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
                   transition={{ duration: 1.2, ease: "easeOut" }}
                   className="flex flex-col items-center justify-center gap-4"
                 >
-                  <img src="/img/suriix2.png" alt="Suriix Logo" className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-full border-2 border-primary/50 shadow-[0_0_30px_hsl(var(--neon-purple)/0.4)] pulse-glow" />
+                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-primary/50 shadow-[0_0_30px_hsl(var(--neon-purple)/0.4)] pulse-glow flex items-center justify-center p-4 shrink-0 bg-black overflow-hidden">
+                    <img src="/img/suriix2.png" alt="Suriix Logo" className="w-full h-full object-contain" />
+                  </div>
                   <div className="text-center">
                     <h1 className="text-4xl md:text-6xl font-bold gradient-text neon-text mb-2">
                       Suriix

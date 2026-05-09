@@ -84,7 +84,9 @@ export default function InstallPWA() {
           </button>
           
           <div className="flex items-center gap-4 z-10">
-            <img src="/img/suriix2.png" alt="Suriix" className="w-14 h-14 rounded-full object-cover shadow-sm border border-white/10" />
+            <div className="w-14 h-14 rounded-full shadow-sm border border-white/10 flex items-center justify-center p-2 shrink-0 bg-black overflow-hidden">
+              <img src="/img/suriix2.png" alt="Suriix Logo" className="w-full h-full object-contain" />
+            </div>
             
             <div className="flex-1">
               <h3 className="text-base font-bold text-white leading-tight" style={{ fontFamily: 'sans-serif' }}>Suriix</h3>

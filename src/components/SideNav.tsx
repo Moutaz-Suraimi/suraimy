@@ -56,7 +56,9 @@ const SideNav = () => {
 
         {/* Center Logo */}
         <div className="flex items-center gap-2.5 shrink-0 pointer-events-none">
-          <img src="/img/suriix2.png" alt="Suriix Logo" className="w-10 h-10 object-cover rounded-full border-2 border-primary/40 overflow-hidden shadow-sm" />
+          <div className="w-10 h-10 rounded-full border-2 border-primary/40 shadow-sm flex items-center justify-center p-1.5 shrink-0 bg-black overflow-hidden">
+            <img src="/img/suriix2.png" alt="Suriix Logo" className="w-full h-full object-contain" />
+          </div>
           <span className="font-bold text-xl gradient-text tracking-wide">Suriix</span>
         </div>
 
@@ -138,7 +140,9 @@ const SideNav = () => {
         style={{ [isRtl ? "right" : "left"]: "1rem" }}
       >
         <div className="flex flex-col items-center justify-center mb-6 p-2 mt-2">
-          <img src="/img/suriix2.png" alt="Suriix Logo" className="w-16 h-16 object-cover rounded-full overflow-hidden border-2 border-primary/50 pulse-glow shadow-lg" />
+          <div className="w-16 h-16 rounded-full border-2 border-primary/50 pulse-glow shadow-lg flex items-center justify-center p-2.5 shrink-0 bg-black overflow-hidden">
+            <img src="/img/suriix2.png" alt="Suriix Logo" className="w-full h-full object-contain" />
+          </div>
         </div>
         {navItems.map((item) => (
           <div
@@ -183,7 +187,9 @@ const SideNav = () => {
              className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl flex flex-col items-center md:hidden pt-[80px]"
           >
             <div className="flex flex-col items-center gap-2 mb-4 mt-2 shrink-0">
-              <img src="/img/suriix2.png" alt="Suriix Logo" className="w-20 h-20 object-cover rounded-full overflow-hidden border-2 border-primary/50 pulse-glow shadow-lg" />
+              <div className="w-20 h-20 rounded-full border-2 border-primary/50 pulse-glow shadow-lg flex items-center justify-center p-3 shrink-0 bg-black overflow-hidden">
+                <img src="/img/suriix2.png" alt="Suriix Logo" className="w-full h-full object-contain" />
+              </div>
               <p className="gradient-text font-bold text-2xl tracking-wide">Suriix</p>
             </div>
             
