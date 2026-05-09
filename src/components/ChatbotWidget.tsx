@@ -161,6 +161,11 @@ const ChatbotWidget = () => {
       
       if (!response.ok) {
         console.error("API Error Response:", data);
+        if (response.status === 429) {
+          return lang === 'ar' 
+            ? "عذراً، أواجه ضغطاً كبيراً في الرسائل حالياً 😅! يرجى الانتظار دقيقة أو التحدث مع خبير حقيقي عبر واتساب." 
+            : "Sorry, I'm receiving too many messages right now 😅! Please wait a minute or talk to a human on WhatsApp.";
+        }
         return lang === 'ar' ? "عذراً، حدث خطأ في النظام. يرجى التواصل معنا عبر واتساب." : "Sorry, a system error occurred. Please contact us via WhatsApp.";
       }
 
