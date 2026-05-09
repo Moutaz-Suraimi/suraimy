@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Headset, Sparkles, Loader2 } from "lucide-react";
 
 const WHATSAPP_NUMBER = "967780930635";
-const API_KEY = "AIzaSyAxomC0O_S8El-VVNBz9Rk6_GLdjU70fg4";
+const API_KEY = "AIzaSyAimQGEa94kiUExFFFIA0oU0o8aEjny98o";
 
 interface Message {
   role: "bot" | "user";
