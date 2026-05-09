@@ -158,13 +158,17 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
                   initial={{ opacity: 0, scale: 0.5, filter: "blur(20px)" }}
                   animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
+                  className="flex flex-col items-center justify-center gap-4"
                 >
-                  <h1 className="text-4xl md:text-6xl font-bold gradient-text neon-text mb-2">
-                    Suriix
-                  </h1>
-                  <p className="text-sm md:text-base tracking-[0.3em] text-muted-foreground uppercase">
-                    Suriix
-                  </p>
+                  <img src="/img/suriix2.png" alt="Suriix Logo" className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-full border-2 border-primary/50 shadow-[0_0_30px_hsl(var(--neon-purple)/0.4)] pulse-glow" />
+                  <div className="text-center">
+                    <h1 className="text-4xl md:text-6xl font-bold gradient-text neon-text mb-2">
+                      Suriix
+                    </h1>
+                    <p className="text-sm md:text-base tracking-[0.3em] text-muted-foreground uppercase">
+                      Suriix
+                    </p>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
