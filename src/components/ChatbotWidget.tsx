@@ -138,15 +138,17 @@ const ChatbotWidget = () => {
         mergedContents.push({ role: "user", parts: [{ text: userText }] });
       }
 
+      // Inject system prompt into the first user message to guarantee compatibility
+      if (mergedContents.length > 0) {
+        mergedContents[0].parts[0].text = `[System Instructions: ${systemPrompt}]\n\nUser Input: ` + mergedContents[0].parts[0].text;
+      }
+
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          systemInstruction: {
-            parts: [{ text: systemPrompt }],
-          },
           contents: mergedContents,
           generationConfig: {
             temperature: 0.7,
