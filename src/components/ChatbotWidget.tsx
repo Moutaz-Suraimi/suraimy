@@ -114,15 +114,29 @@ const ChatbotWidget = () => {
     try {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
-      const contents = chatHistory.map((msg) => ({
-        role: msg.role === "bot" ? "model" : "user",
-        parts: [{ text: msg.text }],
-      }));
+      let validHistory = [...chatHistory];
+      // Gemini strictly requires the first message to be from the 'user'
+      while (validHistory.length > 0 && validHistory[0].role === "bot") {
+        validHistory.shift();
+      }
+
+      const mergedContents: { role: string; parts: { text: string }[] }[] = [];
       
-      contents.push({
-        role: "user",
-        parts: [{ text: userText }],
-      });
+      for (const msg of validHistory) {
+        const role = msg.role === "bot" ? "model" : "user";
+        if (mergedContents.length > 0 && mergedContents[mergedContents.length - 1].role === role) {
+          mergedContents[mergedContents.length - 1].parts[0].text += "\n" + msg.text;
+        } else {
+          mergedContents.push({ role, parts: [{ text: msg.text }] });
+        }
+      }
+
+      // Add current user input
+      if (mergedContents.length > 0 && mergedContents[mergedContents.length - 1].role === "user") {
+        mergedContents[mergedContents.length - 1].parts[0].text += "\n" + userText;
+      } else {
+        mergedContents.push({ role: "user", parts: [{ text: userText }] });
+      }
 
       const response = await fetch(url, {
         method: "POST",
@@ -133,7 +147,7 @@ const ChatbotWidget = () => {
           systemInstruction: {
             parts: [{ text: systemPrompt }],
           },
-          contents: contents,
+          contents: mergedContents,
           generationConfig: {
             temperature: 0.7,
             maxOutputTokens: 1000,
@@ -142,6 +156,12 @@ const ChatbotWidget = () => {
       });
 
       const data = await response.json();
+      
+      if (!response.ok) {
+        console.error("API Error Response:", data);
+        return lang === 'ar' ? "عذراً، حدث خطأ في النظام. يرجى التواصل معنا عبر واتساب." : "Sorry, a system error occurred. Please contact us via WhatsApp.";
+      }
+
       if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
         return data.candidates[0].content.parts[0].text;
       }
