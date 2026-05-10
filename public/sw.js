@@ -3,7 +3,7 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/img/suriix_final.png'
+  '/favicon.png'
 ];
 
 self.addEventListener('install', event => {
