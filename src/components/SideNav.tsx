@@ -90,6 +90,7 @@ const SideNav = () => {
 
         {/* Language & Theme Controls */}
         <div className="flex-1 flex justify-end items-center gap-1.5">
+          <ThemeToggle />
           <div className="relative">
             <button 
               onClick={cycleLang} 
@@ -240,10 +241,6 @@ const SideNav = () => {
                     {t(item.key)}
                   </button>
                 ))}
-                <div className="h-px bg-border/50 my-4 w-full" />
-                <div className="flex justify-center items-center py-2 pb-8">
-                  <ThemeToggle />
-                </div>
               </div>
             </div>
           </motion.div>
