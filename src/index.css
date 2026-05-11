@@ -6,98 +6,98 @@
 
 @layer base {
   :root {
-    --background: 260 25% 4%;
-    --foreground: 0 0% 95%;
+    --background: 265 45% 8%;
+    --foreground: 260 20% 95%;
 
-    --card: 260 20% 8%;
-    --card-foreground: 0 0% 95%;
+    --card: 265 40% 12%;
+    --card-foreground: 260 20% 95%;
 
-    --popover: 260 20% 8%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 265 40% 12%;
+    --popover-foreground: 260 20% 95%;
 
-    --primary: 265 90% 60%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 258 90% 78%; /* Lavender from logo */
+    --primary-foreground: 265 50% 15%; /* Deep Indigo for contrast */
 
-    --secondary: 260 30% 12%;
-    --secondary-foreground: 0 0% 90%;
+    --secondary: 265 30% 18%;
+    --secondary-foreground: 258 50% 90%;
 
-    --muted: 260 15% 15%;
-    --muted-foreground: 260 10% 55%;
+    --muted: 265 25% 18%;
+    --muted-foreground: 265 20% 65%;
 
-    --accent: 275 85% 55%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 160 80% 75%; /* Mint from logo */
+    --accent-foreground: 265 50% 15%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 260 20% 15%;
-    --input: 260 20% 15%;
-    --ring: 265 90% 60%;
+    --border: 265 30% 20%;
+    --input: 265 30% 20%;
+    --ring: 258 90% 78%;
 
     --radius: 0.75rem;
 
-    /* Custom brand tokens */
-    --neon-purple: 265 90% 60%;
-    --neon-violet: 275 85% 55%;
-    --neon-blue: 230 85% 55%;
-    --glow-purple: 265 100% 65%;
-    --glass-bg: 260 20% 8%;
-    --glass-border: 260 30% 20%;
+    /* Custom brand tokens based on suriix.png */
+    --neon-purple: 258 90% 78%;
+    --neon-violet: 265 80% 85%;
+    --neon-blue: 160 80% 75%;
+    --glow-purple: 258 90% 82%;
+    --glass-bg: 265 40% 10%;
+    --glass-border: 265 30% 25%;
 
-    --sidebar-background: 260 25% 6%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 265 90% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 260 30% 12%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 260 20% 15%;
-    --sidebar-ring: 265 90% 60%;
+    --sidebar-background: 265 45% 10%;
+    --sidebar-foreground: 260 20% 95%;
+    --sidebar-primary: 258 90% 78%;
+    --sidebar-primary-foreground: 265 50% 15%;
+    --sidebar-accent: 265 30% 18%;
+    --sidebar-accent-foreground: 260 20% 95%;
+    --sidebar-border: 265 30% 20%;
+    --sidebar-ring: 258 90% 78%;
   }
 
   .light {
-    --background: 250 20% 96%;
-    --foreground: 260 25% 10%;
+    --background: 160 30% 98%; /* Very light mint tint */
+    --foreground: 265 50% 15%; /* Deep Indigo */
 
-    --card: 250 15% 92%;
-    --card-foreground: 260 25% 10%;
+    --card: 258 20% 96%;
+    --card-foreground: 265 50% 15%;
 
-    --popover: 250 15% 92%;
-    --popover-foreground: 260 25% 10%;
+    --popover: 258 20% 96%;
+    --popover-foreground: 265 50% 15%;
 
-    --primary: 265 90% 55%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 258 90% 78%; /* Lavender from logo */
+    --primary-foreground: 265 50% 15%; /* Deep Indigo */
 
-    --secondary: 250 15% 88%;
-    --secondary-foreground: 260 20% 20%;
+    --secondary: 258 30% 90%;
+    --secondary-foreground: 265 50% 20%;
 
-    --muted: 250 10% 85%;
-    --muted-foreground: 260 10% 40%;
+    --muted: 258 20% 90%;
+    --muted-foreground: 265 20% 45%;
 
-    --accent: 275 85% 50%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 160 80% 75%; /* Mint from logo */
+    --accent-foreground: 265 50% 15%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 250 15% 82%;
-    --input: 250 15% 82%;
-    --ring: 265 90% 55%;
+    --border: 258 20% 85%;
+    --input: 258 20% 85%;
+    --ring: 258 90% 78%;
 
-    --neon-purple: 265 90% 55%;
-    --neon-violet: 275 85% 50%;
-    --neon-blue: 230 85% 50%;
-    --glow-purple: 265 100% 60%;
-    --glass-bg: 250 15% 92%;
-    --glass-border: 250 20% 78%;
+    --neon-purple: 258 90% 78%;
+    --neon-violet: 265 80% 85%;
+    --neon-blue: 160 80% 75%;
+    --glow-purple: 258 90% 82%;
+    --glass-bg: 258 20% 96%;
+    --glass-border: 258 20% 88%;
 
-    --sidebar-background: 250 20% 94%;
-    --sidebar-foreground: 260 20% 15%;
-    --sidebar-primary: 265 90% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 250 15% 88%;
-    --sidebar-accent-foreground: 260 20% 10%;
-    --sidebar-border: 250 15% 82%;
-    --sidebar-ring: 265 90% 55%;
+    --sidebar-background: 160 30% 96%;
+    --sidebar-foreground: 265 50% 15%;
+    --sidebar-primary: 258 90% 78%;
+    --sidebar-primary-foreground: 265 50% 15%;
+    --sidebar-accent: 258 30% 90%;
+    --sidebar-accent-foreground: 265 50% 10%;
+    --sidebar-border: 258 20% 85%;
+    --sidebar-ring: 258 90% 78%;
   }
 }
 

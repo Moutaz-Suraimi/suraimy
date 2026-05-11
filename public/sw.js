@@ -1,4 +1,4 @@
-const CACHE_NAME = 'suriix-pwa-cache-v1';
+const CACHE_NAME = 'suriix-pwa-cache-v9';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -30,6 +30,11 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+  // Disable caching for development environment (localhost)
+  if (event.request.url.includes('localhost') || event.request.url.includes('127.0.0.1')) {
+    return; // Let the browser handle the network request directly without SW interference
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => {

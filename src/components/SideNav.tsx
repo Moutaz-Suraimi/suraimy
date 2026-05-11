@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -39,6 +39,34 @@ const SideNav = () => {
     setLangMenuOpen(!langMenuOpen);
   };
 
+  // ScrollSpy to update active state
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+      
+      let currentActive = active;
+      for (const item of navItems) {
+        const element = document.getElementById(item.href.substring(1));
+        if (element) {
+          const { top, bottom } = element.getBoundingClientRect();
+          const elementTop = top + window.scrollY;
+          const elementBottom = bottom + window.scrollY;
+          
+          if (scrollPosition >= elementTop && scrollPosition <= elementBottom) {
+            currentActive = item.href;
+          }
+        }
+      }
+      
+      if (currentActive !== active) {
+        setActive(currentActive);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [active]);
+
   return (
     <>
       {/* Unified Mobile Top Navbar */}
@@ -57,7 +85,7 @@ const SideNav = () => {
         {/* Center Logo */}
         <div className="flex items-center gap-2.5 shrink-0 pointer-events-none">
           <img src="/img/suriix_final.png" alt="Suriix Logo" className="w-10 h-10 object-cover rounded-full" />
-          <span className="font-bold text-xl gradient-text tracking-wide">Suriix</span>
+          <span className="font-bold text-xl text-[#26163c] dark:text-white tracking-wide">Suriix</span>
         </div>
 
         {/* Language & Theme Controls */}
@@ -134,8 +162,8 @@ const SideNav = () => {
 
       {/* Desktop sidebar */}
       <nav
-        className="fixed top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-2 p-2 glass-strong rounded-2xl neon-border"
-        style={{ [isRtl ? "right" : "left"]: "1rem" }}
+        className="fixed top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-2 p-3 glass-strong rounded-3xl neon-border shadow-2xl backdrop-blur-xl bg-background/40"
+        style={{ [isRtl ? "right" : "left"]: "1.5rem" }}
       >
         <div className="flex flex-col items-center justify-center mb-6 p-2 mt-2">
           <img src="/img/suriix_final.png" alt="Suriix Logo" className="w-16 h-16 object-cover rounded-full" />
@@ -149,23 +177,32 @@ const SideNav = () => {
           >
             <button
               onClick={() => handleClick(item.href)}
-              className={`p-3 rounded-xl transition-all duration-300 flex items-center gap-3 ${
+              className={`p-3.5 rounded-2xl transition-all duration-300 flex items-center justify-center relative ${
                 active === item.href
-                  ? "bg-primary/20 text-primary neon-glow"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                  ? "bg-primary/15 text-primary shadow-[0_0_15px_rgba(var(--primary),0.2)] border border-primary/20 scale-105"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/60 hover:scale-105"
               }`}
             >
-              <item.icon className="w-5 h-5 shrink-0" />
+              <item.icon className="w-5 h-5 shrink-0 relative z-10" />
+              {active === item.href && (
+                <motion.div 
+                  layoutId="activeNavBg"
+                  className="absolute inset-0 rounded-2xl bg-primary/10 border border-primary/20"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
               <AnimatePresence>
                 {hovered === item.key && (
-                  <motion.span
-                    initial={{ opacity: 0, width: 0 }}
-                    animate={{ opacity: 1, width: "auto" }}
-                    exit={{ opacity: 0, width: 0 }}
-                    className="text-sm font-medium whitespace-nowrap overflow-hidden"
+                  <motion.div
+                    initial={{ opacity: 0, x: isRtl ? 10 : -10, scale: 0.9 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: isRtl ? 5 : -5, scale: 0.9 }}
+                    transition={{ duration: 0.2 }}
+                    className={`absolute top-1/2 -translate-y-1/2 ${isRtl ? 'right-[calc(100%+12px)]' : 'left-[calc(100%+12px)]'} px-4 py-2 glass-strong rounded-xl text-sm font-medium whitespace-nowrap shadow-xl border border-border/50 flex items-center gap-2`}
                   >
+                    {active === item.href && <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />}
                     {t(item.key)}
-                  </motion.span>
+                  </motion.div>
                 )}
               </AnimatePresence>
             </button>
@@ -184,27 +221,27 @@ const SideNav = () => {
           >
             <div className="flex flex-col items-center gap-2 mb-4 mt-2 shrink-0">
               <img src="/img/suriix_final.png" alt="Suriix Logo" className="w-20 h-20 object-cover rounded-full" />
-              <p className="gradient-text font-bold text-2xl tracking-wide">Suriix</p>
+              <p className="text-[#26163c] dark:text-white font-bold text-3xl tracking-wide mt-2">Suriix</p>
             </div>
             
             <div className="w-full flex-1 overflow-y-auto px-4 pb-4 pt-1 flex flex-col gap-1.5 custom-scrollbar items-center">
-              <div className="w-full max-w-[280px] flex flex-col gap-1">
+              <div className="w-full max-w-[280px] flex flex-col gap-2">
                 {navItems.map((item) => (
                   <button
                     key={item.key}
                     onClick={() => handleClick(item.href)}
-                    className={`flex items-center gap-3 px-5 py-3 rounded-xl text-base font-medium transition-all duration-300 ${
+                    className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl text-base font-medium transition-all duration-300 border ${
                       active === item.href
-                        ? "bg-primary/20 text-primary neon-glow"
-                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                        ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(var(--primary),0.1)]"
+                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/50 border-transparent"
                     }`}
                   >
                     <item.icon className="w-5 h-5 shrink-0" />
                     {t(item.key)}
                   </button>
                 ))}
-                <div className="h-px bg-border/50 my-2 w-full" />
-                <div className="flex justify-center items-center py-2">
+                <div className="h-px bg-border/50 my-4 w-full" />
+                <div className="flex justify-center items-center py-2 pb-8">
                   <ThemeToggle />
                 </div>
               </div>

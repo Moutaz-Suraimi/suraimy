@@ -27,7 +27,7 @@ const PrivacyPolicy = () => {
           ))}
         </div>
         <h1
-          className={`text-3xl md:text-4xl font-bold text-center mb-8 mt-8 ${lang === "ar" ? "text-primary" : "gradient-text"}`}
+          className={`text-3xl md:text-4xl font-bold text-center mb-8 mt-8 ${lang === "ar" ? "text-primary" : "text-[#26163c] dark:text-white"}`}
         >
           {lang === "ar" ? "جميع السياسات القانونية" : t("privacy.title")}
         </h1>

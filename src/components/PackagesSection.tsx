@@ -118,7 +118,7 @@ const PackageCard = ({ pkg, lang }: { pkg: PkgCard; lang: LangKey }) => {
       )}
 
       <div className="text-4xl mb-4">{pkg.icon}</div>
-      <h4 className={`text-xl font-black gradient-text mb-2 ${isRequested ? "pe-24" : ""}`}>
+      <h4 className={`text-xl font-black text-[#26163c] dark:text-white mb-2 ${isRequested ? "pe-24" : ""}`}>
         {pkg.name[lang]}
       </h4>
       <p className="text-sm text-muted-foreground mb-6">
@@ -185,7 +185,7 @@ const PackagesSection = () => {
               <Star className="w-3 h-3 fill-current" />
               {lang === "ar" ? "باقاتنا" : lang === "zh" ? "我们的套餐" : "Our Packages"}
             </motion.span>
-            <h2 className="text-3xl md:text-5xl font-black gradient-text mb-4">
+            <h2 className="text-3xl md:text-5xl font-black text-[#26163c] dark:text-white mb-4">
               {title}
             </h2>
             <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">

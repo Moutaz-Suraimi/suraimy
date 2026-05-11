@@ -71,7 +71,7 @@ const TestimonialsSection = () => {
 
       <div className="max-w-6xl mx-auto relative z-10">
         <ScrollReveal>
-          <h2 className="text-3xl md:text-5xl font-bold text-center text-primary mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-center text-[#26163c] dark:text-white mb-4">
             {t("testimonials.title")}
           </h2>
         </ScrollReveal>

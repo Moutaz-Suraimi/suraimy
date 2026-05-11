@@ -23,7 +23,7 @@ const FAQSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-5xl font-bold text-center gradient-text mb-12"
+          className="text-3xl md:text-5xl font-bold text-center text-[#26163c] dark:text-white mb-12"
         >
           {t("faq.title")}
         </motion.h2>

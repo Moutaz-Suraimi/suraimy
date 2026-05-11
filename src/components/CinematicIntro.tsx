@@ -3,27 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Volume2, VolumeX, SkipForward } from "lucide-react";
 
-const PARTICLE_COUNT = 60;
-
-interface Particle {
-  id: number;
-  x: number;
-  y: number;
-  size: number;
-  delay: number;
-  duration: number;
-}
-
-const generateParticles = (): Particle[] =>
-  Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 4 + 1,
-    delay: Math.random() * 2,
-    duration: Math.random() * 3 + 3,
-  }));
-
 const introText: Record<string, { line1: string; line2: string }> = {
   ar: {
     line1: "مرحباً بك…",
@@ -41,11 +20,10 @@ const introText: Record<string, { line1: string; line2: string }> = {
 
 const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
   const { lang } = useLanguage();
-  const [phase, setPhase] = useState<"particles" | "logo" | "text" | "fadeout">("particles");
+  const [phase, setPhase] = useState<"logo" | "text" | "fadeout">("logo");
   const [muted, setMuted] = useState(true);
   const [typedLine1, setTypedLine1] = useState("");
   const [typedLine2, setTypedLine2] = useState("");
-  const [particles] = useState(generateParticles);
   const timerRef = useRef<number>();
 
   const text = introText[lang] || introText.en;
@@ -58,9 +36,8 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
 
   // Phase progression
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("logo"), 2000);
-    const t2 = setTimeout(() => setPhase("text"), 4000);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
+    const t1 = setTimeout(() => setPhase("text"), 1500);
+    return () => { clearTimeout(t1); };
   }, []);
 
   // Typewriter effect
@@ -75,10 +52,10 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
       if (i <= line1.length) {
         setTypedLine1(line1.slice(0, i));
         i++;
-        timerRef.current = window.setTimeout(typeLine1, 80);
+        timerRef.current = window.setTimeout(typeLine1, 60);
       } else {
         i = 0;
-        timerRef.current = window.setTimeout(typeLine2, 400);
+        timerRef.current = window.setTimeout(typeLine2, 300);
       }
     };
 
@@ -86,12 +63,12 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
       if (i <= line2.length) {
         setTypedLine2(line2.slice(0, i));
         i++;
-        timerRef.current = window.setTimeout(typeLine2, 50);
+        timerRef.current = window.setTimeout(typeLine2, 40);
       } else {
         timerRef.current = window.setTimeout(() => {
           setPhase("fadeout");
           setTimeout(onComplete, 800);
-        }, 2000);
+        }, 1500);
       }
     };
 
@@ -104,113 +81,101 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
       {phase !== "fadeout" ? (
         <motion.div
           key="intro"
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="fixed inset-0 z-[100] bg-background flex items-center justify-center overflow-hidden"
+          exit={{ opacity: 0, scale: 1.05 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
+          style={{ background: "linear-gradient(135deg, #F2FEFA 0%, #E8E5F6 50%, #B8B3F3 100%)" }}
         >
-          {/* Floating particles */}
-          {particles.map((p) => (
-            <motion.div
-              key={p.id}
-              className="absolute rounded-full"
-              style={{
-                left: `${p.x}%`,
-                top: `${p.y}%`,
-                width: p.size,
-                height: p.size,
-                background: `hsl(var(--neon-purple) / ${0.3 + Math.random() * 0.5})`,
-              }}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{
-                opacity: [0, 0.8, 0.3, 0.8, 0],
-                scale: [0, 1.5, 1, 1.5, 0],
-                x: [0, (Math.random() - 0.5) * 200],
-                y: [0, (Math.random() - 0.5) * 200],
-              }}
-              transition={{
-                duration: p.duration,
-                delay: p.delay,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
+          {/* Optimized High-Performance Animated Background Elements */}
+          <motion.div 
+            className="absolute -top-1/4 -left-1/4 w-[150%] h-[150%] opacity-70"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+          >
+            <div className="absolute top-[20%] left-[20%] w-[40%] h-[40%] rounded-full" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%)" }} />
+            <div className="absolute bottom-[20%] right-[20%] w-[45%] h-[45%] rounded-full" style={{ background: "radial-gradient(circle, rgba(184,179,243,0.8) 0%, transparent 70%)" }} />
+            <div className="absolute top-[40%] right-[30%] w-[40%] h-[40%] rounded-full" style={{ background: "radial-gradient(circle, rgba(242,254,250,0.9) 0%, transparent 70%)" }} />
+            <div className="absolute bottom-[30%] left-[30%] w-[35%] h-[35%] rounded-full" style={{ background: "radial-gradient(circle, rgba(35,20,60,0.15) 0%, transparent 70%)" }} />
+          </motion.div>
+          
+          {/* Light Overlay without heavy blur */}
+          <div className="absolute inset-0 bg-white/10" />
 
-          {/* Convergence glow */}
-          <motion.div
-            className="absolute w-64 h-64 rounded-full"
-            style={{
-              background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.3), transparent 70%)",
-            }}
-            animate={{
-              scale: phase === "logo" || phase === "text" ? [1, 1.4, 1.1] : [0.5, 0.8, 0.5],
-              opacity: phase === "logo" || phase === "text" ? 0.8 : 0.3,
-            }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          />
-
-          {/* Logo */}
-          <div className="relative z-10 text-center px-6">
+          {/* Main Content */}
+          <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-md px-6">
             <AnimatePresence mode="wait">
               {(phase === "logo" || phase === "text") && (
                 <motion.div
                   key="logo-text"
-                  initial={{ opacity: 0, scale: 0.5, filter: "blur(20px)" }}
-                  animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                  transition={{ duration: 1.2, ease: "easeOut" }}
-                  className="flex flex-col items-center justify-center gap-4"
+                  initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex flex-col items-center justify-center gap-6"
                 >
-                  <img src="/img/suriix_final.png" alt="Suriix Logo" className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-full" />
+                  <div className="flex items-center justify-center">
+                    <img 
+                      src="/img/suriix_final.png" 
+                      alt="Suriix Logo" 
+                      className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-full shadow-[0_0_40px_rgba(255,255,255,0.15)]" 
+                    />
+                  </div>
+                  
                   <div className="text-center">
-                    <h1 className="text-4xl md:text-6xl font-bold gradient-text neon-text mb-2">
+                    <h1 className="text-4xl md:text-5xl font-bold text-[#26163c] mb-2 drop-shadow-sm tracking-tight">
                       Suriix
                     </h1>
-                    <p className="text-sm md:text-base tracking-[0.3em] text-muted-foreground uppercase">
-                      Suriix
-                    </p>
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#2c1558]/30" />
+                      <p className="text-xs md:text-sm tracking-[0.4em] text-[#2c1558]/70 uppercase font-bold">
+                        Digital
+                      </p>
+                      <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-[#2c1558]/30" />
+                    </div>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {/* Typewriter text */}
-            {phase === "text" && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="mt-10 space-y-2"
-              >
-                <p className="text-xl md:text-2xl text-foreground font-medium min-h-[2rem]">
-                  {typedLine1}
-                  {typedLine1.length < text.line1.length && (
-                    <span className="inline-block w-0.5 h-6 bg-primary animate-pulse ml-0.5" />
-                  )}
-                </p>
-                <p className="text-lg md:text-xl text-muted-foreground min-h-[1.75rem]">
-                  {typedLine2}
-                  {typedLine1.length >= text.line1.length && typedLine2.length < text.line2.length && (
-                    <span className="inline-block w-0.5 h-5 bg-primary animate-pulse ml-0.5" />
-                  )}
-                </p>
-              </motion.div>
-            )}
+            {/* Premium Typewriter text */}
+            <div className="mt-12 h-20 flex flex-col items-center justify-center">
+              {phase === "text" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="space-y-3 text-center w-full"
+                >
+                  <p className="text-lg md:text-xl text-[#2c1558]/90 font-bold tracking-wide">
+                    {typedLine1}
+                    {typedLine1.length < text.line1.length && (
+                      <span className="inline-block w-[2px] h-5 bg-[#462b78] animate-pulse ml-1 align-middle" />
+                    )}
+                  </p>
+                  <p className="text-sm md:text-base text-[#2c1558]/70 font-semibold tracking-wider">
+                    {typedLine2}
+                    {typedLine1.length >= text.line1.length && typedLine2.length < text.line2.length && (
+                      <span className="inline-block w-[2px] h-4 bg-[#462b78] animate-pulse ml-1 align-middle" />
+                    )}
+                  </p>
+                </motion.div>
+              )}
+            </div>
           </div>
 
           {/* Controls */}
           <div className="absolute bottom-8 right-8 flex items-center gap-3 z-20">
             <button
               onClick={() => setMuted(!muted)}
-              className="p-2 glass rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+              className="p-3 bg-black/5 hover:bg-black/10 border border-black/10 backdrop-blur-md rounded-full text-[#2c1558]/70 hover:text-[#2c1558] transition-all shadow-lg"
             >
-              {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+              {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
             <button
               onClick={skip}
-              className="flex items-center gap-2 px-4 py-2 glass rounded-lg text-muted-foreground hover:text-foreground transition-colors text-sm"
+              className="flex items-center gap-2 px-5 py-3 bg-black/5 hover:bg-black/10 border border-black/10 backdrop-blur-md rounded-full text-[#2c1558]/70 hover:text-[#2c1558] transition-all shadow-lg text-sm font-bold tracking-wide"
             >
               <SkipForward className="w-4 h-4" />
-              Skip
+              تخطي
             </button>
           </div>
         </motion.div>

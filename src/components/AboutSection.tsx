@@ -26,7 +26,7 @@ const AboutSection = () => {
     <section id="about" className="section-padding relative">
       <div className="max-w-6xl mx-auto">
         <ScrollReveal>
-          <h2 className="text-3xl md:text-5xl font-bold text-center text-primary mb-14">
+          <h2 className="text-3xl md:text-5xl font-bold text-center text-[#26163c] dark:text-white mb-14">
             {t("about.title")}
           </h2>
         </ScrollReveal>

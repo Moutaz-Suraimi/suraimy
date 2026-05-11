@@ -29,7 +29,7 @@ const SolutionsSection = () => {
       <div className="absolute inset-0 grid-bg opacity-30" />
       <div className="max-w-5xl mx-auto relative z-10">
         <ScrollReveal>
-          <h2 className="text-3xl md:text-5xl font-bold text-center text-primary mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold text-center text-[#26163c] dark:text-white mb-16">
             {t("solutions.title")}
           </h2>
         </ScrollReveal>

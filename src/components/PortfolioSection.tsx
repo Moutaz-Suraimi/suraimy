@@ -443,7 +443,7 @@ const PortfolioSection = () => {
               <ExternalLink className="w-3 h-3" />
               {lang === "ar" ? "أعمالنا المميزة" : lang === "zh" ? "精选作品集" : "Featured Work"}
             </motion.span>
-            <h2 className="text-3xl md:text-5xl font-black gradient-text mb-4">
+            <h2 className="text-3xl md:text-5xl font-black text-[#26163c] dark:text-white mb-4">
               {t("portfolio.title")}
             </h2>
             <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">

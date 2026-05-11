@@ -1,12 +1,12 @@
 {
-  "name": "Suriix Digital",
+  "name": "سريكس - وكالة الذكاء الرقمي",
   "short_name": "Suriix",
-  "description": "AI-powered digital agency. Websites, e-commerce & growth strategies.",
+  "description": "وكالة رقمية رائدة مدعومة بالذكاء الاصطناعي. نقوم بتصميم وتطوير مواقع إلكترونية احترافية.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "/favicon.png",

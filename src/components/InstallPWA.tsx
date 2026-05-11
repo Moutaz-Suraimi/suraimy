@@ -12,7 +12,7 @@ export default function InstallPWA() {
 
   useEffect(() => {
     setMounted(true);
-    const dismissed = localStorage.getItem('suriix-pwa-dismissed');
+    const dismissed = localStorage.getItem('suriix-pwa-dismissed-v2');
     if (dismissed) {
       setIsDismissed(true);
     }
@@ -56,7 +56,7 @@ export default function InstallPWA() {
   const onDismiss = () => {
     setIsDismissed(true);
     setShowIOSInstructions(false);
-    localStorage.setItem('suriix-pwa-dismissed', 'true');
+    localStorage.setItem('suriix-pwa-dismissed-v2', 'true');
   };
 
   if (!mounted || isInstalled || isDismissed) {
@@ -73,8 +73,9 @@ export default function InstallPWA() {
         className="fixed bottom-0 left-0 right-0 z-[100] p-4 pb-6 sm:p-6 sm:pb-8 pointer-events-none"
         dir="rtl"
       >
-        <div className="mx-auto max-w-md pointer-events-auto bg-black/90 dark:bg-black/95 backdrop-blur-xl shadow-[0_-10px_40px_-15px_rgba(255,255,255,0.1)] rounded-2xl border border-white/10 p-4 flex flex-col gap-3 relative overflow-hidden">
+        <div className="mx-auto max-w-md pointer-events-auto glass-strong neon-border rounded-2xl p-4 flex flex-col gap-3 relative overflow-hidden shadow-[0_-10px_40px_-15px_rgba(121,40,202,0.2)]">
           
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent pointer-events-none" />
           <button 
             onClick={onDismiss}
             className="absolute top-2 left-2 p-1.5 text-gray-400 hover:text-white rounded-full transition-colors z-10"
@@ -84,20 +85,18 @@ export default function InstallPWA() {
           </button>
           
           <div className="flex items-center gap-4 z-10">
-            <img src="/img/suriix_final.png" alt="Suriix Logo" className="w-14 h-14 object-cover rounded-full" />
-            
-            <div className="flex-1">
-              <h3 className="text-base font-bold text-white leading-tight" style={{ fontFamily: 'sans-serif' }}>Suriix</h3>
-              <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+            <div className="flex-1 pr-2">
+               <p className="text-[#26163c] dark:text-white font-bold text-lg tracking-wide leading-tight">Suriix</p>
+              <p className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">
                 ثبّت التطبيق لتجربة أسرع للوكالة
               </p>
             </div>
             
             <button
               onClick={onClick}
-              className="shrink-0 bg-white hover:bg-gray-200 text-black text-sm font-bold px-5 py-2.5 rounded-full shadow-lg flex items-center gap-2 transition-all active:scale-95"
+              className="shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold px-4 py-2.5 rounded-full shadow-[0_0_15px_rgba(var(--primary),0.4)] flex items-center gap-1.5 transition-all active:scale-95"
             >
-              <Download className="w-4 h-4" />
+              <Download className="w-3.5 h-3.5" />
               تثبيت
             </button>
           </div>
