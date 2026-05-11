@@ -114,7 +114,7 @@ const ChatbotWidget = () => {
     try {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
-      let validHistory = [...chatHistory];
+      const validHistory = [...chatHistory];
       // Gemini strictly requires the first message to be from the 'user'
       while (validHistory.length > 0 && validHistory[0].role === "bot") {
         validHistory.shift();

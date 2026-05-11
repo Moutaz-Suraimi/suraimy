@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Download, Share } from 'lucide-react';
 
 export default function InstallPWA() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [promptInstall, setPromptInstall] = useState<any>(null);
   const [isDismissed, setIsDismissed] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
@@ -17,6 +18,7 @@ export default function InstallPWA() {
       setIsDismissed(true);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true) {
       setIsInstalled(true);
     }
@@ -25,6 +27,7 @@ export default function InstallPWA() {
     const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
     setIsIOS(isIosDevice);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handler = (e: any) => {
       e.preventDefault();
       setPromptInstall(e);
