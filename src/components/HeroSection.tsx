@@ -195,7 +195,7 @@ const HeroSection = () => {
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleButtonClick(btn.key, btn.section)}
                   className={`relative px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold text-lg md:text-xl
-                    text-primary-foreground bg-gradient-to-r ${btn.color}
+                    text-primary-foreground bg-primary
                     neon-glow transition-all duration-300 cursor-pointer
                     ${activeButton === btn.key ? "ring-2 ring-primary ring-offset-2 ring-offset-background" : ""}`}
                   style={{ transformStyle: "preserve-3d", perspective: "600px" }}
