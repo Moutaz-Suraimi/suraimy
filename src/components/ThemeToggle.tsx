@@ -20,6 +20,21 @@ const ThemeToggle = () => {
   }, []);
 
   const toggle = () => {
+    // Create a style element to disable all transitions temporarily
+    const css = document.createElement('style');
+    css.appendChild(
+      document.createTextNode(
+        `* {
+          -webkit-transition: none !important;
+          -moz-transition: none !important;
+          -o-transition: none !important;
+          -ms-transition: none !important;
+          transition: none !important;
+        }`
+      )
+    );
+    document.head.appendChild(css);
+
     const newDark = !isDark;
     setIsDark(newDark);
     if (newDark) {
@@ -31,6 +46,10 @@ const ThemeToggle = () => {
       document.documentElement.classList.add("light");
       localStorage.setItem("suriix_theme", "light");
     }
+
+    // Force browser repaint before re-enabling transitions
+    window.getComputedStyle(css).opacity;
+    document.head.removeChild(css);
   };
 
   return (
