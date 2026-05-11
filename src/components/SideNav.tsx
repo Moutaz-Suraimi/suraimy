@@ -41,30 +41,40 @@ const SideNav = () => {
 
   // ScrollSpy to update active state
   useEffect(() => {
+    let timeout: NodeJS.Timeout | null = null;
+    
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight / 3;
+      if (timeout) return;
       
-      let currentActive = active;
-      for (const item of navItems) {
-        const element = document.getElementById(item.href.substring(1));
-        if (element) {
-          const { top, bottom } = element.getBoundingClientRect();
-          const elementTop = top + window.scrollY;
-          const elementBottom = bottom + window.scrollY;
-          
-          if (scrollPosition >= elementTop && scrollPosition <= elementBottom) {
-            currentActive = item.href;
+      timeout = setTimeout(() => {
+        const scrollPosition = window.scrollY + window.innerHeight / 3;
+        
+        let currentActive = active;
+        for (const item of navItems) {
+          const element = document.getElementById(item.href.substring(1));
+          if (element) {
+            const { top, bottom } = element.getBoundingClientRect();
+            const elementTop = top + window.scrollY;
+            const elementBottom = bottom + window.scrollY;
+            
+            if (scrollPosition >= elementTop && scrollPosition <= elementBottom) {
+              currentActive = item.href;
+            }
           }
         }
-      }
-      
-      if (currentActive !== active) {
-        setActive(currentActive);
-      }
+        
+        if (currentActive !== active) {
+          setActive(currentActive);
+        }
+        timeout = null;
+      }, 100);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (timeout) clearTimeout(timeout);
+    };
   }, [active]);
 
   return (

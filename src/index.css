@@ -103,12 +103,12 @@
 @layer base {
   * {
     @apply border-border;
-    transition: background-color 0.3s ease, color 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   body {
     @apply bg-background text-foreground;
     font-family: 'Space Grotesk', 'Inter', sans-serif;
+    transition: background-color 0.3s ease, color 0.2s ease;
   }
 
   [dir="rtl"] body,
@@ -144,6 +144,20 @@
       0 0 20px hsl(var(--neon-purple) / 0.5),
       0 0 60px hsl(var(--neon-purple) / 0.25),
       0 0 120px hsl(var(--neon-purple) / 0.1);
+  }
+
+  /* Performance optimizations for mobile devices */
+  @media (max-width: 768px) {
+    .glass, .glass-strong {
+      @apply bg-card/95 backdrop-blur-none border-border/20;
+    }
+    .neon-glow, .neon-glow-strong {
+      box-shadow: none !important;
+    }
+    .pulse-glow {
+      animation: none !important;
+      box-shadow: none !important;
+    }
   }
 
   .neon-text {
