@@ -41,6 +41,15 @@ const Index = () => {
     sessionStorage.setItem("suriix-intro-seen", "true");
   };
 
+  React.useEffect(() => {
+    if (!showIntro && window.location.hash) {
+      setTimeout(() => {
+        const id = window.location.hash.substring(1);
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [showIntro]);
+
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {showIntro && <CinematicIntro onComplete={handleIntroComplete} />}

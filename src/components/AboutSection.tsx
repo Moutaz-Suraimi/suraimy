@@ -1,12 +1,14 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { Eye, Target, Heart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import ScrollReveal from "./ScrollReveal";
 
 const WHATSAPP = "https://wa.me/967780930635";
 
 const AboutSection = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const navigate = useNavigate();
 
   const cards = [
     { icon: Eye, title: t("about.vision.title"), desc: t("about.vision.desc") },
@@ -58,15 +60,21 @@ const AboutSection = () => {
         </div>
 
         <ScrollReveal delay={0.3}>
-          <div className="text-center mt-12">
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-12">
             <a
               href={WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-6 py-3 glass rounded-xl neon-border text-primary hover:bg-primary/10 transition-colors font-medium"
+              className="px-6 py-3 gradient-purple text-primary-foreground rounded-xl neon-glow font-medium transition-all hover:scale-105"
             >
               {t("about.cta")}
             </a>
+            <button
+              onClick={() => { navigate("/about"); window.scrollTo(0, 0); }}
+              className="px-6 py-3 glass rounded-xl neon-border text-foreground hover:text-primary hover:bg-primary/5 transition-all font-medium"
+            >
+              {lang === "ar" ? "قراءة المزيد عن قصتنا" : lang === "zh" ? "阅读更多关于我们的故事" : "Read more about our story"}
+            </button>
           </div>
         </ScrollReveal>
       </div>

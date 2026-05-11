@@ -16,6 +16,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const WHATSAPP_NUMBER = "967780930635";
 
@@ -111,6 +112,7 @@ const FloatInput = ({
 // ─── Main Component ────────────────────────────────────────────────────────────
 const ContactSection = () => {
   const { t, lang } = useLanguage();
+  const navigate = useNavigate();
   const l = lang as "ar" | "en" | "zh";
   const isRtl = lang === "ar";
 
@@ -390,9 +392,15 @@ const ContactSection = () => {
           <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold border border-primary/30 bg-primary/10 text-primary mb-4 uppercase tracking-widest">
             {t("contact.briefing.subtitle")}
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#26163c] dark:text-white leading-tight">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#26163c] dark:text-white leading-tight mb-4">
             {t("contact.title")}
           </h2>
+          <button
+            onClick={() => { navigate("/contact"); window.scrollTo(0, 0); }}
+            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors underline underline-offset-4"
+          >
+            {isRtl ? "أو انتقل لصفحة التواصل الكاملة" : l === "zh" ? "或前往完整联系页面" : "Or go to the full contact page"}
+          </button>
         </motion.div>
 
         <AnimatePresence mode="wait">

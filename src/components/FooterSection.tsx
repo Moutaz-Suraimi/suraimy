@@ -1,11 +1,22 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const FooterSection = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const handleNav = (path: string, hash?: string) => {
+    if (hash) {
+      if (location.pathname !== "/") {
+        navigate(`/${hash}`);
+      } else {
+        document.getElementById(hash.substring(1))?.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      navigate(path);
+      window.scrollTo(0, 0);
+    }
   };
 
   return (
@@ -15,32 +26,35 @@ const FooterSection = () => {
           <div>
             <h4 className="font-semibold text-foreground mb-4">{t("footer.services")}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li onClick={() => scrollTo("solutions")} className="hover:text-primary transition-colors cursor-pointer">{t("sol.digital")}</li>
-              <li onClick={() => scrollTo("solutions")} className="hover:text-primary transition-colors cursor-pointer">{t("sol.ecommerce")}</li>
-              <li onClick={() => scrollTo("solutions")} className="hover:text-primary transition-colors cursor-pointer">{t("sol.brand")}</li>
+              <li onClick={() => handleNav("/", "#solutions")} className="hover:text-primary transition-colors cursor-pointer">{t("sol.digital")}</li>
+              <li onClick={() => handleNav("/", "#solutions")} className="hover:text-primary transition-colors cursor-pointer">{t("sol.ecommerce")}</li>
+              <li onClick={() => handleNav("/", "#solutions")} className="hover:text-primary transition-colors cursor-pointer">{t("sol.brand")}</li>
             </ul>
           </div>
           <div>
             <h4 className="font-semibold text-foreground mb-4">{t("footer.company")}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li onClick={() => scrollTo("about")} className="hover:text-primary transition-colors cursor-pointer">{t("nav.about")}</li>
-              <li onClick={() => scrollTo("contact")} className="hover:text-primary transition-colors cursor-pointer">{t("nav.contact")}</li>
+              <li onClick={() => handleNav("/about")} className="hover:text-primary transition-colors cursor-pointer">{t("nav.about")}</li>
+              <li onClick={() => handleNav("/contact")} className="hover:text-primary transition-colors cursor-pointer">{t("nav.contact")}</li>
             </ul>
           </div>
           <div>
             <h4 className="font-semibold text-foreground mb-4">{t("footer.packages")}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li onClick={() => scrollTo("packages")} className="hover:text-primary transition-colors cursor-pointer">{t("packages.websites")}</li>
-              <li onClick={() => scrollTo("packages")} className="hover:text-primary transition-colors cursor-pointer">{t("packages.ecommerce")}</li>
+              <li onClick={() => handleNav("/", "#packages")} className="hover:text-primary transition-colors cursor-pointer">{t("packages.websites")}</li>
+              <li onClick={() => handleNav("/", "#packages")} className="hover:text-primary transition-colors cursor-pointer">{t("packages.ecommerce")}</li>
             </ul>
           </div>
           <div>
             <h4 className="font-semibold text-foreground mb-4">{t("footer.resources")}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li onClick={() => scrollTo("faq")} className="hover:text-primary transition-colors cursor-pointer">{t("nav.faq")}</li>
-              <li onClick={() => scrollTo("blog")} className="hover:text-primary transition-colors cursor-pointer">{t("nav.blog")}</li>
+              <li onClick={() => handleNav("/", "#faq")} className="hover:text-primary transition-colors cursor-pointer">{t("nav.faq")}</li>
+              <li onClick={() => handleNav("/", "#blog")} className="hover:text-primary transition-colors cursor-pointer">{t("nav.blog")}</li>
               <li>
                 <Link to="/privacy" className="hover:text-primary transition-colors">{t("footer.privacy")}</Link>
+              </li>
+              <li>
+                <Link to="/terms" className="hover:text-primary transition-colors">{lang === "ar" ? "شروط الاستخدام" : lang === "zh" ? "使用条款" : "Terms of Use"}</Link>
               </li>
             </ul>
           </div>

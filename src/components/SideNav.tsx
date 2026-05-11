@@ -5,11 +5,12 @@ import {
   Home, Users, Layers, Package, Lightbulb,
   HelpCircle, MessageSquare, Menu, X, Globe, Briefcase, Star, BookOpen
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
   { key: "nav.home", icon: Home, href: "#home" },
-  { key: "nav.about", icon: Users, href: "#about" },
+  { key: "nav.about", icon: Users, href: "/about" },
   { key: "nav.mirror", icon: Layers, href: "#mirror" },
   { key: "nav.solutions", icon: Lightbulb, href: "#solutions" },
   { key: "nav.packages", icon: Package, href: "#packages" },
@@ -17,7 +18,7 @@ const navItems = [
   { key: "nav.testimonials", icon: Star, href: "#testimonials" },
   { key: "nav.faq", icon: HelpCircle, href: "#faq" },
   { key: "nav.blog", icon: BookOpen, href: "#blog" },
-  { key: "nav.contact", icon: MessageSquare, href: "#contact" },
+  { key: "nav.contact", icon: MessageSquare, href: "/contact" },
 ];
 
 const SideNav = () => {
@@ -27,10 +28,21 @@ const SideNav = () => {
   const [active, setActive] = useState("#home");
   const [langMenuOpen, setLangMenuOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleClick = (href: string) => {
     setActive(href);
     setMobileOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    if (href.startsWith("/")) {
+      navigate(href);
+      window.scrollTo(0, 0);
+    } else {
+      if (window.location.pathname !== "/") {
+        navigate("/" + href);
+      } else {
+        document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   };
 
   const isRtl = lang === "ar";
