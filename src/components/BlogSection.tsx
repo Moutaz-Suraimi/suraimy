@@ -46,8 +46,40 @@ const blogPosts = [
 ];
 
 const BlogSection = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [expandedPost, setExpandedPost] = useState<number | null>(null);
+  
+  // Comments state
+  const [comments, setComments] = useState<{name: string, text: string, date: string}[]>([]);
+  const [newComment, setNewComment] = useState("");
+
+  // Load comments when a post is opened
+  const handleOpenPost = (index: number) => {
+    setExpandedPost(index);
+    const savedComments = localStorage.getItem(`suriix_blog_comments_${index}`);
+    if (savedComments) {
+      setComments(JSON.parse(savedComments));
+    } else {
+      setComments([]);
+    }
+  };
+
+  const handleAddComment = () => {
+    if (!newComment.trim() || expandedPost === null) return;
+    
+    const comment = {
+      name: lang === "ar" ? "زائر" : "Visitor", // In a real app this would be the logged in user
+      text: newComment.trim(),
+      date: new Date().toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US", { year: 'numeric', month: 'short', day: 'numeric' })
+    };
+    
+    const updatedComments = [comment, ...comments];
+    setComments(updatedComments);
+    setNewComment("");
+    
+    // Save to localStorage so it persists
+    localStorage.setItem(`suriix_blog_comments_${expandedPost}`, JSON.stringify(updatedComments));
+  };
 
   return (
     <section id="blog" className="section-padding relative">
@@ -73,7 +105,7 @@ const BlogSection = () => {
               <motion.div
                 className="card-3d glass rounded-2xl neon-border overflow-hidden cursor-pointer group"
                 whileHover={{ y: -5 }}
-                onClick={() => setExpandedPost(i)}
+                onClick={() => handleOpenPost(i)}
               >
                 {/* Gradient header */}
                 <div className={`h-2 bg-gradient-to-r ${post.gradient}`} />
@@ -160,15 +192,61 @@ const BlogSection = () => {
                 {t(blogPosts[expandedPost].contentKey)}
               </div>
 
-              <a
-                href={`${WHATSAPP}?text=${encodeURIComponent(t("blog.cta.message"))}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl gradient-purple text-primary-foreground font-medium neon-glow-strong hover:shadow-[0_0_40px_hsl(265_90%_60%/0.4)] transition-shadow"
-              >
-                <BookOpen className="w-4 h-4" />
-                {t("blog.cta")}
-              </a>
+              {/* Comments Section */}
+              <div className="mt-8 pt-8 border-t border-border/30">
+                <h3 className="text-xl font-bold text-foreground mb-4">{t("blog.comments") || (lang === "ar" ? "التعليقات" : "Comments")}</h3>
+                
+                {/* Add Comment */}
+                <div className="mb-6 flex flex-col gap-3">
+                  <textarea 
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder={lang === "ar" ? "أضف رأيك هنا..." : "Write your opinion here..."}
+                    className="w-full bg-background/50 border border-border/50 rounded-xl p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all resize-none h-24"
+                  />
+                  <button 
+                    onClick={handleAddComment}
+                    disabled={!newComment.trim()}
+                    className="self-end px-5 py-2 rounded-xl bg-primary/20 text-primary hover:bg-primary/30 disabled:opacity-50 transition-colors text-sm font-bold"
+                  >
+                    {lang === "ar" ? "إرسال التعليق" : "Post Comment"}
+                  </button>
+                </div>
+
+                {/* Display Comments */}
+                <div className="space-y-4 max-h-48 overflow-y-auto custom-scrollbar pr-2">
+                  {comments.length === 0 ? (
+                    <p className="text-muted-foreground text-sm text-center py-4 italic">
+                      {lang === "ar" ? "لا توجد تعليقات بعد. كن أول من يشارك برأيه!" : "No comments yet. Be the first to share your opinion!"}
+                    </p>
+                  ) : (
+                    comments.map((comment, idx) => (
+                      <div key={idx} className="bg-background/40 border border-border/30 rounded-xl p-4 flex flex-col gap-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">
+                            {comment.name.charAt(0)}
+                          </div>
+                          <span className="text-sm font-semibold text-foreground">{comment.name}</span>
+                          <span className="text-xs text-muted-foreground ml-auto">{comment.date}</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground leading-relaxed pl-8">{comment.text}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-8 pt-6 flex items-center justify-center border-t border-border/10">
+                <a
+                  href={`${WHATSAPP}?text=${encodeURIComponent(t("blog.cta.message"))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl gradient-purple text-primary-foreground font-medium neon-glow-strong hover:shadow-[0_0_40px_hsl(265_90%_60%/0.4)] transition-shadow"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  {t("blog.cta")}
+                </a>
+              </div>
             </motion.div>
           </motion.div>
         )}
