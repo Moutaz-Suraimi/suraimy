@@ -70,7 +70,7 @@ const ContactUs = () => {
     setStatus("submitting");
     
     // إرسال البيانات عبر FormSubmit (AJAX)
-    fetch("https://formsubmit.co/ajax/moutazw3@gmail.com", {
+    fetch("https://formsubmit.co/ajax/info@suriix.com", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -142,8 +142,8 @@ const ContactUs = () => {
           <div className="inline-flex items-center justify-center p-4 rounded-full bg-primary/10 text-primary mb-4 ring-1 ring-primary/20 shadow-[0_0_30px_rgba(var(--primary),0.2)]">
             <MessageSquare className="w-10 h-10" />
           </div>
-          <a href="mailto:moutazw3@gmail.com" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-6 font-medium bg-secondary/50 px-4 py-2 rounded-full border border-border/50">
-            <Mail className="w-4 h-4" /> moutazw3@gmail.com
+          <a href="mailto:info@suriix.com" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-6 font-medium bg-secondary/50 px-4 py-2 rounded-full border border-border/50">
+            <Mail className="w-4 h-4" /> info@suriix.com
           </a>
           <h1 className="text-4xl md:text-5xl font-bold text-[#26163c] dark:text-white mb-4 tracking-tight">
             {currentTexts.title}
