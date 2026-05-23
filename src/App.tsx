@@ -9,6 +9,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AboutUs from "./pages/AboutUs";
 import TermsOfUse from "./pages/TermsOfUse";
 import ContactUs from "./pages/ContactUs";
+import ReadyWebsiteDetails from "./pages/ReadyWebsiteDetails";
 import NotFound from "./pages/NotFound";
 import InstallPWA from "./components/InstallPWA";
 
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/about" element={<AboutUs />} />
             <Route path="/terms" element={<TermsOfUse />} />
             <Route path="/contact" element={<ContactUs />} />
+            <Route path="/ready-website/:id" element={<ReadyWebsiteDetails />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <InstallPWA />

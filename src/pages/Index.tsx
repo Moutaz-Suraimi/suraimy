@@ -12,6 +12,7 @@ import FAQSection from "@/components/FAQSection";
 import BlogSection from "@/components/BlogSection";
 import ContactSection from "@/components/ContactSection";
 import FooterSection from "@/components/FooterSection";
+import ReadyWebsitesSection from "@/components/ReadyWebsitesSection";
 import ChatbotWidget from "@/components/ChatbotWidget";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import CinematicIntro from "@/components/CinematicIntro";
@@ -61,6 +62,7 @@ const Index = () => {
         <SectionReveal><DigitalMirror /></SectionReveal>
         <SectionReveal><SolutionsSection /></SectionReveal>
         <SectionReveal><PackagesSection /></SectionReveal>
+        <SectionReveal><ReadyWebsitesSection /></SectionReveal>
         <SectionReveal><PortfolioSection /></SectionReveal>
         <SectionReveal><TestimonialsSection /></SectionReveal>
         <SectionReveal><FAQSection /></SectionReveal>

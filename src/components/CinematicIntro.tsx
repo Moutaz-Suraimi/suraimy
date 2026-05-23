@@ -83,23 +83,22 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
           key="intro"
           exit={{ opacity: 0, scale: 1.05 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
-          style={{ background: "linear-gradient(135deg, #F2FEFA 0%, #E8E5F6 50%, #B8B3F3 100%)" }}
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-background"
         >
-          {/* Optimized High-Performance Animated Background Elements */}
+          {/* Optimized High-Performance Animated Glowing Background Elements */}
           <motion.div 
-            className="absolute -top-1/4 -left-1/4 w-[150%] h-[150%] opacity-70"
+            className="absolute -top-1/4 -left-1/4 w-[150%] h-[150%] opacity-80 mix-blend-multiply"
             animate={{ rotate: 360 }}
             transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
           >
-            <div className="absolute top-[20%] left-[20%] w-[40%] h-[40%] rounded-full" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%)" }} />
-            <div className="absolute bottom-[20%] right-[20%] w-[45%] h-[45%] rounded-full" style={{ background: "radial-gradient(circle, rgba(184,179,243,0.8) 0%, transparent 70%)" }} />
-            <div className="absolute top-[40%] right-[30%] w-[40%] h-[40%] rounded-full" style={{ background: "radial-gradient(circle, rgba(242,254,250,0.9) 0%, transparent 70%)" }} />
-            <div className="absolute bottom-[30%] left-[30%] w-[35%] h-[35%] rounded-full" style={{ background: "radial-gradient(circle, rgba(35,20,60,0.15) 0%, transparent 70%)" }} />
+            <div className="absolute top-[20%] left-[20%] w-[40%] h-[40%] rounded-full blur-[80px]" style={{ background: "radial-gradient(circle, rgba(139,92,246,0.5) 0%, transparent 70%)" }} />
+            <div className="absolute bottom-[20%] right-[20%] w-[45%] h-[45%] rounded-full blur-[100px]" style={{ background: "radial-gradient(circle, rgba(59,130,246,0.5) 0%, transparent 70%)" }} />
+            <div className="absolute top-[40%] right-[30%] w-[40%] h-[40%] rounded-full blur-[80px]" style={{ background: "radial-gradient(circle, rgba(217,70,239,0.4) 0%, transparent 70%)" }} />
+            <div className="absolute bottom-[30%] left-[30%] w-[35%] h-[35%] rounded-full blur-[70px]" style={{ background: "radial-gradient(circle, rgba(14,165,233,0.3) 0%, transparent 70%)" }} />
           </motion.div>
           
           {/* Light Overlay without heavy blur */}
-          <div className="absolute inset-0 bg-white/10" />
+          <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px]" />
 
           {/* Main Content */}
           <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-md px-6">
@@ -112,24 +111,25 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
                   transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                   className="flex flex-col items-center justify-center gap-6"
                 >
-                  <div className="flex items-center justify-center">
+                  <div className="flex items-center justify-center relative">
+                    <div className="absolute inset-0 bg-white/40 blur-2xl rounded-full animate-pulse-glow" />
                     <img 
                       src="/img/suriix_final.png" 
                       alt="Suriix Logo" 
-                      className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-full shadow-[0_0_40px_rgba(255,255,255,0.15)]" 
+                      className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-full shadow-[0_0_50px_rgba(139,92,246,0.25)] border border-white/50 bg-white" 
                     />
                   </div>
                   
-                  <div className="text-center">
-                    <h1 className="text-4xl md:text-5xl font-bold text-[#26163c] mb-2 drop-shadow-sm tracking-tight">
+                  <div className="text-center mt-2">
+                    <h1 className="text-4xl md:text-5xl font-bold text-[#26163c] mb-2 tracking-tight drop-shadow-sm">
                       Suriix
                     </h1>
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#2c1558]/30" />
-                      <p className="text-xs md:text-sm tracking-[0.4em] text-[#2c1558]/70 uppercase font-bold">
+                    <div className="flex items-center justify-center gap-2 mt-3">
+                      <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-[#2c1558]/40" />
+                      <p className="text-xs md:text-sm tracking-[0.5em] text-[#2c1558]/80 uppercase font-bold">
                         Digital
                       </p>
-                      <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-[#2c1558]/30" />
+                      <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-[#2c1558]/40" />
                     </div>
                   </div>
                 </motion.div>
@@ -137,21 +137,21 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
             </AnimatePresence>
 
             {/* Premium Typewriter text */}
-            <div className="mt-12 h-20 flex flex-col items-center justify-center">
+            <div className="mt-14 h-20 flex flex-col items-center justify-center">
               {phase === "text" && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="space-y-3 text-center w-full"
+                  className="space-y-4 text-center w-full"
                 >
-                  <p className="text-lg md:text-xl text-[#2c1558]/90 font-bold tracking-wide">
+                  <p className="text-lg md:text-xl text-[#2c1558]/95 font-bold tracking-wide">
                     {typedLine1}
                     {typedLine1.length < text.line1.length && (
                       <span className="inline-block w-[2px] h-5 bg-[#462b78] animate-pulse ml-1 align-middle" />
                     )}
                   </p>
-                  <p className="text-sm md:text-base text-[#2c1558]/70 font-semibold tracking-wider">
+                  <p className="text-sm md:text-base text-[#2c1558]/80 font-semibold tracking-wider">
                     {typedLine2}
                     {typedLine1.length >= text.line1.length && typedLine2.length < text.line2.length && (
                       <span className="inline-block w-[2px] h-4 bg-[#462b78] animate-pulse ml-1 align-middle" />
@@ -166,13 +166,13 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
           <div className="absolute bottom-8 right-8 flex items-center gap-3 z-20">
             <button
               onClick={() => setMuted(!muted)}
-              className="p-3 bg-black/5 hover:bg-black/10 border border-black/10 backdrop-blur-md rounded-full text-[#2c1558]/70 hover:text-[#2c1558] transition-all shadow-lg"
+              className="p-3 bg-white/30 hover:bg-white/50 border border-white/40 backdrop-blur-md rounded-full text-[#2c1558]/80 hover:text-[#2c1558] transition-all shadow-lg"
             >
               {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
             <button
               onClick={skip}
-              className="flex items-center gap-2 px-5 py-3 bg-black/5 hover:bg-black/10 border border-black/10 backdrop-blur-md rounded-full text-[#2c1558]/70 hover:text-[#2c1558] transition-all shadow-lg text-sm font-bold tracking-wide"
+              className="flex items-center gap-2 px-5 py-3 bg-white/30 hover:bg-white/50 border border-white/40 backdrop-blur-md rounded-full text-[#2c1558]/80 hover:text-[#2c1558] transition-all shadow-lg text-sm font-bold tracking-wide"
             >
               <SkipForward className="w-4 h-4" />
               تخطي
@@ -185,3 +185,4 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
 };
 
 export default CinematicIntro;
+
