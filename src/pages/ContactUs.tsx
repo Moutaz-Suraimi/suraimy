@@ -2,7 +2,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowLeft, MessageSquare, Send, CheckCircle2, AlertCircle, Mail, 
-  User, Shield, Clock, HelpCircle, Send as TelegramIcon 
+  User, Shield, Clock, HelpCircle 
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import FooterSection from "@/components/FooterSection";
@@ -266,7 +266,7 @@ const ContactUs = () => {
                         placeholder={currentTexts.namePlaceholder}
                         required
                       />
-                      <User className="absolute right-5 rtl:left-5 text-muted-foreground w-5 h-5" />
+                      <User className="absolute right-5 rtl:right-auto rtl:left-5 text-muted-foreground w-5 h-5" />
                     </div>
                   </div>
 
@@ -284,7 +284,7 @@ const ContactUs = () => {
                         placeholder={currentTexts.emailPlaceholder}
                         required
                       />
-                      <Mail className="absolute right-5 rtl:left-5 text-muted-foreground w-5 h-5" />
+                      <Mail className="absolute right-5 rtl:right-auto rtl:left-5 text-muted-foreground w-5 h-5" />
                     </div>
                   </div>
 
@@ -302,7 +302,7 @@ const ContactUs = () => {
                         placeholder={currentTexts.messagePlaceholder}
                         required
                       />
-                      <Send className="absolute right-5 top-5 rtl:left-5 text-muted-foreground w-5 h-5 rotate-45" />
+                      <Send className="absolute right-5 top-5 rtl:right-auto rtl:left-5 text-muted-foreground w-5 h-5 rotate-45" />
                     </div>
                   </div>
                 </div>
@@ -311,19 +311,30 @@ const ContactUs = () => {
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-95 text-white font-bold py-4.5 rounded-2xl transition-all shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 flex items-center justify-center gap-2.5 group disabled:opacity-70 disabled:pointer-events-none cursor-pointer"
+                  className="w-full relative overflow-hidden rounded-2xl cursor-pointer disabled:opacity-70 disabled:pointer-events-none group"
+                  style={{ padding: 0, border: "none", background: "transparent" }}
                 >
-                  {status === "submitting" ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                      {currentTexts.sending}
-                    </>
-                  ) : (
-                    <>
-                      {currentTexts.send}
-                      <Send className="w-4.5 h-4.5 group-hover:translate-x-1 transition-transform" />
-                    </>
-                  )}
+                  {/* Gradient background */}
+                  <span
+                    className="absolute inset-0 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:opacity-90"
+                    style={{ borderRadius: "inherit" }}
+                  />
+                  {/* Shine overlay on hover */}
+                  <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 rounded-2xl" />
+                  {/* Content */}
+                  <span className="relative flex items-center justify-center gap-3 py-4 px-8 text-white font-bold text-base tracking-wide">
+                    {status === "submitting" ? (
+                      <>
+                        <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block" />
+                        <span>{currentTexts.sending}</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>{currentTexts.send}</span>
+                        <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+                      </>
+                    )}
+                  </span>
                 </button>
 
                 {/* Privacy shield footer inside LTR/RTL wrapper */}
@@ -426,7 +437,7 @@ const ContactUs = () => {
                 <div className="border-t border-dashed border-border/50 pt-5 flex items-center justify-between text-sm">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-secondary/50 flex items-center justify-center border border-border/50">
-                      <TelegramIcon className="w-4 h-4 text-muted-foreground" />
+                      <Send className="w-4 h-4 text-muted-foreground" />
                     </div>
                     <span className="font-semibold text-muted-foreground">
                       {currentTexts.followUs}
