@@ -1,8 +1,8 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  ArrowLeft, ArrowRight, MessageSquare, Send, CheckCircle2, AlertCircle, Mail, 
-  User, Shield, Clock, HelpCircle, Globe, Briefcase, DollarSign, Check, X
+  ArrowLeft, MessageSquare, Send, CheckCircle2, Mail, 
+  User, Shield, Clock
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import FooterSection from "@/components/FooterSection";
@@ -12,339 +12,140 @@ import ThemeToggle from "@/components/ThemeToggle";
 const WHATSAPP_NUMBER = "967780930635";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
 
-// ─── Steps ───────────────────────────────────────────────────────────────────
-const STEPS = ["name", "country", "services", "budget", "privacy"] as const;
-type StepId = (typeof STEPS)[number];
-
-// ─── Services list ────────────────────────────────────────────────────────────
-const SERVICES = [
-  { key: "web", icon: "🌐" },
-  { key: "dynamic", icon: "⚡" },
-  { key: "ecommerce", icon: "🛒" },
-  { key: "ads", icon: "📢" },
-  { key: "content", icon: "🎨" },
-  { key: "branding", icon: "💎" },
-  { key: "social", icon: "📱" },
-  { key: "seo", icon: "🔍" },
-  { key: "video", icon: "🎬" },
-  { key: "mixed", icon: "🚀" },
-] as const;
-
-// ─── Budget options ────────────────────────────────────────────────────────────
-const BUDGETS = [
-  { key: "under100", usd: "Under $100" },
-  { key: "100_300", usd: "$100 – $300" },
-  { key: "300_500", usd: "$300 – $500" },
-  { key: "500_1000", usd: "$500 – $1,000" },
-  { key: "1000plus", usd: "$1,000+" },
-] as const;
-
-// ─── Step icons map ────────────────────────────────────────────────────────────
-const STEP_ICONS: Record<StepId, React.ReactNode> = {
-  name: <User className="w-4 h-4" />,
-  country: <Globe className="w-4 h-4" />,
-  services: <Briefcase className="w-4 h-4" />,
-  budget: <DollarSign className="w-4 h-4" />,
-  privacy: <Shield className="w-4 h-4" />,
-};
-
-// ─── Floating label input ──────────────────────────────────────────────────────
-interface FloatInputProps {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  type?: string;
-  autoFocus?: boolean;
-  isRtl?: boolean;
-}
-const FloatInput = ({
-  label,
-  value,
-  onChange,
-  type = "text",
-  autoFocus,
-  isRtl,
-}: FloatInputProps) => {
-  const [focused, setFocused] = useState(false);
-  const lifted = focused || value.length > 0;
-  return (
-    <div className="relative w-full">
-      <motion.label
-        animate={{
-          y: lifted ? -24 : 0,
-          scale: lifted ? 0.8 : 1,
-          color: lifted
-            ? "hsl(var(--primary))"
-            : "hsl(var(--muted-foreground))",
-        }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className={`absolute top-4 ${isRtl ? "right-4" : "left-4"} origin-${isRtl ? "right" : "left"} text-sm font-medium pointer-events-none`}
-      >
-        {label}
-      </motion.label>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        autoFocus={autoFocus}
-        dir={isRtl ? "rtl" : "ltr"}
-        className={`w-full pt-6 pb-3 ${isRtl ? "pr-4 pl-4" : "px-4"} rounded-xl bg-secondary/40 border transition-all duration-300 text-foreground text-base
-          ${
-            focused
-              ? "border-primary/70 ring-2 ring-primary/20 shadow-[0_0_20px_hsl(var(--neon-purple)/0.15)]"
-              : "border-border/50 hover:border-primary/30"
-          } focus:outline-none`}
-      />
-    </div>
-  );
-};
-
 const ContactUs = () => {
   const { t, lang, setLang, langLabels, langOrder } = useLanguage();
   const navigate = useNavigate();
 
-  // Wizard State
-  const [step, setStep] = useState(0);
+  // Form State
   const [name, setName] = useState("");
-  const [country, setCountry] = useState("");
-  const [services, setServices] = useState<string[]>([]);
-  const [budget, setBudget] = useState("");
-  const [privacy, setPrivacy] = useState(false);
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSending, setIsSending] = useState(false);
 
-  // Auto-detect country
-  useEffect(() => {
-    fetch("https://ipapi.co/json/")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d?.country_name) setCountry(d.country_name);
-      })
-      .catch(() => {});
-  }, []);
-
-  const currentStepId = STEPS[step];
   const isRtl = lang === "ar";
+  const l = lang as "ar" | "en" | "zh";
 
-  // Validation per step
+  // Local translations
+  const f = {
+    ar: {
+      nameLabel: "الاسم الكامل",
+      namePlaceholder: "الاسم الكامل",
+      emailLabel: "البريد الإلكتروني",
+      emailPlaceholder: "البريد الإلكتروني",
+      messageLabel: "الرسالة",
+      messagePlaceholder: "الرسالة",
+      send: "إرسال",
+      sending: "جاري الإرسال...",
+      nameRequired: "يرجى إدخال اسمك الكامل",
+      emailRequired: "يرجى إدخال بريدك الإلكتروني",
+      emailInvalid: "يرجى إدخال بريد إلكتروني صحيح",
+      messageRequired: "يرجى كتابة رسالتك",
+      waHello: "*طلب تواصل جديد من الموقع* 🚀",
+      waName: "*الاسم الكامل:*",
+      waEmail: "*البريد الإلكتروني:*",
+      waMsg: "*الرسالة:*",
+      subtitle: "تواصل معنا مباشرة عبر النموذج أو واتساب",
+    },
+    en: {
+      nameLabel: "Full Name",
+      namePlaceholder: "Full Name",
+      emailLabel: "Email Address",
+      emailPlaceholder: "Email Address",
+      messageLabel: "Message",
+      messagePlaceholder: "Message",
+      send: "Send",
+      sending: "Sending...",
+      nameRequired: "Full name is required",
+      emailRequired: "Email address is required",
+      emailInvalid: "Please enter a valid email address",
+      messageRequired: "Message content is required",
+      waHello: "*New Contact Request* 🚀",
+      waName: "*Full Name:*",
+      waEmail: "*Email:*",
+      waMsg: "*Message:*",
+      subtitle: "Contact us directly via the form or WhatsApp",
+    },
+    zh: {
+      nameLabel: "完整姓名",
+      namePlaceholder: "完整姓名",
+      emailLabel: "电子邮件",
+      emailPlaceholder: "电子邮件",
+      messageLabel: "留言",
+      messagePlaceholder: "留言",
+      send: "发送",
+      sending: "发送中...",
+      nameRequired: "请输入您的完整姓名",
+      emailRequired: "请输入您的电子邮件",
+      emailInvalid: "请输入有效的电子邮件地址",
+      messageRequired: "请输入留言内容",
+      waHello: "*来自网站的新联络请求* 🚀",
+      waName: "*全名:*",
+      waEmail: "*电子邮件:*",
+      waMsg: "*留言:*",
+      subtitle: "直接通过表单或 WhatsApp 与我们联系",
+    }
+  }[lang as "ar" | "en" | "zh"] || {
+    nameLabel: "Full Name",
+    namePlaceholder: "Full Name",
+    emailLabel: "Email Address",
+    emailPlaceholder: "Email Address",
+    messageLabel: "Message",
+    messagePlaceholder: "Message",
+    send: "Send",
+    sending: "Sending...",
+    nameRequired: "Full name is required",
+    emailRequired: "Email address is required",
+    emailInvalid: "Please enter a valid email address",
+    messageRequired: "Message content is required",
+    waHello: "*New Contact Request* 🚀",
+    waName: "*Full Name:*",
+    waEmail: "*Email:*",
+    waMsg: "*Message:*",
+    subtitle: "Contact us directly via the form or WhatsApp",
+  };
+
   const validate = (): boolean => {
     const errs: Record<string, string> = {};
-    if (currentStepId === "name" && !name.trim()) errs.name = t("contact.name");
-    if (currentStepId === "services" && services.length === 0)
-      errs.services = t("contact.required.services");
-    if (currentStepId === "budget" && !budget)
-      errs.budget = t("contact.budget");
-    if (currentStepId === "privacy" && !privacy)
-      errs.privacy = t("contact.privacy.required");
+    if (!name.trim()) errs.name = f.nameRequired;
+    
+    if (!email.trim()) {
+      errs.email = f.emailRequired;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errs.email = f.emailInvalid;
+    }
+    
+    if (!message.trim()) errs.message = f.messageRequired;
+    
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
 
-  const handleNext = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (!validate()) return;
-    if (step < STEPS.length - 1) setStep((s) => s + 1);
-    else handleSubmitWizard();
-  };
 
-  const handleBack = () => setStep((s) => Math.max(0, s - 1));
+    setIsSending(true);
 
-  const toggleService = (key: string) => {
-    setServices((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
-    );
-    setErrors((e) => ({ ...e, services: "" }));
-  };
-
-  const handleSubmitWizard = () => {
-    setSubmitted(true);
-    const serviceLabels = services
-      .map((k) => t(`contact.service.${k}`))
-      .join(", ");
-    const budgetLabel = t(`contact.budget.${budget}`);
-    const parts = [
-      `${t("contact.wa.hello")} ${name} ${t("contact.wa.from")} ${country}.`,
-      `${t("contact.wa.interested")} ${serviceLabels}.`,
-      `${t("contact.wa.budget")} ${budgetLabel}.`,
-      t("contact.wa.start"),
-    ].filter(Boolean);
+    // Format WhatsApp message
+    const waText = [
+      f.waHello,
+      `${f.waName} ${name}`,
+      `${f.waEmail} ${email}`,
+      f.waMsg,
+      message
+    ].join("\n");
 
     setTimeout(() => {
+      setSubmitted(true);
+      setIsSending(false);
       window.open(
-        `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(parts.join("\n"))}`,
+        `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`,
         "_blank"
       );
-    }, 1800);
+    }, 1200);
   };
-
-  // ─── Step content renderers ──────────────────────────────────────────────────
-  const renderStep = () => {
-    switch (currentStepId) {
-      case "name":
-        return (
-          <div className="space-y-4">
-            <FloatInput
-              label={t("contact.name")}
-              value={name}
-              onChange={(v) => {
-                setName(v);
-                setErrors((e) => ({ ...e, name: "" }));
-              }}
-              isRtl={isRtl}
-            />
-            {errors.name && (
-              <p className="text-destructive text-xs px-1 text-start">{errors.name}</p>
-            )}
-          </div>
-        );
-
-      case "country":
-        return (
-          <FloatInput
-            label={t("contact.country")}
-            value={country}
-            onChange={setCountry}
-            isRtl={isRtl}
-          />
-        );
-
-      case "services":
-        return (
-          <div className="space-y-3">
-            <p className="text-xs text-muted-foreground mb-2 text-start">
-              {t("contact.select.services")}
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1 custom-scrollbar text-start">
-              {SERVICES.map((s) => {
-                const selected = services.includes(s.key);
-                return (
-                  <motion.button
-                    key={s.key}
-                    type="button"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => toggleService(s.key)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-start transition-all duration-200
-                      ${
-                        selected
-                          ? "gradient-purple text-primary-foreground neon-glow shadow-md"
-                          : "glass border border-border/40 text-foreground hover:border-primary/45 hover:bg-primary/5"
-                      }`}
-                  >
-                    <span className="text-base shrink-0">{s.icon}</span>
-                    <span className="flex-1 leading-tight">
-                      {t(`contact.service.${s.key}`)}
-                    </span>
-                    {selected && <Check className="w-3.5 h-3.5 shrink-0" />}
-                  </motion.button>
-                );
-              })}
-            </div>
-            {errors.services && (
-              <p className="text-destructive text-xs px-1 text-start">{errors.services}</p>
-            )}
-          </div>
-        );
-
-      case "budget":
-        return (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-start">
-            {BUDGETS.map((b) => {
-              const selected = budget === b.key;
-              return (
-                <motion.button
-                  key={b.key}
-                  type="button"
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => {
-                    setBudget(b.key);
-                    setErrors((e) => ({ ...e, budget: "" }));
-                  }}
-                  className={`px-5 py-4 rounded-xl text-sm font-semibold transition-all duration-200
-                    ${
-                      selected
-                        ? "gradient-purple text-primary-foreground neon-glow"
-                        : "glass border border-border/40 text-foreground hover:border-primary/45 hover:bg-primary/5"
-                    }`}
-                >
-                  {t(`contact.budget.${b.key}`)}
-                </motion.button>
-              );
-            })}
-            {errors.budget && (
-              <p className="text-destructive text-xs px-1 col-span-2 text-start">
-                {errors.budget}
-              </p>
-            )}
-          </div>
-        );
-
-      case "privacy":
-        return (
-          <div className="space-y-5 text-start">
-            <motion.button
-              type="button"
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              onClick={() => {
-                setPrivacy(!privacy);
-                setErrors((e) => ({ ...e, privacy: "" }));
-              }}
-              className={`w-full flex items-center gap-3 px-4 py-4 rounded-xl border transition-all duration-200
-                ${
-                  privacy
-                    ? "border-primary/50 bg-primary/10 neon-glow"
-                    : "border-border/50 bg-secondary/20 hover:border-primary/30"
-                }`}
-            >
-              <div
-                className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all
-                ${privacy ? "gradient-purple border-primary" : "border-border/60"}`}
-              >
-                {privacy && (
-                  <Check className="w-3.5 h-3.5 text-primary-foreground" />
-                )}
-              </div>
-              <span className="text-sm text-foreground text-start flex-1">
-                {t("contact.privacy")}{" "}
-                <a
-                  href="/privacy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="text-primary underline underline-offset-2 hover:text-accent transition-colors"
-                >
-                  {t("footer.privacy")}
-                </a>
-              </span>
-            </motion.button>
-            {errors.privacy && (
-              <p className="text-destructive text-xs px-1 text-start">{errors.privacy}</p>
-            )}
-          </div>
-        );
-    }
-  };
-
-  const stepLabels: Record<StepId, { ar: string; en: string; zh: string }> = {
-    name: { ar: "الاسم", en: "Name", zh: "姓名" },
-    country: { ar: "الدولة", en: "Country", zh: "国家" },
-    services: { ar: "الخدمات", en: "Services", zh: "服务" },
-    budget: { ar: "الميزانية", en: "Budget", zh: "预算" },
-    privacy: { ar: "الموافقة", en: "Confirm", zh: "确认" },
-  };
-
-  const stepPrompts: Record<StepId, { ar: string; en: string; zh: string }> = {
-    name: { ar: "كيف يمكنني مناداتك؟", en: "What's your name?", zh: "您叫什么名字？" },
-    country: { ar: "من أي دولة تتواصل معنا؟", en: "Which country are you from?", zh: "您来自哪个国家？" },
-    services: { ar: "ما الخدمات التي تحتاجها؟", en: "Which services do you need?", zh: "您需要哪些服务？" },
-    budget: { ar: "ما ميزانيتك التقريبية؟", en: "What's your estimated budget?", zh: "您的预算大概是多少？" },
-    privacy: { ar: "آخر خطوة — قبل الإرسال", en: "Final step — before sending", zh: "最后一步 — 发送前" },
-  };
-
-  const l = lang as "ar" | "en" | "zh";
 
   useEffect(() => {
     const titles = {
@@ -490,191 +291,149 @@ const ContactUs = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 lg:gap-12">
             
-            {/* Left Column: Contact Form Wizard (Col Span 7) */}
+            {/* Left Column: Contact Form (Col Span 7) */}
             <div className="md:col-span-7 flex flex-col justify-between">
               <AnimatePresence mode="wait">
                 {!submitted ? (
-                  <motion.div
+                  <motion.form
                     key="form"
+                    onSubmit={handleSubmit}
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -24 }}
-                    className="flex flex-col h-full justify-between gap-6"
+                    className="flex flex-col h-full gap-5 text-start"
                   >
-                    {/* Step progress */}
-                    <div className="flex items-center gap-1.5 mb-2">
-                      {STEPS.map((sid, i) => {
-                        const isActive = i === step;
-                        const isDone = i < step;
-                        return (
-                          <div
-                            key={sid}
-                            className="flex items-center gap-1.5 flex-1"
-                          >
-                            <motion.div
-                              animate={{
-                                backgroundColor:
-                                  isDone || isActive
-                                    ? "hsl(var(--primary))"
-                                    : "hsl(var(--border))",
-                                scale: isActive ? 1.15 : 1,
-                              }}
-                              className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-primary-foreground"
-                            >
-                              {isDone ? (
-                                <Check className="w-3.5 h-3.5" />
-                              ) : (
-                                <span className="text-[10px] font-bold">
-                                  {i + 1}
-                                </span>
-                              )}
-                            </motion.div>
-                            {i < STEPS.length - 1 && (
-                              <div
-                                className={`flex-1 h-0.5 rounded-full transition-all duration-500 ${isDone ? "gradient-purple" : "bg-border/40"}`}
-                              />
-                            )}
-                          </div>
-                        );
-                      })}
+                    {/* Full Name input */}
+                    <div className="space-y-2 relative z-10">
+                      <label className="block text-sm font-bold text-foreground/90">
+                        {f.nameLabel}
+                      </label>
+                      <div className="relative">
+                        <User className={`absolute top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/60 ${isRtl ? "right-4" : "left-4"}`} />
+                        <input
+                          type="text"
+                          value={name}
+                          onChange={(e) => {
+                            setName(e.target.value);
+                            if (errors.name) setErrors((prev) => ({ ...prev, name: "" }));
+                          }}
+                          placeholder={f.namePlaceholder}
+                          dir={isRtl ? "rtl" : "ltr"}
+                          className={`w-full py-4 rounded-2xl bg-secondary/40 border transition-all duration-300 text-foreground placeholder:text-muted-foreground/45 text-base
+                            ${isRtl ? "pr-12 pl-4" : "pl-12 pr-4"}
+                            ${
+                              errors.name
+                                ? "border-destructive/60 focus:border-destructive focus:ring-2 focus:ring-destructive/20"
+                                : "border-border/50 hover:border-primary/45 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:shadow-[0_0_20px_hsl(var(--neon-purple)/0.15)]"
+                            } focus:outline-none`}
+                        />
+                      </div>
+                      {errors.name && (
+                        <p className="text-destructive text-xs px-1">{errors.name}</p>
+                      )}
                     </div>
 
-                    {/* Step icon + label */}
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={`header-${step}`}
-                        initial={{ opacity: 0, y: -8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 8 }}
-                        transition={{ duration: 0.25 }}
-                        className={`flex items-center gap-3 my-2 ${isRtl ? "flex-row-reverse" : ""}`}
-                      >
-                        <div className="w-10 h-10 rounded-xl gradient-purple flex items-center justify-center shrink-0 neon-glow">
-                          {STEP_ICONS[currentStepId]}
-                        </div>
-                        <div className={isRtl ? "text-right" : ""}>
-                          <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
-                            {stepLabels[currentStepId][l]}
-                          </p>
-                          <h3 className="text-lg font-bold text-foreground">
-                            {stepPrompts[currentStepId][l]}
-                          </h3>
-                        </div>
-                      </motion.div>
-                    </AnimatePresence>
+                    {/* Email input */}
+                    <div className="space-y-2 relative z-10">
+                      <label className="block text-sm font-bold text-foreground/90">
+                        {f.emailLabel}
+                      </label>
+                      <div className="relative">
+                        <Mail className={`absolute top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/60 ${isRtl ? "right-4" : "left-4"}`} />
+                        <input
+                          type="text"
+                          value={email}
+                          onChange={(e) => {
+                            setEmail(e.target.value);
+                            if (errors.email) setErrors((prev) => ({ ...prev, email: "" }));
+                          }}
+                          placeholder={f.emailPlaceholder}
+                          dir="ltr"
+                          className={`w-full py-4 rounded-2xl bg-secondary/40 border transition-all duration-300 text-foreground placeholder:text-muted-foreground/45 text-base text-start
+                            ${isRtl ? "pr-12 pl-4" : "pl-12 pr-4"}
+                            ${
+                              errors.email
+                                ? "border-destructive/60 focus:border-destructive focus:ring-2 focus:ring-destructive/20"
+                                : "border-border/50 hover:border-primary/45 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:shadow-[0_0_20px_hsl(var(--neon-purple)/0.15)]"
+                            } focus:outline-none`}
+                        />
+                      </div>
+                      {errors.email && (
+                        <p className="text-destructive text-xs px-1">{errors.email}</p>
+                      )}
+                    </div>
 
-                    {/* Step content */}
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={`content-${step}`}
-                        initial={{ opacity: 0, x: isRtl ? -28 : 28 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: isRtl ? 28 : -28 }}
-                        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                        className="my-2"
-                      >
-                        {renderStep()}
-                      </motion.div>
-                    </AnimatePresence>
+                    {/* Message textarea */}
+                    <div className="space-y-2 relative z-10">
+                      <label className="block text-sm font-bold text-foreground/90">
+                        {f.messageLabel}
+                      </label>
+                      <div className="relative">
+                        <MessageSquare className={`absolute top-5 w-5 h-5 text-muted-foreground/60 ${isRtl ? "right-4" : "left-4"}`} />
+                        <textarea
+                          rows={5}
+                          value={message}
+                          onChange={(e) => {
+                            setMessage(e.target.value);
+                            if (errors.message) setErrors((prev) => ({ ...prev, message: "" }));
+                          }}
+                          placeholder={f.messagePlaceholder}
+                          dir={isRtl ? "rtl" : "ltr"}
+                          className={`w-full py-4 rounded-2xl bg-secondary/40 border transition-all duration-300 text-foreground placeholder:text-muted-foreground/45 text-base resize-none
+                            ${isRtl ? "pr-12 pl-4" : "pl-12 pr-4"}
+                            ${
+                              errors.message
+                                ? "border-destructive/60 focus:border-destructive focus:ring-2 focus:ring-destructive/20"
+                                : "border-border/50 hover:border-primary/45 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:shadow-[0_0_20px_hsl(var(--neon-purple)/0.15)]"
+                            } focus:outline-none`}
+                        />
+                      </div>
+                      {errors.message && (
+                        <p className="text-destructive text-xs px-1">{errors.message}</p>
+                      )}
+                    </div>
 
-                    {/* Navigation */}
-                    <div
-                      className={`flex items-center justify-between gap-3 ${isRtl ? "flex-row-reverse" : ""}`}
-                    >
+                    {/* Submit Button */}
+                    <div className="pt-2 relative z-10">
                       <motion.button
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={handleBack}
-                        disabled={step === 0}
-                        className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-medium transition-all
-                          ${
-                            step === 0
-                              ? "opacity-30 cursor-not-allowed text-muted-foreground"
-                              : "glass border border-border/40 text-foreground hover:border-primary/40"
-                          }`}
-                      >
-                        {isRtl ? (
-                          <ArrowRight className="w-4 h-4" />
-                        ) : (
-                          <ArrowLeft className="w-4 h-4" />
-                        )}
-                        {t("contact.back")}
-                      </motion.button>
-
-                      <motion.button
+                        type="submit"
+                        disabled={isSending}
                         whileHover={{
-                          scale: 1.04,
+                          scale: 1.02,
                           boxShadow: "0 0 30px hsl(var(--neon-purple)/0.4)",
                         }}
-                        whileTap={{ scale: 0.96 }}
-                        onClick={handleNext}
-                        className="flex items-center gap-2 px-7 py-3 rounded-xl font-semibold text-sm gradient-purple text-primary-foreground neon-glow transition-all"
+                        whileTap={{ scale: 0.98 }}
+                        className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-base gradient-purple text-primary-foreground neon-glow transition-all disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer"
                       >
-                        {step === STEPS.length - 1 ? (
-                          <>
-                            <Send className="w-4 h-4" />
-                            {t("contact.submit")}
-                          </>
+                        {isSending ? (
+                          <span>{f.sending}</span>
                         ) : (
                           <>
-                            {t("contact.next")}
-                            {isRtl ? (
-                              <ArrowLeft className="w-4 h-4" />
-                            ) : (
-                              <ArrowRight className="w-4 h-4" />
-                            )}
+                            <Send className="w-5 h-5" />
+                            <span>{f.send}</span>
                           </>
                         )}
                       </motion.button>
                     </div>
-
-                    {/* Summary preview (visible when data entered) */}
-                    {(name || services.length > 0 || budget) && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="mt-2 glass rounded-2xl p-4 border border-primary/10"
-                      >
-                        <div className="flex flex-wrap gap-2 justify-start">
-                          {name && (
-                            <span className="px-3 py-1 rounded-full text-xs bg-primary/15 text-primary border border-primary/20 font-medium">
-                              👤 {name}
-                            </span>
-                          )}
-                          {country && (
-                            <span className="px-3 py-1 rounded-full text-xs bg-primary/15 text-primary border border-primary/20 font-medium">
-                              🌍 {country}
-                            </span>
-                          )}
-                          {services.map((k) => (
-                            <span
-                              key={k}
-                              className="px-3 py-1 rounded-full text-xs bg-accent/15 text-accent border border-accent/20 font-medium"
-                            >
-                              {SERVICES.find((s) => s.key === k)?.icon}{" "}
-                              {t(`contact.service.${k}`)}
-                            </span>
-                          ))}
-                          {budget && (
-                            <span className="px-3 py-1 rounded-full text-xs bg-secondary text-secondary-foreground border border-border/40 font-medium">
-                              💰 {t(`contact.budget.${budget}`)}
-                            </span>
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
-                  </motion.div>
+                  </motion.form>
                 ) : (
-                  /* ── Success State ─────────────────────────────────────────────── */
+                  /* Success State */
                   <motion.div
                     key="success"
                     initial={{ opacity: 0, scale: 0.88 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ type: "spring", bounce: 0.35 }}
-                    className="glass-strong rounded-3xl p-8 neon-border text-center flex flex-col items-center justify-center h-full w-full"
+                    className="glass-strong rounded-3xl p-8 neon-border text-center flex flex-col items-center justify-center h-full w-full relative overflow-hidden"
                   >
-                    {/* Animated ring */}
-                    <div className="relative w-20 h-20 mx-auto mb-6">
+                    {/* Subtle inner glow */}
+                    <div
+                      className="absolute inset-0 rounded-3xl pointer-events-none"
+                      style={{
+                        background:
+                          "radial-gradient(ellipse at 50% 0%, hsl(var(--neon-purple)/0.07) 0%, transparent 70%)",
+                      }}
+                    />
+                    <div className="relative w-20 h-20 mx-auto mb-6 relative z-10">
                       <motion.div
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
@@ -695,7 +454,7 @@ const ContactUs = () => {
                       initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
-                      className="text-2xl font-bold gradient-text mb-2"
+                      className="text-2xl font-bold gradient-text mb-2 relative z-10"
                     >
                       {t("contact.success.title")}
                     </motion.h3>
@@ -703,7 +462,7 @@ const ContactUs = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.55 }}
-                      className="text-muted-foreground text-xs max-w-sm mx-auto"
+                      className="text-muted-foreground text-xs max-w-sm mx-auto relative z-10"
                     >
                       {t("contact.success.message")}
                     </motion.p>

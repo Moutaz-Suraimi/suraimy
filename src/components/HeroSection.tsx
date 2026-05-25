@@ -398,13 +398,11 @@ const HeroSection = memo(() => {
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
               onTouchStart={() => setIsHovered(true)}
-              className={`w-full h-full relative cursor-grab active:cursor-grabbing transition-shadow duration-300 rounded-[2rem] ${
-                !isHovered ? "animate-hero-float" : ""
-              }`}
+              className="w-full h-full relative cursor-grab active:cursor-grabbing transition-shadow duration-300 rounded-[2rem]"
               style={{
                 transform: isHovered
                   ? `rotateY(${-15 + rotateY}deg) rotateX(${10 + rotateX}deg) rotateZ(-2deg)`
-                  : undefined,
+                  : "rotateY(-15deg) rotateX(10deg) rotateZ(-2deg)",
                 transformStyle: "preserve-3d",
                 transition: isHovered ? "none" : "transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)",
               }}
