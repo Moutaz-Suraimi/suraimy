@@ -160,6 +160,9 @@ const HeroSection = memo(({ isIntroActive = false }: HeroSectionProps) => {
           <div className="relative">
             <button
               onClick={() => setLangMenuOpen(!langMenuOpen)}
+              aria-haspopup="listbox"
+              aria-expanded={langMenuOpen}
+              aria-label="Select language"
               className="p-2 glass rounded-xl border border-border/50 hover:bg-secondary/40 text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <Globe className="w-4 h-4" />
@@ -701,7 +704,16 @@ const HeroSection = memo(({ isIntroActive = false }: HeroSectionProps) => {
             opacity: { duration: 0.6, delay: 0.5 }
           }}
           onClick={() => handleNavClick("#about")}
-          className="flex flex-col items-center gap-2 text-muted-foreground/80 hover:text-primary transition-colors cursor-pointer"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleNavClick("#about");
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label={t("hero.scroll_down")}
+          className="flex flex-col items-center gap-2 text-muted-foreground/80 hover:text-primary transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/55 rounded-xl px-2 py-1"
         >
           <span className="text-xs font-semibold tracking-wide uppercase">
             {t("hero.scroll_down")}

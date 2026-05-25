@@ -44,6 +44,7 @@ export default defineConfig(({ mode }) => ({
     minify: "esbuild",
     esbuildOptions: {
       legalComments: "none",
+      drop: mode === "production" ? ["console", "debugger"] : [],
     },
     // Enable source maps only in development
     sourcemap: mode !== "production",
