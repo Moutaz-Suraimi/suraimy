@@ -28,26 +28,9 @@ export default defineConfig(({ mode }) => ({
     cssCodeSplit: true,
     rollupOptions: {
       output: {
-        // Manual chunk splitting for maximum caching efficiency
+        // Manual chunk splitting for maximum caching efficiency and stability
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            // Heavy animation library → isolated chunk, cached independently
-            if (id.includes("framer-motion")) return "vendor-framer";
-            // Icon library → isolated chunk
-            if (id.includes("lucide-react")) return "vendor-lucide";
-            // Router → small, cached forever
-            if (
-              id.includes("react-router-dom") ||
-              id.includes("react-router") ||
-              id.includes("@remix-run")
-            )
-              return "vendor-router";
-            // React core → always cached
-            if (id.includes("/react/") || id.includes("/react-dom/"))
-              return "vendor-react";
-            // Query state management
-            if (id.includes("@tanstack/react-query")) return "vendor-query";
-            // All other node_modules go into a shared vendor chunk
             return "vendor";
           }
         },
@@ -59,9 +42,7 @@ export default defineConfig(({ mode }) => ({
     },
     // Minification: use esbuild (fast) — SWC handles TS already
     minify: "esbuild",
-    // Remove console logs and debugger in production
     esbuildOptions: {
-      drop: mode === "production" ? ["console", "debugger"] : [],
       legalComments: "none",
     },
     // Enable source maps only in development
