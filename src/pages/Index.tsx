@@ -42,6 +42,27 @@ const Index = () => {
   };
 
   React.useEffect(() => {
+    // Dynamic SEO update for Main Page
+    const titles = {
+      ar: "Suriix | تصميم مواقع ومتاجر إلكترونية احترافية",
+      en: "Suriix | Professional Web Design & E-Commerce Solutions",
+      zh: "Suriix | 专业网页设计与电子商务解决方案"
+    };
+    const descriptions = {
+      ar: "وكالة رقمية متخصصة في تصميم المواقع والمتاجر الإلكترونية وتطوير الهوية البصرية والحلول الرقمية الحديثة.",
+      en: "Premium digital agency specializing in professional website design, e-commerce development, branding, and modern digital growth solutions.",
+      zh: "专业的数字化代理商，专注于企业网站设计、电商平台开发、品牌视觉形象升级与创新的数字化增长策略。"
+    };
+
+    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
+    
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
+    }
+  }, [lang]);
+
+  React.useEffect(() => {
     if (!showIntro && window.location.hash) {
       setTimeout(() => {
         const id = window.location.hash.substring(1);

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { Check, Star, MessageCircle } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import ScrollReveal from "./ScrollReveal";
 
 const WHATSAPP_NUMBER = "967780930635";
@@ -153,6 +154,8 @@ const PackageCard = ({ pkg, lang }: { pkg: PkgCard; lang: LangKey }) => {
 
 const PackagesSection = () => {
   const { lang } = useLanguage();
+  const location = useLocation();
+  const isDedicatedPage = location.pathname === "/packages";
   
   const title = lang === "ar" ? "باقات Suriix" : lang === "zh" ? "Suriix 套餐" : "Suriix Packages";
   const subtitle = lang === "ar" 
@@ -185,9 +188,15 @@ const PackagesSection = () => {
               <Star className="w-3 h-3 fill-current" />
               {lang === "ar" ? "باقاتنا" : lang === "zh" ? "我们的套餐" : "Our Packages"}
             </motion.span>
-            <h2 className="text-3xl md:text-5xl font-black gradient-text mb-4">
-              {title}
-            </h2>
+            {isDedicatedPage ? (
+              <h1 className="text-3xl md:text-5xl font-black gradient-text mb-4">
+                {title}
+              </h1>
+            ) : (
+              <h2 className="text-3xl md:text-5xl font-black gradient-text mb-4">
+                {title}
+              </h2>
+            )}
             <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
               {subtitle}
             </p>

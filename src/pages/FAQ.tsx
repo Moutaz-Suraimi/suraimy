@@ -11,14 +11,22 @@ const FAQ = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = lang === "ar" ? "الأسئلة الشائعة والاستفسارات | Suriix" : lang === "zh" ? "常见问题与解答 | Suriix" : "Frequently Asked Questions (FAQ) | Suriix";
+    const titles = {
+      ar: "الأسئلة الشائعة والمساعدة | Suriix FAQ",
+      en: "Frequently Asked Questions & Help | Suriix",
+      zh: "常见问题与客户支持 | Suriix FAQ"
+    };
+    const descriptions = {
+      ar: "هل لديك استفسار؟ ابحث عن إجابات واضحة لجميع الأسئلة المتعلقة ببرمجة المواقع، أمن المتاجر الإلكترونية، طرق الدفع والتعاقد مع Suriix.",
+      en: "Got questions? Find clear answers regarding website design, e-commerce security, payment gateways, and project delivery with Suriix.",
+      zh: "有任何疑问？在此查找关于网页定制、电商资金安全、全球支付接口对接及 Suriix 服务交付周期的完整解答。"
+    };
+
+    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
     
-    // Add meta description for SEO
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute("content", lang === "ar" 
-        ? "ابحث عن إجابات لاستفساراتك الشائعة حول خدمات تصميم المواقع، المتاجر الإلكترونية، خطط الأسعار وطريقة العمل مع Suriix." 
-        : "Find answers to frequently asked questions about website design, e-commerce services, pricing, and project workflows.");
+      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
     }
     
     window.scrollTo(0, 0);

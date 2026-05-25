@@ -1,5 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 import {
   Globe,
   MapPin,
@@ -13,6 +14,8 @@ import ScrollReveal from "./ScrollReveal";
 
 const SolutionsSection = () => {
   const { t } = useLanguage();
+  const location = useLocation();
+  const isDedicatedPage = location.pathname === "/solutions";
 
   const solutions = [
     { key: "sol.digital", icon: Globe },
@@ -29,9 +32,15 @@ const SolutionsSection = () => {
       <div className="absolute inset-0 grid-bg opacity-30" />
       <div className="max-w-5xl mx-auto relative z-10">
         <ScrollReveal>
-          <h2 className="text-3xl md:text-5xl font-bold text-center gradient-text mb-16">
-            {t("solutions.title")}
-          </h2>
+          {isDedicatedPage ? (
+            <h1 className="text-3xl md:text-5xl font-bold text-center gradient-text mb-16">
+              {t("solutions.title")}
+            </h1>
+          ) : (
+            <h2 className="text-3xl md:text-5xl font-bold text-center gradient-text mb-16">
+              {t("solutions.title")}
+            </h2>
+          )}
         </ScrollReveal>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

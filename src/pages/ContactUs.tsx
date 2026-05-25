@@ -19,14 +19,22 @@ const ContactUs = () => {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   useEffect(() => {
-    document.title = lang === "ar" ? "تواصل معنا | Suriix" : lang === "zh" ? "联系我们 | Suriix" : "Contact Us | Suriix";
+    const titles = {
+      ar: "تواصل معنا | Suriix",
+      en: "Contact Us | Suriix",
+      zh: "联系我们 | Suriix"
+    };
+    const descriptions = {
+      ar: "تواصل مع فريق Suriix للحصول على حلول رقمية احترافية وتصميم مواقع ومتاجر إلكترونية حديثة.",
+      en: "Get in touch with Suriix for premium digital solutions, custom web design, and advanced systems development.",
+      zh: "联系 Suriix 团队，获取专业的数字化解决方案、现代化网站与电商平台定制开发服务。"
+    };
+
+    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
     
-    // Add meta description for SEO
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute("content", lang === "ar" 
-        ? "تواصل معنا اليوم في Suriix. نحن هنا للإجابة على استفساراتك ومساعدتك في تحويل أفكارك إلى واقع رقمي مذهل." 
-        : "Contact Suriix today. We are here to answer your questions and help you transform your ideas into a stunning digital reality.");
+      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
     }
     
     window.scrollTo(0, 0);

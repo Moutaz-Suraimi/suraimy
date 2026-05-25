@@ -16,13 +16,22 @@ const Solutions = () => {
   const isRtl = lang === "ar";
 
   useEffect(() => {
-    document.title = lang === "ar" ? "حلولنا الرقمية المتكاملة | Suriix" : lang === "zh" ? "我们的数字化解决方案 | Suriix" : "Our Digital Solutions & Services | Suriix";
+    const titles = {
+      ar: "خدمات Suriix | تصميم مواقع وتسويق رقمي وبرمجة",
+      en: "Suriix Services | Web Design, Digital Marketing & Coding",
+      zh: "Suriix 服务 | 网页设计、数字营销与编程"
+    };
+    const descriptions = {
+      ar: "خدمات احترافية تشمل تصميم المواقع، المتاجر الإلكترونية، تطوير الهوية البصرية، التسويق الرقمي، وإدارة المحتوى.",
+      en: "Professional digital services including web design, e-commerce stores, brand identity development, digital marketing, and content management.",
+      zh: "专业的数字化服务，包括网页设计、电商平台开发、品牌视觉形象升级、数字营销与内容管理。"
+    };
+
+    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
     
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute("content", lang === "ar" 
-        ? "اكتشف حلولنا الرقمية الفاخرة: تصميم مواقع الويب الاحترافية، المتاجر الإلكترونية المتكاملة، أتمتة الذكاء الاصطناعي، الهوية البصرية، وحملات النمو." 
-        : "Discover our premium digital solutions: professional web design, fully integrated e-commerce, custom AI automation, brand identities, and digital growth campaigns.");
+      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
     }
     
     window.scrollTo(0, 0);

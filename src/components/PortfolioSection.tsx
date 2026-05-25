@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ExternalLink, MessageCircle, Globe, ShoppingBag, Palette, Megaphone, LayoutGrid } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import ScrollReveal from "./ScrollReveal";
 
 const WHATSAPP_NUMBER = "967780930635";
@@ -415,8 +416,10 @@ const ProjectCard = ({
 // ─── MAIN SECTION ──────────────────────────────────────────────────────────────
 const PortfolioSection = () => {
   const { t, lang } = useLanguage();
+  const location = useLocation();
   const l = lang as LangKey;
   const isRtl = lang === "ar";
+  const isDedicatedPage = location.pathname === "/portfolio";
 
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -445,9 +448,15 @@ const PortfolioSection = () => {
               <ExternalLink className="w-3 h-3" />
               {lang === "ar" ? "أعمالنا المميزة" : lang === "zh" ? "精选作品集" : "Featured Work"}
             </motion.span>
-            <h2 className="text-3xl md:text-5xl font-black gradient-text mb-4">
-              {t("portfolio.title")}
-            </h2>
+            {isDedicatedPage ? (
+              <h1 className="text-3xl md:text-5xl font-black gradient-text mb-4">
+                {t("portfolio.title")}
+              </h1>
+            ) : (
+              <h2 className="text-3xl md:text-5xl font-black gradient-text mb-4">
+                {t("portfolio.title")}
+              </h2>
+            )}
             <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
               {t("portfolio.subtitle")}
             </p>

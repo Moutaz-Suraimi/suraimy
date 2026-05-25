@@ -11,14 +11,22 @@ const Packages = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = lang === "ar" ? "باقات الأسعار والخدمات | Suriix" : lang === "zh" ? "价格与服务套餐 | Suriix" : "Pricing & Services Packages | Suriix";
+    const titles = {
+      ar: "باقات وأسعار تصميم المواقع والمتاجر | Suriix",
+      en: "Pricing & Web Development Packages | Suriix",
+      zh: "套餐与价格方案 - 网页设计与电商开发 | Suriix"
+    };
+    const descriptions = {
+      ar: "تعرف على باقات وأسعار تصميم المواقع التعريفيّة والمتاجر الإلكترونية وحلول الذكاء الاصطناعي المخصصة لمشروعك من Suriix.",
+      en: "Explore our web development pricing, custom e-commerce packages, and tailored AI business automation plans from Suriix.",
+      zh: "查看 Suriix 团队为您定制的专属网页设计、品牌出海电商平台与人工智能系统开发套餐及价格方案。"
+    };
+
+    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
     
-    // Add meta description for SEO
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute("content", lang === "ar" 
-        ? "تصفح باقات تصميم المواقع والمتاجر الإلكترونية وحلول الأتمتة المخصصة لمشروعك من وكالة Suriix الرقمية." 
-        : "Browse pricing and packages for websites, e-commerce, and automation solutions by Suriix digital agency.");
+      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
     }
     
     window.scrollTo(0, 0);

@@ -15,14 +15,22 @@ const AboutUs = () => {
   const isRtl = lang === "ar";
 
   useEffect(() => {
-    document.title = lang === "ar" ? "من نحن | Suriix" : lang === "zh" ? "关于我们 | Suriix" : "About Us | Suriix";
+    const titles = {
+      ar: "من نحن | وكالة Suriix للحلول الرقمية وتصميم المواقع",
+      en: "About Us | Suriix Digital Solutions & Web Agency",
+      zh: "关于我们 | Suriix 数字化解决方案与网页定制开发团队"
+    };
+    const descriptions = {
+      ar: "تعرف على وكالة Suriix الرقمية. رؤيتنا، قيمنا، ومنهجيتنا الاحترافية في تصميم وتطوير المواقع، المتاجر الإلكترونية وحلول الأتمتة المتقدمة.",
+      en: "Learn more about Suriix Digital Agency. Our vision, core values, and professional methodology for custom web design, e-commerce, and advanced AI business solutions.",
+      zh: "深入了解 Suriix 数字化代理商：我们的核心价值观、技术愿景以及为您量身打造的高效独立站开发与人工智能系统部署流程。"
+    };
+
+    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
     
-    // Add meta description for SEO
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute("content", lang === "ar" 
-        ? "تعرف على وكالة Suriix الرقمية. رؤيتنا، قيمنا، ومنهجية عملنا الفاخرة لتطوير المواقع وتطبيقات الذكاء الاصطناعي بنسب نمو قياسية." 
-        : "Learn about Suriix Digital Agency. Our vision, core values, and professional methodology for custom web systems and AI development.");
+      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
     }
     
     window.scrollTo(0, 0);

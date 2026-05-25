@@ -2,10 +2,13 @@ import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const FAQSection = () => {
   const { t } = useLanguage();
+  const location = useLocation();
   const [open, setOpen] = useState<number | null>(null);
+  const isDedicatedPage = location.pathname === "/faq";
 
   const faqs = [
     { q: t("faq.q1"), a: t("faq.a1") },
@@ -19,14 +22,25 @@ const FAQSection = () => {
   return (
     <section id="faq" className="section-padding">
       <div className="max-w-3xl mx-auto">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-3xl md:text-5xl font-bold text-center gradient-text mb-12"
-        >
-          {t("faq.title")}
-        </motion.h2>
+        {isDedicatedPage ? (
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-5xl font-bold text-center gradient-text mb-12"
+          >
+            {t("faq.title")}
+          </motion.h1>
+        ) : (
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-5xl font-bold text-center gradient-text mb-12"
+          >
+            {t("faq.title")}
+          </motion.h2>
+        )}
 
         <div className="space-y-3">
           {faqs.map((faq, i) => (

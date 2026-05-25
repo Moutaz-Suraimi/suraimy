@@ -11,14 +11,22 @@ const Blog = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = lang === "ar" ? "مدونة Suriix | مقالات وتقنيات ومستجدات رقمية" : lang === "zh" ? "Suriix 博客 | 技术、趋势与数字化动态" : "Suriix Blog | Tech Articles, Trends & Digital Insights";
+    const titles = {
+      ar: "مدونة Suriix | مقالات ونصائح تقنية ورقمية",
+      en: "Suriix Blog | Tech Insights, Web Design & Digital Tips",
+      zh: "Suriix 博客 | 技术分享与数字化商业指南"
+    };
+    const descriptions = {
+      ar: "اقرأ مقالات ونصائح خبراء Suriix في تصميم المواقع، زيادة مبيعات المتاجر، اتجاهات الذكاء الاصطناعي، واستراتيجيات التسويق الحديثة.",
+      en: "Read articles and expert tips from Suriix on custom website design, e-commerce conversion optimization, AI trends, and digital marketing.",
+      zh: "获取来自 Suriix 专家的独家干货：高转化率网页设计技巧、独立站运营增长方案及前沿人工智能商业化指南。"
+    };
+
+    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
     
-    // Add meta description for SEO
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute("content", lang === "ar" 
-        ? "تصفح مدونة Suriix للحصول على أحدث المقالات والنصائح في مجال تطوير المواقع، التجارة الإلكترونية، التسويق الرقمي وتصميم تجربة المستخدم." 
-        : "Browse the Suriix blog for the latest articles, guides, and tips on web development, e-commerce, UX/UI design, and digital marketing.");
+      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
     }
     
     window.scrollTo(0, 0);

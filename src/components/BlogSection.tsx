@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocation } from "react-router-dom";
 import ScrollReveal from "./ScrollReveal";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, ArrowRight, X, BookOpen } from "lucide-react";
@@ -81,14 +82,23 @@ const BlogSection = () => {
     localStorage.setItem(`suriix_blog_comments_${expandedPost}`, JSON.stringify(updatedComments));
   };
 
+  const location = useLocation();
+  const isDedicatedPage = location.pathname === "/blog";
+
   return (
     <section id="blog" className="section-padding relative">
       <div className="max-w-6xl mx-auto">
         <ScrollReveal>
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold gradient-text mb-4">
-              {t("blog.title")}
-            </h2>
+            {isDedicatedPage ? (
+              <h1 className="text-3xl md:text-5xl font-bold gradient-text mb-4">
+                {t("blog.title")}
+              </h1>
+            ) : (
+              <h2 className="text-3xl md:text-5xl font-bold gradient-text mb-4">
+                {t("blog.title")}
+              </h2>
+            )}
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               {t("blog.subtitle")}
             </p>

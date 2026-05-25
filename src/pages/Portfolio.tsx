@@ -11,14 +11,22 @@ const Portfolio = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = lang === "ar" ? "معرض أعمالنا المميزة | Suriix" : lang === "zh" ? "我们的精选作品集 | Suriix" : "Featured Portfolio & Work | Suriix";
+    const titles = {
+      ar: "أعمالنا | مشاريع وتصاميم Suriix",
+      en: "Our Portfolio | Suriix Projects & Custom Designs",
+      zh: "我们的作品集 | Suriix 精选项目与定制设计"
+    };
+    const descriptions = {
+      ar: "استعرض أحدث مشاريع وتصاميم Suriix الاحترافية في تصميم المواقع والمتاجر الإلكترونية والهوية البصرية.",
+      en: "Browse the latest professional projects and custom web designs by Suriix digital agency.",
+      zh: "展示 Suriix 团队在网页设计、电商系统开发、品牌视觉形象升级等领域的精选成功案例。"
+    };
+
+    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
     
-    // Add meta description for SEO
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute("content", lang === "ar" 
-        ? "استعرض معرض مشاريعنا المنفذة باحترافية - مواقع تعريفية، متاجر إلكترونية متكاملة وأنظمة رقمية مخصصة." 
-        : "Browse our portfolio of completed projects including custom websites, e-commerce stores, and digital systems.");
+      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
     }
     
     window.scrollTo(0, 0);
