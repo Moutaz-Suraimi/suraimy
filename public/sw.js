@@ -1,4 +1,4 @@
-const CACHE_NAME = 'suriix-pwa-cache-v9';
+const CACHE_NAME = 'suriix-pwa-cache-v10';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -35,6 +35,33 @@ self.addEventListener('fetch', event => {
     return; // Let the browser handle the network request directly without SW interference
   }
 
+  const acceptHeader = event.request.headers.get('accept') || '';
+  const isHtml = event.request.mode === 'navigate' || 
+                 acceptHeader.includes('text/html') ||
+                 event.request.url.endsWith('/') ||
+                 event.request.url.endsWith('index.html');
+
+  // Network-First strategy for HTML/document requests to prevent white-screen on new deploys
+  if (isHtml) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          if (response && response.status === 200) {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+
+  // Cache-First for static assets
   event.respondWith(
     caches.match(event.request)
       .then(response => {
