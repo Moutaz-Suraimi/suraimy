@@ -40,10 +40,23 @@ const HeroSection = memo(() => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   const isRtl = lang === "ar";
 
+  // Detect mobile screen size/touch capability to disable mouse interactions and run CSS float
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024 || window.matchMedia("(pointer: coarse)").matches);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return;
+    setIsHovered(true);
     const card = e.currentTarget;
     const box = card.getBoundingClientRect();
     const x = e.clientX - box.left - box.width / 2;
@@ -51,12 +64,12 @@ const HeroSection = memo(() => {
     // Calculate rotation angles (max 8 degrees)
     setRotateX(-(y / (box.height / 2)) * 8);
     setRotateY((x / (box.width / 2)) * 8);
-  }, []);
+  }, [isMobile]);
 
   const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
     setRotateX(0);
     setRotateY(0);
-    setIsHovered(false);
   }, []);
 
   const handleNavClick = useCallback((href: string) => {
@@ -364,10 +377,14 @@ const HeroSection = memo(() => {
             <div
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              onMouseEnter={() => setIsHovered(true)}
-              className="w-full h-full relative cursor-grab active:cursor-grabbing transition-shadow duration-300 rounded-[2rem]"
+              onMouseEnter={isMobile ? undefined : () => setIsHovered(true)}
+              className={`w-full h-full relative cursor-grab active:cursor-grabbing transition-shadow duration-300 rounded-[2rem] ${
+                !isHovered ? "animate-hero-float" : ""
+              }`}
               style={{
-                transform: `rotateY(${-15 + rotateY}deg) rotateX(${10 + rotateX}deg) rotateZ(-2deg)`,
+                transform: isHovered
+                  ? `rotateY(${-15 + rotateY}deg) rotateX(${10 + rotateX}deg) rotateZ(-2deg)`
+                  : undefined,
                 transformStyle: "preserve-3d",
                 transition: isHovered ? "none" : "transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)",
               }}

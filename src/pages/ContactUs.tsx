@@ -1,22 +1,350 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  ArrowLeft, MessageSquare, Send, CheckCircle2, AlertCircle, Mail, 
-  User, Shield, Clock, HelpCircle 
+  ArrowLeft, ArrowRight, MessageSquare, Send, CheckCircle2, AlertCircle, Mail, 
+  User, Shield, Clock, HelpCircle, Globe, Briefcase, DollarSign, Check, X
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import FooterSection from "@/components/FooterSection";
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 
-const WHATSAPP_URL = "https://wa.me/967780930635";
+const WHATSAPP_NUMBER = "967780930635";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
+
+// ─── Steps ───────────────────────────────────────────────────────────────────
+const STEPS = ["name", "country", "services", "budget", "privacy"] as const;
+type StepId = (typeof STEPS)[number];
+
+// ─── Services list ────────────────────────────────────────────────────────────
+const SERVICES = [
+  { key: "web", icon: "🌐" },
+  { key: "dynamic", icon: "⚡" },
+  { key: "ecommerce", icon: "🛒" },
+  { key: "ads", icon: "📢" },
+  { key: "content", icon: "🎨" },
+  { key: "branding", icon: "💎" },
+  { key: "social", icon: "📱" },
+  { key: "seo", icon: "🔍" },
+  { key: "video", icon: "🎬" },
+  { key: "mixed", icon: "🚀" },
+] as const;
+
+// ─── Budget options ────────────────────────────────────────────────────────────
+const BUDGETS = [
+  { key: "under100", usd: "Under $100" },
+  { key: "100_300", usd: "$100 – $300" },
+  { key: "300_500", usd: "$300 – $500" },
+  { key: "500_1000", usd: "$500 – $1,000" },
+  { key: "1000plus", usd: "$1,000+" },
+] as const;
+
+// ─── Step icons map ────────────────────────────────────────────────────────────
+const STEP_ICONS: Record<StepId, React.ReactNode> = {
+  name: <User className="w-4 h-4" />,
+  country: <Globe className="w-4 h-4" />,
+  services: <Briefcase className="w-4 h-4" />,
+  budget: <DollarSign className="w-4 h-4" />,
+  privacy: <Shield className="w-4 h-4" />,
+};
+
+// ─── Floating label input ──────────────────────────────────────────────────────
+interface FloatInputProps {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  type?: string;
+  autoFocus?: boolean;
+  isRtl?: boolean;
+}
+const FloatInput = ({
+  label,
+  value,
+  onChange,
+  type = "text",
+  autoFocus,
+  isRtl,
+}: FloatInputProps) => {
+  const [focused, setFocused] = useState(false);
+  const lifted = focused || value.length > 0;
+  return (
+    <div className="relative w-full">
+      <motion.label
+        animate={{
+          y: lifted ? -24 : 0,
+          scale: lifted ? 0.8 : 1,
+          color: lifted
+            ? "hsl(var(--primary))"
+            : "hsl(var(--muted-foreground))",
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        className={`absolute top-4 ${isRtl ? "right-4" : "left-4"} origin-${isRtl ? "right" : "left"} text-sm font-medium pointer-events-none`}
+      >
+        {label}
+      </motion.label>
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        autoFocus={autoFocus}
+        dir={isRtl ? "rtl" : "ltr"}
+        className={`w-full pt-6 pb-3 ${isRtl ? "pr-4 pl-4" : "px-4"} rounded-xl bg-secondary/40 border transition-all duration-300 text-foreground text-base
+          ${
+            focused
+              ? "border-primary/70 ring-2 ring-primary/20 shadow-[0_0_20px_hsl(var(--neon-purple)/0.15)]"
+              : "border-border/50 hover:border-primary/30"
+          } focus:outline-none`}
+      />
+    </div>
+  );
+};
 
 const ContactUs = () => {
   const { t, lang, setLang, langLabels, langOrder } = useLanguage();
   const navigate = useNavigate();
 
-  const [formState, setFormState] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  // Wizard State
+  const [step, setStep] = useState(0);
+  const [name, setName] = useState("");
+  const [country, setCountry] = useState("");
+  const [services, setServices] = useState<string[]>([]);
+  const [budget, setBudget] = useState("");
+  const [privacy, setPrivacy] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Auto-detect country
+  useEffect(() => {
+    fetch("https://ipapi.co/json/")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.country_name) setCountry(d.country_name);
+      })
+      .catch(() => {});
+  }, []);
+
+  const currentStepId = STEPS[step];
+  const isRtl = lang === "ar";
+
+  // Validation per step
+  const validate = (): boolean => {
+    const errs: Record<string, string> = {};
+    if (currentStepId === "name" && !name.trim()) errs.name = t("contact.name");
+    if (currentStepId === "services" && services.length === 0)
+      errs.services = t("contact.required.services");
+    if (currentStepId === "budget" && !budget)
+      errs.budget = t("contact.budget");
+    if (currentStepId === "privacy" && !privacy)
+      errs.privacy = t("contact.privacy.required");
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const handleNext = () => {
+    if (!validate()) return;
+    if (step < STEPS.length - 1) setStep((s) => s + 1);
+    else handleSubmitWizard();
+  };
+
+  const handleBack = () => setStep((s) => Math.max(0, s - 1));
+
+  const toggleService = (key: string) => {
+    setServices((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+    );
+    setErrors((e) => ({ ...e, services: "" }));
+  };
+
+  const handleSubmitWizard = () => {
+    setSubmitted(true);
+    const serviceLabels = services
+      .map((k) => t(`contact.service.${k}`))
+      .join(", ");
+    const budgetLabel = t(`contact.budget.${budget}`);
+    const parts = [
+      `${t("contact.wa.hello")} ${name} ${t("contact.wa.from")} ${country}.`,
+      `${t("contact.wa.interested")} ${serviceLabels}.`,
+      `${t("contact.wa.budget")} ${budgetLabel}.`,
+      t("contact.wa.start"),
+    ].filter(Boolean);
+
+    setTimeout(() => {
+      window.open(
+        `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(parts.join("\n"))}`,
+        "_blank"
+      );
+    }, 1800);
+  };
+
+  // ─── Step content renderers ──────────────────────────────────────────────────
+  const renderStep = () => {
+    switch (currentStepId) {
+      case "name":
+        return (
+          <div className="space-y-4">
+            <FloatInput
+              label={t("contact.name")}
+              value={name}
+              onChange={(v) => {
+                setName(v);
+                setErrors((e) => ({ ...e, name: "" }));
+              }}
+              isRtl={isRtl}
+            />
+            {errors.name && (
+              <p className="text-destructive text-xs px-1 text-start">{errors.name}</p>
+            )}
+          </div>
+        );
+
+      case "country":
+        return (
+          <FloatInput
+            label={t("contact.country")}
+            value={country}
+            onChange={setCountry}
+            isRtl={isRtl}
+          />
+        );
+
+      case "services":
+        return (
+          <div className="space-y-3">
+            <p className="text-xs text-muted-foreground mb-2 text-start">
+              {t("contact.select.services")}
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1 custom-scrollbar text-start">
+              {SERVICES.map((s) => {
+                const selected = services.includes(s.key);
+                return (
+                  <motion.button
+                    key={s.key}
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => toggleService(s.key)}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-start transition-all duration-200
+                      ${
+                        selected
+                          ? "gradient-purple text-primary-foreground neon-glow shadow-md"
+                          : "glass border border-border/40 text-foreground hover:border-primary/45 hover:bg-primary/5"
+                      }`}
+                  >
+                    <span className="text-base shrink-0">{s.icon}</span>
+                    <span className="flex-1 leading-tight">
+                      {t(`contact.service.${s.key}`)}
+                    </span>
+                    {selected && <Check className="w-3.5 h-3.5 shrink-0" />}
+                  </motion.button>
+                );
+              })}
+            </div>
+            {errors.services && (
+              <p className="text-destructive text-xs px-1 text-start">{errors.services}</p>
+            )}
+          </div>
+        );
+
+      case "budget":
+        return (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-start">
+            {BUDGETS.map((b) => {
+              const selected = budget === b.key;
+              return (
+                <motion.button
+                  key={b.key}
+                  type="button"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => {
+                    setBudget(b.key);
+                    setErrors((e) => ({ ...e, budget: "" }));
+                  }}
+                  className={`px-5 py-4 rounded-xl text-sm font-semibold transition-all duration-200
+                    ${
+                      selected
+                        ? "gradient-purple text-primary-foreground neon-glow"
+                        : "glass border border-border/40 text-foreground hover:border-primary/45 hover:bg-primary/5"
+                    }`}
+                >
+                  {t(`contact.budget.${b.key}`)}
+                </motion.button>
+              );
+            })}
+            {errors.budget && (
+              <p className="text-destructive text-xs px-1 col-span-2 text-start">
+                {errors.budget}
+              </p>
+            )}
+          </div>
+        );
+
+      case "privacy":
+        return (
+          <div className="space-y-5 text-start">
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              onClick={() => {
+                setPrivacy(!privacy);
+                setErrors((e) => ({ ...e, privacy: "" }));
+              }}
+              className={`w-full flex items-center gap-3 px-4 py-4 rounded-xl border transition-all duration-200
+                ${
+                  privacy
+                    ? "border-primary/50 bg-primary/10 neon-glow"
+                    : "border-border/50 bg-secondary/20 hover:border-primary/30"
+                }`}
+            >
+              <div
+                className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all
+                ${privacy ? "gradient-purple border-primary" : "border-border/60"}`}
+              >
+                {privacy && (
+                  <Check className="w-3.5 h-3.5 text-primary-foreground" />
+                )}
+              </div>
+              <span className="text-sm text-foreground text-start flex-1">
+                {t("contact.privacy")}{" "}
+                <a
+                  href="/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-primary underline underline-offset-2 hover:text-accent transition-colors"
+                >
+                  {t("footer.privacy")}
+                </a>
+              </span>
+            </motion.button>
+            {errors.privacy && (
+              <p className="text-destructive text-xs px-1 text-start">{errors.privacy}</p>
+            )}
+          </div>
+        );
+    }
+  };
+
+  const stepLabels: Record<StepId, { ar: string; en: string; zh: string }> = {
+    name: { ar: "الاسم", en: "Name", zh: "姓名" },
+    country: { ar: "الدولة", en: "Country", zh: "国家" },
+    services: { ar: "الخدمات", en: "Services", zh: "服务" },
+    budget: { ar: "الميزانية", en: "Budget", zh: "预算" },
+    privacy: { ar: "الموافقة", en: "Confirm", zh: "确认" },
+  };
+
+  const stepPrompts: Record<StepId, { ar: string; en: string; zh: string }> = {
+    name: { ar: "كيف يمكنني مناداتك؟", en: "What's your name?", zh: "您叫什么名字？" },
+    country: { ar: "من أي دولة تتواصل معنا؟", en: "Which country are you from?", zh: "您来自哪个国家？" },
+    services: { ar: "ما الخدمات التي تحتاجها؟", en: "Which services do you need?", zh: "您需要哪些服务？" },
+    budget: { ar: "ما ميزانيتك التقريبية؟", en: "What's your estimated budget?", zh: "您的预算大概是多少？" },
+    privacy: { ar: "آخر خطوة — قبل الإرسال", en: "Final step — before sending", zh: "最后一步 — 发送前" },
+  };
+
+  const l = lang as "ar" | "en" | "zh";
 
   useEffect(() => {
     const titles = {
@@ -44,17 +372,6 @@ const ContactUs = () => {
     ar: {
       title: "تواصل معنا",
       subtitle: "نحن هنا للإجابة على استفساراتك وتحويل أفكارك إلى واقع رقمي مدهش",
-      name: "الاسم الكامل",
-      namePlaceholder: "الاسم الكامل",
-      email: "البريد الإلكتروني",
-      emailPlaceholder: "البريد الإلكتروني",
-      message: "الرسالة",
-      messagePlaceholder: "اكتب رسالتك هنا...",
-      send: "إرسال الرسالة",
-      sending: "جاري الإرسال...",
-      success: "تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.",
-      error: "حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.",
-      required: "يرجى ملء جميع الحقول المطلوبة.",
       contactVia: "تواصل معنا عبر",
       whatsapp: "واتساب",
       whatsappSub: "تحدث معنا الآن",
@@ -69,17 +386,6 @@ const ContactUs = () => {
     en: {
       title: "Contact Us",
       subtitle: "We are here to answer your questions and turn your ideas into a stunning digital reality",
-      name: "Full Name",
-      namePlaceholder: "Enter your full name",
-      email: "Email Address",
-      emailPlaceholder: "Enter your email address",
-      message: "Message",
-      messagePlaceholder: "Write your message here...",
-      send: "Send Message",
-      sending: "Sending...",
-      success: "Your message has been sent successfully! We will contact you soon.",
-      error: "An error occurred while sending. Please try again.",
-      required: "Please fill in all required fields.",
       contactVia: "Contact us via",
       whatsapp: "WhatsApp",
       whatsappSub: "Chat with us now",
@@ -94,17 +400,6 @@ const ContactUs = () => {
     zh: {
       title: "联系我们",
       subtitle: "我们在这里回答您的问题，并将您的想法转化为惊人的数字现实",
-      name: "全名",
-      namePlaceholder: "输入您的全名",
-      email: "电子邮件地址",
-      emailPlaceholder: "输入您的电子邮件地址",
-      message: "留言",
-      messagePlaceholder: "在这里写下您的留言...",
-      send: "发送留言",
-      sending: "发送中...",
-      success: "您的留言已成功发送！我们将尽快与您联系。",
-      error: "发送时发生错误。请重试。",
-      required: "请填写所有必填项。",
       contactVia: "联系我们",
       whatsapp: "WhatsApp",
       whatsappSub: "立即与我们联系",
@@ -119,47 +414,6 @@ const ContactUs = () => {
   };
 
   const currentTexts = texts[lang as keyof typeof texts] || texts.en;
-  const isRtl = lang === "ar";
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formState.name || !formState.email || !formState.message) {
-      setStatus("error");
-      setTimeout(() => setStatus("idle"), 4000);
-      return;
-    }
-    
-    setStatus("submitting");
-    
-    fetch("https://formsubmit.co/ajax/info@suriix.com", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        _subject: `New contact from Suriix website - ${formState.name}`,
-        Name: formState.name,
-        Email: formState.email,
-        Message: formState.message,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success === "true" || data.success === true) {
-          setStatus("success");
-          setFormState({ name: "", email: "", message: "" });
-        } else {
-          setStatus("error");
-        }
-        setTimeout(() => setStatus("idle"), 6000);
-      })
-      .catch((error) => {
-        console.error(error);
-        setStatus("error");
-        setTimeout(() => setStatus("idle"), 6000);
-      });
-  };
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">
@@ -236,121 +490,226 @@ const ContactUs = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 lg:gap-12">
             
-            {/* Left Column: Contact Form (Col Span 7) */}
+            {/* Left Column: Contact Form Wizard (Col Span 7) */}
             <div className="md:col-span-7 flex flex-col justify-between">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                
-                {/* Alert Banners */}
-                <AnimatePresence mode="wait">
-                  {status === "success" && (
-                    <div className="bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 p-4 rounded-2xl flex items-center gap-3">
-                      <CheckCircle2 className="w-5 h-5 shrink-0" />
-                      <p className="text-sm font-medium">{currentTexts.success}</p>
+              <AnimatePresence mode="wait">
+                {!submitted ? (
+                  <motion.div
+                    key="form"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -24 }}
+                    className="flex flex-col h-full justify-between gap-6"
+                  >
+                    {/* Step progress */}
+                    <div className="flex items-center gap-1.5 mb-2">
+                      {STEPS.map((sid, i) => {
+                        const isActive = i === step;
+                        const isDone = i < step;
+                        return (
+                          <div
+                            key={sid}
+                            className="flex items-center gap-1.5 flex-1"
+                          >
+                            <motion.div
+                              animate={{
+                                backgroundColor:
+                                  isDone || isActive
+                                    ? "hsl(var(--primary))"
+                                    : "hsl(var(--border))",
+                                scale: isActive ? 1.15 : 1,
+                              }}
+                              className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-primary-foreground"
+                            >
+                              {isDone ? (
+                                <Check className="w-3.5 h-3.5" />
+                              ) : (
+                                <span className="text-[10px] font-bold">
+                                  {i + 1}
+                                </span>
+                              )}
+                            </motion.div>
+                            {i < STEPS.length - 1 && (
+                              <div
+                                className={`flex-1 h-0.5 rounded-full transition-all duration-500 ${isDone ? "gradient-purple" : "bg-border/40"}`}
+                              />
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
-                  )}
-                  {status === "error" && (
-                    <div className="bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 p-4 rounded-2xl flex items-center gap-3">
-                      <AlertCircle className="w-5 h-5 shrink-0" />
-                      <p className="text-sm font-medium">
-                        {!formState.name || !formState.email || !formState.message ? currentTexts.required : currentTexts.error}
-                      </p>
-                    </div>
-                  )}
-                </AnimatePresence>
 
-                {/* Form fields */}
-                <div className="space-y-5">
-                  {/* Name field */}
-                  <div>
-                    <label className="block text-sm font-bold text-foreground mb-2 text-start">
-                      {currentTexts.name} <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative flex items-center">
-                      <input
-                        type="text"
-                        value={formState.name}
-                        onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                        className="w-full bg-secondary/10 dark:bg-secondary/40 border border-border/40 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-2xl px-5 py-4 text-foreground placeholder:text-muted-foreground transition-all duration-300 pr-12 pl-5 rtl:pl-12 rtl:pr-5 focus:outline-none"
-                        placeholder={currentTexts.namePlaceholder}
-                        required
-                      />
-                      <User className="absolute right-5 rtl:right-auto rtl:left-5 text-muted-foreground w-5 h-5" />
-                    </div>
-                  </div>
+                    {/* Step icon + label */}
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={`header-${step}`}
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.25 }}
+                        className={`flex items-center gap-3 my-2 ${isRtl ? "flex-row-reverse" : ""}`}
+                      >
+                        <div className="w-10 h-10 rounded-xl gradient-purple flex items-center justify-center shrink-0 neon-glow">
+                          {STEP_ICONS[currentStepId]}
+                        </div>
+                        <div className={isRtl ? "text-right" : ""}>
+                          <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
+                            {stepLabels[currentStepId][l]}
+                          </p>
+                          <h3 className="text-lg font-bold text-foreground">
+                            {stepPrompts[currentStepId][l]}
+                          </h3>
+                        </div>
+                      </motion.div>
+                    </AnimatePresence>
 
-                  {/* Email field */}
-                  <div>
-                    <label className="block text-sm font-bold text-foreground mb-2 text-start">
-                      {currentTexts.email} <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative flex items-center">
-                      <input
-                        type="email"
-                        value={formState.email}
-                        onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                        className="w-full bg-secondary/10 dark:bg-secondary/40 border border-border/40 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-2xl px-5 py-4 text-foreground placeholder:text-muted-foreground transition-all duration-300 pr-12 pl-5 rtl:pl-12 rtl:pr-5 focus:outline-none"
-                        placeholder={currentTexts.emailPlaceholder}
-                        required
-                      />
-                      <Mail className="absolute right-5 rtl:right-auto rtl:left-5 text-muted-foreground w-5 h-5" />
-                    </div>
-                  </div>
+                    {/* Step content */}
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={`content-${step}`}
+                        initial={{ opacity: 0, x: isRtl ? -28 : 28 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: isRtl ? 28 : -28 }}
+                        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                        className="my-2"
+                      >
+                        {renderStep()}
+                      </motion.div>
+                    </AnimatePresence>
 
-                  {/* Message field */}
-                  <div>
-                    <label className="block text-sm font-bold text-foreground mb-2 text-start">
-                      {currentTexts.message} <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative flex items-start">
-                      <textarea
-                        value={formState.message}
-                        onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                        rows={5}
-                        className="w-full bg-secondary/10 dark:bg-secondary/40 border border-border/40 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 rounded-2xl px-5 py-4 text-foreground placeholder:text-muted-foreground transition-all duration-300 pr-12 pl-5 rtl:pl-12 rtl:pr-5 focus:outline-none resize-none"
-                        placeholder={currentTexts.messagePlaceholder}
-                        required
-                      />
-                      <Send className="absolute right-5 top-5 rtl:right-auto rtl:left-5 text-muted-foreground w-5 h-5 rotate-45" />
-                    </div>
-                  </div>
-                </div>
+                    {/* Navigation */}
+                    <div
+                      className={`flex items-center justify-between gap-3 ${isRtl ? "flex-row-reverse" : ""}`}
+                    >
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={handleBack}
+                        disabled={step === 0}
+                        className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-medium transition-all
+                          ${
+                            step === 0
+                              ? "opacity-30 cursor-not-allowed text-muted-foreground"
+                              : "glass border border-border/40 text-foreground hover:border-primary/40"
+                          }`}
+                      >
+                        {isRtl ? (
+                          <ArrowRight className="w-4 h-4" />
+                        ) : (
+                          <ArrowLeft className="w-4 h-4" />
+                        )}
+                        {t("contact.back")}
+                      </motion.button>
 
-                {/* Submit button */}
-                <button
-                  type="submit"
-                  disabled={status === "submitting"}
-                  className="w-full relative overflow-hidden rounded-2xl cursor-pointer disabled:opacity-70 disabled:pointer-events-none group"
-                  style={{ padding: 0, border: "none", background: "transparent" }}
-                >
-                  {/* Gradient background */}
-                  <span
-                    className="absolute inset-0 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:opacity-90"
-                    style={{ borderRadius: "inherit" }}
-                  />
-                  {/* Shine overlay on hover */}
-                  <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 rounded-2xl" />
-                  {/* Content */}
-                  <span className="relative flex items-center justify-center gap-3 py-4 px-8 text-white font-bold text-base tracking-wide">
-                    {status === "submitting" ? (
-                      <>
-                        <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block" />
-                        <span>{currentTexts.sending}</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>{currentTexts.send}</span>
-                        <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-                      </>
+                      <motion.button
+                        whileHover={{
+                          scale: 1.04,
+                          boxShadow: "0 0 30px hsl(var(--neon-purple)/0.4)",
+                        }}
+                        whileTap={{ scale: 0.96 }}
+                        onClick={handleNext}
+                        className="flex items-center gap-2 px-7 py-3 rounded-xl font-semibold text-sm gradient-purple text-primary-foreground neon-glow transition-all"
+                      >
+                        {step === STEPS.length - 1 ? (
+                          <>
+                            <Send className="w-4 h-4" />
+                            {t("contact.submit")}
+                          </>
+                        ) : (
+                          <>
+                            {t("contact.next")}
+                            {isRtl ? (
+                              <ArrowLeft className="w-4 h-4" />
+                            ) : (
+                              <ArrowRight className="w-4 h-4" />
+                            )}
+                          </>
+                        )}
+                      </motion.button>
+                    </div>
+
+                    {/* Summary preview (visible when data entered) */}
+                    {(name || services.length > 0 || budget) && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-2 glass rounded-2xl p-4 border border-primary/10"
+                      >
+                        <div className="flex flex-wrap gap-2 justify-start">
+                          {name && (
+                            <span className="px-3 py-1 rounded-full text-xs bg-primary/15 text-primary border border-primary/20 font-medium">
+                              👤 {name}
+                            </span>
+                          )}
+                          {country && (
+                            <span className="px-3 py-1 rounded-full text-xs bg-primary/15 text-primary border border-primary/20 font-medium">
+                              🌍 {country}
+                            </span>
+                          )}
+                          {services.map((k) => (
+                            <span
+                              key={k}
+                              className="px-3 py-1 rounded-full text-xs bg-accent/15 text-accent border border-accent/20 font-medium"
+                            >
+                              {SERVICES.find((s) => s.key === k)?.icon}{" "}
+                              {t(`contact.service.${k}`)}
+                            </span>
+                          ))}
+                          {budget && (
+                            <span className="px-3 py-1 rounded-full text-xs bg-secondary text-secondary-foreground border border-border/40 font-medium">
+                              💰 {t(`contact.budget.${budget}`)}
+                            </span>
+                          )}
+                        </div>
+                      </motion.div>
                     )}
-                  </span>
-                </button>
+                  </motion.div>
+                ) : (
+                  /* ── Success State ─────────────────────────────────────────────── */
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.88 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ type: "spring", bounce: 0.35 }}
+                    className="glass-strong rounded-3xl p-8 neon-border text-center flex flex-col items-center justify-center h-full w-full"
+                  >
+                    {/* Animated ring */}
+                    <div className="relative w-20 h-20 mx-auto mb-6">
+                      <motion.div
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ type: "spring", bounce: 0.5, delay: 0.15 }}
+                        className="absolute inset-0 rounded-full gradient-purple neon-glow-strong flex items-center justify-center"
+                      >
+                        <CheckCircle2 className="w-10 h-10 text-primary-foreground" />
+                      </motion.div>
+                      <motion.div
+                        initial={{ scale: 1.5, opacity: 0 }}
+                        animate={{ scale: 2.2, opacity: 0 }}
+                        transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+                        className="absolute inset-0 rounded-full border-2 border-primary/60"
+                      />
+                    </div>
 
-                {/* Privacy shield footer inside LTR/RTL wrapper */}
-                <div className="flex items-center justify-center gap-2 mt-5 text-muted-foreground/80 text-xs font-semibold">
-                  <Shield className="w-4 h-4 text-primary" />
-                  <p>{currentTexts.privacyText}</p>
-                </div>
-              </form>
+                    <motion.h3
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-2xl font-bold gradient-text mb-2"
+                    >
+                      {t("contact.success.title")}
+                    </motion.h3>
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.55 }}
+                      className="text-muted-foreground text-xs max-w-sm mx-auto"
+                    >
+                      {t("contact.success.message")}
+                    </motion.p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Right Column: Contact Channels & Info Sidebar (Col Span 5) */}
