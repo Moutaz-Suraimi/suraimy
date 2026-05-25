@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense, memo, useCallback } from "react";
+import React, { useState, memo, useCallback } from "react";
 import { motion } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
@@ -13,16 +13,9 @@ import ContactSection from "@/components/ContactSection";
 import FooterSection from "@/components/FooterSection";
 import ReadyWebsitesSection from "@/components/ReadyWebsitesSection";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
+import ChatbotWidget from "@/components/ChatbotWidget";
+import CinematicIntro from "@/components/CinematicIntro";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-// ── Heavy non-critical components — lazy loaded after initial render ──────
-// ChatbotWidget is never needed on first paint → defer it entirely
-const ChatbotWidget = lazy(() => import("@/components/ChatbotWidget"));
-// CinematicIntro only runs once per session → load on demand
-const CinematicIntro = lazy(() => import("@/components/CinematicIntro"));
-
-// Lightweight fallback for deferred widget loads
-const NullFallback = () => null;
 
 // ── Cinematic section wrapper: fade + slide-up on scroll entry ────────────
 // memo prevents re-renders when parent re-renders (e.g. lang change)
@@ -47,7 +40,7 @@ const Index = () => {
     try {
       return !sessionStorage.getItem("suriix-intro-seen");
     } catch (e) {
-      return true; // Fallback to showing intro if sessionStorage is blocked
+      return true;
     }
   });
 
@@ -93,20 +86,16 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-transparent overflow-x-hidden">
-      {/* CinematicIntro — lazy loaded, only shown once per session */}
+      {/* CinematicIntro — only shown once per session */}
       {showIntro && (
-        <Suspense fallback={<NullFallback />}>
-          <CinematicIntro onComplete={handleIntroComplete} />
-        </Suspense>
+        <CinematicIntro onComplete={handleIntroComplete} />
       )}
 
       <ScrollProgressBar />
 
       <main className="w-full">
-        {/* HeroSection is critical — loaded synchronously for fast LCP */}
         <HeroSection />
 
-        {/* All below-fold sections lazy-revealed on scroll */}
         <SectionReveal><AboutSection /></SectionReveal>
         <SectionReveal><DigitalMirror /></SectionReveal>
         <SectionReveal><SolutionsSection /></SectionReveal>
@@ -120,12 +109,10 @@ const Index = () => {
         <FooterSection />
       </main>
 
-      {/* ChatbotWidget — fully deferred: loads after page is interactive */}
-      <Suspense fallback={<NullFallback />}>
-        <ChatbotWidget />
-      </Suspense>
+      <ChatbotWidget />
     </div>
   );
 };
 
 export default Index;
+
