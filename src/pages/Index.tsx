@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, lazy, Suspense, memo, useCallback } from "react";
 import { motion } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
@@ -12,23 +12,34 @@ import BlogSection from "@/components/BlogSection";
 import ContactSection from "@/components/ContactSection";
 import FooterSection from "@/components/FooterSection";
 import ReadyWebsitesSection from "@/components/ReadyWebsitesSection";
-import ChatbotWidget from "@/components/ChatbotWidget";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
-import CinematicIntro from "@/components/CinematicIntro";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-// Cinematic section wrapper with fade + slide-up on scroll entry
-const SectionReveal = ({ children, id }: { children: React.ReactNode; id?: string }) => (
-  <motion.div
-    id={id}
-    initial={{ opacity: 0, y: 40 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-80px" }}
-    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-  >
-    {children}
-  </motion.div>
+// ── Heavy non-critical components — lazy loaded after initial render ──────
+// ChatbotWidget is never needed on first paint → defer it entirely
+const ChatbotWidget = lazy(() => import("@/components/ChatbotWidget"));
+// CinematicIntro only runs once per session → load on demand
+const CinematicIntro = lazy(() => import("@/components/CinematicIntro"));
+
+// Lightweight fallback for deferred widget loads
+const NullFallback = () => null;
+
+// ── Cinematic section wrapper: fade + slide-up on scroll entry ────────────
+// memo prevents re-renders when parent re-renders (e.g. lang change)
+const SectionReveal = memo(
+  ({ children, id }: { children: React.ReactNode; id?: string }) => (
+    <motion.div
+      id={id}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  )
 );
+SectionReveal.displayName = "SectionReveal";
 
 const Index = () => {
   const { lang } = useLanguage();
@@ -36,10 +47,11 @@ const Index = () => {
     return !sessionStorage.getItem("suriix-intro-seen");
   });
 
-  const handleIntroComplete = () => {
+  // Stable callback reference — prevents CinematicIntro re-render
+  const handleIntroComplete = useCallback(() => {
     setShowIntro(false);
     sessionStorage.setItem("suriix-intro-seen", "true");
-  };
+  }, []);
 
   React.useEffect(() => {
     // Dynamic SEO update for Main Page
@@ -55,7 +67,7 @@ const Index = () => {
     };
 
     document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
-    
+
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
@@ -73,10 +85,20 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-transparent overflow-x-hidden">
-      {showIntro && <CinematicIntro onComplete={handleIntroComplete} />}
+      {/* CinematicIntro — lazy loaded, only shown once per session */}
+      {showIntro && (
+        <Suspense fallback={<NullFallback />}>
+          <CinematicIntro onComplete={handleIntroComplete} />
+        </Suspense>
+      )}
+
       <ScrollProgressBar />
+
       <main className="w-full">
+        {/* HeroSection is critical — loaded synchronously for fast LCP */}
         <HeroSection />
+
+        {/* All below-fold sections lazy-revealed on scroll */}
         <SectionReveal><AboutSection /></SectionReveal>
         <SectionReveal><DigitalMirror /></SectionReveal>
         <SectionReveal><SolutionsSection /></SectionReveal>
@@ -89,7 +111,11 @@ const Index = () => {
         <SectionReveal><ContactSection /></SectionReveal>
         <FooterSection />
       </main>
-      <ChatbotWidget />
+
+      {/* ChatbotWidget — fully deferred: loads after page is interactive */}
+      <Suspense fallback={<NullFallback />}>
+        <ChatbotWidget />
+      </Suspense>
     </div>
   );
 };

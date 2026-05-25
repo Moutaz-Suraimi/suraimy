@@ -1,6 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Users, Folder, Rocket, Star, ArrowUpRight, Play,
@@ -10,7 +10,17 @@ import ThemeToggle from "./ThemeToggle";
 
 const WHATSAPP = "https://wa.me/967780930635";
 
-const HeroSection = () => {
+// Static data defined outside component — avoids re-creation on every render
+const NAV_ITEMS = [
+  { key: "nav.home", href: "/" },
+  { key: "nav.packages", href: "/packages" },
+  { key: "nav.portfolio", href: "/portfolio" },
+  { key: "nav.solutions", href: "/solutions" },
+  { key: "nav.about", href: "/about" },
+  { key: "nav.contact", href: "/contact" },
+];
+
+const HeroSection = memo(() => {
   const { t, lang, setLang, langLabels, langOrder } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,27 +43,23 @@ const HeroSection = () => {
   
   const isRtl = lang === "ar";
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const card = e.currentTarget;
     const box = card.getBoundingClientRect();
     const x = e.clientX - box.left - box.width / 2;
     const y = e.clientY - box.top - box.height / 2;
-    
-    // Calculate rotation angles (max 10 degrees)
-    const rotX = -(y / (box.height / 2)) * 8;
-    const rotY = (x / (box.width / 2)) * 8;
-    
-    setRotateX(rotX);
-    setRotateY(rotY);
-  };
+    // Calculate rotation angles (max 8 degrees)
+    setRotateX(-(y / (box.height / 2)) * 8);
+    setRotateY((x / (box.width / 2)) * 8);
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setRotateX(0);
     setRotateY(0);
     setIsHovered(false);
-  };
+  }, []);
 
-  const handleNavClick = (href: string) => {
+  const handleNavClick = useCallback((href: string) => {
     setMobileMenuOpen(false);
     if (href.startsWith("/")) {
       if (location.pathname === href) {
@@ -68,17 +74,10 @@ const HeroSection = () => {
         el.scrollIntoView({ behavior: "smooth" });
       }
     }
-  };
+  }, [navigate, location.pathname]);
 
-  // Nav items from translations
-  const navItems = [
-    { key: "nav.home", href: "/" },
-    { key: "nav.packages", href: "/packages" },
-    { key: "nav.portfolio", href: "/portfolio" },
-    { key: "nav.solutions", href: "/solutions" },
-    { key: "nav.about", href: "/about" },
-    { key: "nav.contact", href: "/contact" },
-  ];
+  // Use static NAV_ITEMS defined outside component
+  const navItems = NAV_ITEMS;
 
   return (
     <section
@@ -658,6 +657,8 @@ const HeroSection = () => {
 
     </section>
   );
-};
+});
+
+HeroSection.displayName = "HeroSection";
 
 export default HeroSection;

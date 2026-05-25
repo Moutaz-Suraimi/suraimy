@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 
 interface ScrollRevealProps {
@@ -9,6 +9,7 @@ interface ScrollRevealProps {
   distance?: number;
 }
 
+// Static lookup — defined once outside component (no re-creation on render)
 const directionMap: Record<string, { x: number; y: number }> = {
   up: { x: 0, y: 1 },
   down: { x: 0, y: -1 },
@@ -16,7 +17,8 @@ const directionMap: Record<string, { x: number; y: number }> = {
   right: { x: -1, y: 0 },
 };
 
-const ScrollReveal: React.FC<ScrollRevealProps> = ({
+// memo prevents re-renders when props haven't changed
+const ScrollReveal: React.FC<ScrollRevealProps> = memo(({
   children,
   className = "",
   delay = 0,
@@ -45,6 +47,8 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
       {children}
     </motion.div>
   );
-};
+});
+
+ScrollReveal.displayName = "ScrollReveal";
 
 export default ScrollReveal;

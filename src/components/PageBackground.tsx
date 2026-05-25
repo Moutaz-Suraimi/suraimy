@@ -1,9 +1,11 @@
-import { motion } from "framer-motion";
+import React, { memo } from "react";
 
-const PageBackground = ({ children }: { children: React.ReactNode }) => {
+// Pure-CSS animated background — zero framer-motion overhead
+// Replaces motion.path (JS-driven) with CSS @keyframes (GPU-composited)
+const PageBackground = memo(({ children }: { children: React.ReactNode }) => {
   return (
     <div className="relative min-h-screen bg-gradient-to-tr from-[#e3e8ff] via-[#fbfcff] to-[#eddfff] dark:from-[#090714] dark:via-[#0e0b21] dark:to-[#171530] transition-colors duration-300">
-      
+
       {/* ── Fixed background layers (pointer-events:none, z-0) ─────────── */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
 
@@ -17,13 +19,14 @@ const PageBackground = ({ children }: { children: React.ReactNode }) => {
           }}
         />
 
-        {/* Curving SVG neon paths */}
+        {/* Curving SVG neon paths — CSS-animated (GPU composited, no JS) */}
         <svg
           className="absolute w-full h-full opacity-60 dark:opacity-30"
           viewBox="0 0 1440 900"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           preserveAspectRatio="xMidYMid slice"
+          aria-hidden="true"
         >
           <defs>
             <linearGradient id="globalLine1" x1="0" y1="0" x2="100%" y2="100%">
@@ -40,43 +43,71 @@ const PageBackground = ({ children }: { children: React.ReactNode }) => {
               <stop offset="0%"   stopColor="#c084fc" stopOpacity="0.4" />
               <stop offset="100%" stopColor="#818cf8" stopOpacity="0.15" />
             </linearGradient>
+
+            {/* CSS keyframes for path drawing — no JS overhead */}
+            <style>{`
+              @keyframes drawPath1 {
+                from { stroke-dashoffset: 2000; opacity: 0; }
+                10%  { opacity: 1; }
+                to   { stroke-dashoffset: 0; opacity: 1; }
+              }
+              @keyframes drawPath2 {
+                from { stroke-dashoffset: 2000; opacity: 0; }
+                10%  { opacity: 1; }
+                to   { stroke-dashoffset: 0; opacity: 1; }
+              }
+              @keyframes drawPath3 {
+                from { stroke-dashoffset: 2000; opacity: 0; }
+                10%  { opacity: 1; }
+                to   { stroke-dashoffset: 0; opacity: 1; }
+              }
+              .bg-path-1 {
+                stroke-dasharray: 2000;
+                stroke-dashoffset: 2000;
+                animation: drawPath1 2.5s ease-in-out 0s 1 forwards;
+              }
+              .bg-path-2 {
+                stroke-dasharray: 2000;
+                stroke-dashoffset: 2000;
+                animation: drawPath2 3s ease-in-out 0.5s 1 forwards;
+              }
+              .bg-path-3 {
+                stroke-dasharray: 2000;
+                stroke-dashoffset: 2000;
+                animation: drawPath3 2.8s ease-in-out 0.8s 1 forwards;
+              }
+            `}</style>
           </defs>
 
           {/* Primary sweep — top-left to bottom-right */}
-          <motion.path
+          <path
+            className="bg-path-1"
             d="M -100 350 C 250 150, 750 650, 1540 250"
             stroke="url(#globalLine1)"
             strokeWidth="2.5"
             strokeLinecap="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 2.5, ease: "easeInOut" }}
           />
 
           {/* Secondary sweep — bottom */}
-          <motion.path
+          <path
+            className="bg-path-2"
             d="M -50 700 C 350 850, 900 200, 1600 600"
             stroke="url(#globalLine2)"
             strokeWidth="1.5"
             strokeLinecap="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 3, delay: 0.5, ease: "easeInOut" }}
           />
 
           {/* Tertiary accent — upper-right */}
-          <motion.path
+          <path
+            className="bg-path-3"
             d="M 700 -50 C 900 200, 1200 100, 1500 400"
             stroke="url(#globalLine3)"
             strokeWidth="1.5"
             strokeLinecap="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 2.8, delay: 0.8, ease: "easeInOut" }}
           />
         </svg>
 
-        {/* Ambient glow orbs */}
+        {/* Ambient glow orbs — pure CSS animations */}
         <div className="absolute top-[-5%] right-[-5%] w-[600px] h-[600px] rounded-full bg-primary/12 dark:bg-primary/5 blur-[150px] animate-glow-pulse" />
         <div className="absolute bottom-[5%] left-[-5%] w-[550px] h-[550px] rounded-full bg-accent/12 dark:bg-accent/5 blur-[140px] animate-glow-pulse" style={{ animationDelay: "1.5s" }} />
         <div className="absolute top-[40%] right-[15%] w-[400px] h-[400px] rounded-full bg-purple-300/8 dark:bg-purple-900/4 blur-[120px] animate-glow-pulse" style={{ animationDelay: "3s" }} />
@@ -89,6 +120,8 @@ const PageBackground = ({ children }: { children: React.ReactNode }) => {
       </div>
     </div>
   );
-};
+});
+
+PageBackground.displayName = "PageBackground";
 
 export default PageBackground;

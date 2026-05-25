@@ -293,7 +293,7 @@ const SideNav = () => {
              className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl flex flex-col items-center md:hidden pt-[80px]"
           >
             <div className="flex flex-col items-center gap-2 mb-4 mt-2 shrink-0">
-              <img src="/img/suriix_final.png" alt="Suriix Logo" className="w-20 h-20 object-cover rounded-full" />
+              <img src="/favicon-192x192.png" alt="Suriix Logo" className="w-20 h-20 object-cover rounded-full" />
               <p className="text-[#26163c] dark:text-white font-bold text-3xl tracking-wide mt-2">Suriix</p>
             </div>
             
