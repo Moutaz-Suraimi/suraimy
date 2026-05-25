@@ -1,21 +1,23 @@
-import React, { useState, memo, useCallback } from "react";
+import React, { useState, memo, useCallback, lazy, Suspense, useEffect } from "react";
 import { motion } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
-import AboutSection from "@/components/AboutSection";
-import DigitalMirror from "@/components/DigitalMirror";
-import SolutionsSection from "@/components/SolutionsSection";
-import PackagesSection from "@/components/PackagesSection";
-import PortfolioSection from "@/components/PortfolioSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import FAQSection from "@/components/FAQSection";
-import BlogSection from "@/components/BlogSection";
-import ContactSection from "@/components/ContactSection";
-import FooterSection from "@/components/FooterSection";
-import ReadyWebsitesSection from "@/components/ReadyWebsitesSection";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
-import ChatbotWidget from "@/components/ChatbotWidget";
 import CinematicIntro from "@/components/CinematicIntro";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+// Lazy load non-critical sections & widgets for faster bundle parsing and hydration
+const AboutSection = lazy(() => import("@/components/AboutSection"));
+const DigitalMirror = lazy(() => import("@/components/DigitalMirror"));
+const SolutionsSection = lazy(() => import("@/components/SolutionsSection"));
+const PackagesSection = lazy(() => import("@/components/PackagesSection"));
+const ReadyWebsitesSection = lazy(() => import("@/components/ReadyWebsitesSection"));
+const PortfolioSection = lazy(() => import("@/components/PortfolioSection"));
+const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
+const FAQSection = lazy(() => import("@/components/FAQSection"));
+const BlogSection = lazy(() => import("@/components/BlogSection"));
+const ContactSection = lazy(() => import("@/components/ContactSection"));
+const FooterSection = lazy(() => import("@/components/FooterSection"));
+const ChatbotWidget = lazy(() => import("@/components/ChatbotWidget"));
 
 // ── Cinematic section wrapper: fade + slide-up on scroll entry ────────────
 // memo prevents re-renders when parent re-renders (e.g. lang change)
@@ -84,6 +86,26 @@ const Index = () => {
     }
   }, [showIntro]);
 
+  // Dynamically load Google AdSense script after the intro cover has faded out
+  useEffect(() => {
+    if (!showIntro) {
+      const loadAdSense = () => {
+        try {
+          const script = document.createElement("script");
+          script.async = true;
+          script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4479803404171955";
+          script.crossOrigin = "anonymous";
+          document.body.appendChild(script);
+        } catch (e) {
+          console.error("Failed to load Google AdSense:", e);
+        }
+      };
+      // 500ms delay after the cover disappears keeps frame budgets perfectly optimal
+      const timer = setTimeout(loadAdSense, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [showIntro]);
+
   return (
     <div className="min-h-screen bg-transparent overflow-x-hidden">
       {/* CinematicIntro — only shown once per session */}
@@ -94,22 +116,26 @@ const Index = () => {
       <ScrollProgressBar />
 
       <main className="w-full">
-        <HeroSection />
+        <HeroSection isIntroActive={showIntro} />
 
-        <SectionReveal><AboutSection /></SectionReveal>
-        <SectionReveal><DigitalMirror /></SectionReveal>
-        <SectionReveal><SolutionsSection /></SectionReveal>
-        <SectionReveal><PackagesSection /></SectionReveal>
-        <SectionReveal><ReadyWebsitesSection /></SectionReveal>
-        <SectionReveal><PortfolioSection /></SectionReveal>
-        <SectionReveal><TestimonialsSection /></SectionReveal>
-        <SectionReveal><FAQSection /></SectionReveal>
-        <SectionReveal><BlogSection /></SectionReveal>
-        <SectionReveal><ContactSection /></SectionReveal>
-        <FooterSection />
+        <Suspense fallback={<div className="min-h-[200px] w-full flex items-center justify-center bg-transparent" />}>
+          <SectionReveal><AboutSection /></SectionReveal>
+          <SectionReveal><DigitalMirror /></SectionReveal>
+          <SectionReveal><SolutionsSection /></SectionReveal>
+          <SectionReveal><PackagesSection /></SectionReveal>
+          <SectionReveal><ReadyWebsitesSection /></SectionReveal>
+          <SectionReveal><PortfolioSection /></SectionReveal>
+          <SectionReveal><TestimonialsSection /></SectionReveal>
+          <SectionReveal><FAQSection /></SectionReveal>
+          <SectionReveal><BlogSection /></SectionReveal>
+          <SectionReveal><ContactSection /></SectionReveal>
+          <FooterSection />
+        </Suspense>
       </main>
 
-      <ChatbotWidget />
+      <Suspense fallback={null}>
+        <ChatbotWidget />
+      </Suspense>
     </div>
   );
 };

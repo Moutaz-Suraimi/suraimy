@@ -31,12 +31,12 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
   const skip = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
     setPhase("fadeout");
-    setTimeout(onComplete, 600);
+    setTimeout(onComplete, 500);
   }, [onComplete]);
 
   // Phase progression
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("text"), 1500);
+    const t1 = setTimeout(() => setPhase("text"), 800);
     return () => { clearTimeout(t1); };
   }, []);
 
@@ -52,10 +52,10 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
       if (i <= line1.length) {
         setTypedLine1(line1.slice(0, i));
         i++;
-        timerRef.current = window.setTimeout(typeLine1, 60);
+        timerRef.current = window.setTimeout(typeLine1, 30);
       } else {
         i = 0;
-        timerRef.current = window.setTimeout(typeLine2, 300);
+        timerRef.current = window.setTimeout(typeLine2, 150);
       }
     };
 
@@ -63,12 +63,12 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
       if (i <= line2.length) {
         setTypedLine2(line2.slice(0, i));
         i++;
-        timerRef.current = window.setTimeout(typeLine2, 40);
+        timerRef.current = window.setTimeout(typeLine2, 20);
       } else {
         timerRef.current = window.setTimeout(() => {
           setPhase("fadeout");
-          setTimeout(onComplete, 800);
-        }, 1500);
+          setTimeout(onComplete, 500);
+        }, 800);
       }
     };
 
@@ -82,7 +82,7 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
         <motion.div
           key="intro"
           exit={{ opacity: 0, scale: 1.05 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
           className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-gradient-to-tr from-[#e3e8ff] via-[#fbfcff] to-[#eddfff] dark:from-[#090714] dark:via-[#0e0b21] dark:to-[#171530] transition-colors duration-500"
         >
           {/* Optimized High-Performance Animated Glowing Background Elements */}
@@ -90,11 +90,12 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
             className="absolute -top-1/4 -left-1/4 w-[150%] h-[150%] opacity-80 mix-blend-multiply dark:mix-blend-screen"
             animate={{ rotate: 360 }}
             transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+            style={{ willChange: "transform" }}
           >
-            <div className="absolute top-[20%] left-[20%] w-[40%] h-[40%] rounded-full blur-[80px]" style={{ background: "radial-gradient(circle, rgba(139,92,246,0.5) 0%, transparent 70%)" }} />
-            <div className="absolute bottom-[20%] right-[20%] w-[45%] h-[45%] rounded-full blur-[100px]" style={{ background: "radial-gradient(circle, rgba(59,130,246,0.5) 0%, transparent 70%)" }} />
-            <div className="absolute top-[40%] right-[30%] w-[40%] h-[40%] rounded-full blur-[80px]" style={{ background: "radial-gradient(circle, rgba(217,70,239,0.4) 0%, transparent 70%)" }} />
-            <div className="absolute bottom-[30%] left-[30%] w-[35%] h-[35%] rounded-full blur-[70px]" style={{ background: "radial-gradient(circle, rgba(14,165,233,0.3) 0%, transparent 70%)" }} />
+            <div className="absolute top-[20%] left-[20%] w-[40%] h-[40%] rounded-full" style={{ background: "radial-gradient(circle, rgba(139,92,246,0.2) 0%, rgba(139,92,246,0.05) 50%, transparent 70%)" }} />
+            <div className="absolute bottom-[20%] right-[20%] w-[45%] h-[45%] rounded-full" style={{ background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, rgba(59,130,246,0.05) 50%, transparent 70%)" }} />
+            <div className="absolute top-[40%] right-[30%] w-[40%] h-[40%] rounded-full" style={{ background: "radial-gradient(circle, rgba(217,70,239,0.18) 0%, rgba(217,70,239,0.04) 50%, transparent 70%)" }} />
+            <div className="absolute bottom-[30%] left-[30%] w-[35%] h-[35%] rounded-full" style={{ background: "radial-gradient(circle, rgba(14,165,233,0.15) 0%, rgba(14,165,233,0.03) 50%, transparent 70%)" }} />
           </motion.div>
           
           {/* Theme adaptive overlay without heavy blur */}

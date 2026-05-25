@@ -4,6 +4,42 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Blocking Script to Resolve FOUC Theme Flashing -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem("suriix_theme");
+          var isDark = saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          if (isDark) {
+            document.documentElement.classList.remove("light");
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+            document.documentElement.classList.add("light");
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Inline Styles to Lock Background and Fade In Seamlessly -->
+    <style>
+      html.dark {
+        background-color: #090714 !important;
+      }
+      html.light {
+        background-color: #ffffff !important;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        opacity: 0;
+        transition: opacity 0.25s ease-in;
+      }
+      body.loaded {
+        opacity: 1 !important;
+      }
+    </style>
+
     <!-- Production Runtime Debugger (Auto-catches and displays startup crashes) -->
     <script>
       window.addEventListener('error', function(e) {
@@ -53,7 +89,13 @@
     <!-- Font Preconnect & Performance Preloading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="preload" as="image" href="/favicon-192x192.png" fetchpriority="high" />
+    <!-- Pruned to absolute critical weights: Cairo 400/700 (Arabic body/headers), Space Grotesk 700 (English headers), Inter 400/600 (English body/medium) -->
+    <!-- display=swap ensures text renders immediately with system font, web font swapped in invisibly -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Space+Grotesk:wght@700&family=Inter:wght@400;600&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Space+Grotesk:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Space+Grotesk:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet" /></noscript>
 
     <!-- Primary SEO -->
     <title>Suriix | تصميم مواقع ومتاجر إلكترونية احترافية</title>
@@ -64,8 +106,6 @@
     <link rel="canonical" href="https://suriix.com/" />
 
    <!--auth google adsenes    -->
-   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4479803404171955"
-     crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-4479803404171955">
      
     <!-- Open Graph -->
