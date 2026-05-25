@@ -6,16 +6,23 @@ const ThemeToggle = () => {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("suriix_theme");
-    if (saved === "dark") {
-      setIsDark(true);
-      document.documentElement.classList.remove("light");
-      document.documentElement.classList.add("dark");
-    } else {
+    try {
+      const saved = localStorage.getItem("suriix_theme");
+      if (saved === "dark") {
+        setIsDark(true);
+        document.documentElement.classList.remove("light");
+        document.documentElement.classList.add("dark");
+      } else {
+        setIsDark(false);
+        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.add("light");
+        if (!saved) localStorage.setItem("suriix_theme", "light");
+      }
+    } catch (e) {
+      // Default to light theme in restricted environments
       setIsDark(false);
       document.documentElement.classList.remove("dark");
       document.documentElement.classList.add("light");
-      if (!saved) localStorage.setItem("suriix_theme", "light");
     }
   }, []);
 
@@ -40,11 +47,15 @@ const ThemeToggle = () => {
     if (newDark) {
       document.documentElement.classList.remove("light");
       document.documentElement.classList.add("dark");
-      localStorage.setItem("suriix_theme", "dark");
+      try {
+        localStorage.setItem("suriix_theme", "dark");
+      } catch (e) {}
     } else {
       document.documentElement.classList.remove("dark");
       document.documentElement.classList.add("light");
-      localStorage.setItem("suriix_theme", "light");
+      try {
+        localStorage.setItem("suriix_theme", "light");
+      } catch (e) {}
     }
 
     // Force browser repaint before re-enabling transitions

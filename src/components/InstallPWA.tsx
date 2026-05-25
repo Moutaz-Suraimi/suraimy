@@ -13,9 +13,13 @@ export default function InstallPWA() {
 
   useEffect(() => {
     setMounted(true);
-    const dismissed = localStorage.getItem('suriix-pwa-dismissed-v2');
-    if (dismissed) {
-      setIsDismissed(true);
+    try {
+      const dismissed = localStorage.getItem('suriix-pwa-dismissed-v2');
+      if (dismissed) {
+        setIsDismissed(true);
+      }
+    } catch (e) {
+      // Ignore storage errors in restricted environments
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,7 +63,11 @@ export default function InstallPWA() {
   const onDismiss = () => {
     setIsDismissed(true);
     setShowIOSInstructions(false);
-    localStorage.setItem('suriix-pwa-dismissed-v2', 'true');
+    try {
+      localStorage.setItem('suriix-pwa-dismissed-v2', 'true');
+    } catch (e) {
+      // Ignore storage errors in restricted environments
+    }
   };
 
   if (!mounted || isInstalled || isDismissed) {

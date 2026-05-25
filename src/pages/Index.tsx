@@ -44,13 +44,21 @@ SectionReveal.displayName = "SectionReveal";
 const Index = () => {
   const { lang } = useLanguage();
   const [showIntro, setShowIntro] = useState(() => {
-    return !sessionStorage.getItem("suriix-intro-seen");
+    try {
+      return !sessionStorage.getItem("suriix-intro-seen");
+    } catch (e) {
+      return true; // Fallback to showing intro if sessionStorage is blocked
+    }
   });
 
   // Stable callback reference — prevents CinematicIntro re-render
   const handleIntroComplete = useCallback(() => {
     setShowIntro(false);
-    sessionStorage.setItem("suriix-intro-seen", "true");
+    try {
+      sessionStorage.setItem("suriix-intro-seen", "true");
+    } catch (e) {
+      // Ignore storage errors in restricted environments
+    }
   }, []);
 
   React.useEffect(() => {

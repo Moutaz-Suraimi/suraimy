@@ -1129,10 +1129,14 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [lang, setLang] = useState<Language>(() => {
-    // استخدمنا مفتاح جديد لتجاوز أي تخزين سابق في المتصفح 
-    const savedLang = localStorage.getItem("suriix_lang_v2") as Language;
-    if (savedLang && ["ar", "en", "zh"].includes(savedLang)) {
-      return savedLang;
+    try {
+      // استخدمنا مفتاح جديد لتجاوز أي تخزين سابق في المتصفح 
+      const savedLang = localStorage.getItem("suriix_lang_v2") as Language;
+      if (savedLang && ["ar", "en", "zh"].includes(savedLang)) {
+        return savedLang;
+      }
+    } catch (e) {
+      // تجاهل الخطأ في حالة حظر التخزين المحلي والاعتماد على لغة المتصفح
     }
     
     // فحص لغة المتصفح
@@ -1148,7 +1152,11 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
   const dir = lang === "ar" ? "rtl" : "ltr";
 
   useEffect(() => {
-    localStorage.setItem("suriix_lang_v2", lang);
+    try {
+      localStorage.setItem("suriix_lang_v2", lang);
+    } catch (e) {
+      // تجاهل أخطاء التخزين في بيئات التصفح المقيدة
+    }
     document.documentElement.dir = dir;
     document.documentElement.lang = lang;
   }, [lang, dir]);
