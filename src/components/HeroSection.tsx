@@ -44,10 +44,10 @@ const HeroSection = memo(() => {
   
   const isRtl = lang === "ar";
 
-  // Detect mobile screen size/touch capability to disable mouse interactions and run CSS float
+  // Simple mobile screen size detection for responsive layout elements
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024 || window.matchMedia("(pointer: coarse)").matches);
+      setIsMobile(window.innerWidth < 768);
     };
     checkMobile();
     window.addEventListener("resize", checkMobile);
@@ -55,7 +55,6 @@ const HeroSection = memo(() => {
   }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (isMobile) return;
     setIsHovered(true);
     const card = e.currentTarget;
     const box = card.getBoundingClientRect();
@@ -64,9 +63,27 @@ const HeroSection = memo(() => {
     // Calculate rotation angles (max 8 degrees)
     setRotateX(-(y / (box.height / 2)) * 8);
     setRotateY((x / (box.width / 2)) * 8);
-  }, [isMobile]);
+  }, []);
 
   const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+    setRotateX(0);
+    setRotateY(0);
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    setIsHovered(true);
+    const card = e.currentTarget;
+    const box = card.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = touch.clientX - box.left - box.width / 2;
+    const y = touch.clientY - box.top - box.height / 2;
+    // Calculate rotation angles (max 10 degrees for touch feedback)
+    setRotateX(-(y / (box.height / 2)) * 10);
+    setRotateY((x / (box.width / 2)) * 10);
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
     setIsHovered(false);
     setRotateX(0);
     setRotateY(0);
@@ -377,7 +394,10 @@ const HeroSection = memo(() => {
             <div
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              onMouseEnter={isMobile ? undefined : () => setIsHovered(true)}
+              onMouseEnter={() => setIsHovered(true)}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onTouchStart={() => setIsHovered(true)}
               className={`w-full h-full relative cursor-grab active:cursor-grabbing transition-shadow duration-300 rounded-[2rem] ${
                 !isHovered ? "animate-hero-float" : ""
               }`}
