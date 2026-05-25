@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import SideNav from "@/components/SideNav";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import DigitalMirror from "@/components/DigitalMirror";
@@ -52,11 +51,10 @@ const Index = () => {
   }, [showIntro]);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-transparent overflow-x-hidden">
       {showIntro && <CinematicIntro onComplete={handleIntroComplete} />}
       <ScrollProgressBar />
-      <SideNav />
-      <main className={lang === "ar" ? "md:mr-16" : "md:ml-16"}>
+      <main className="w-full">
         <HeroSection />
         <SectionReveal><AboutSection /></SectionReveal>
         <SectionReveal><DigitalMirror /></SectionReveal>

@@ -71,7 +71,7 @@ const TestimonialsSection = () => {
 
       <div className="max-w-6xl mx-auto relative z-10">
         <ScrollReveal>
-          <h2 className="text-3xl md:text-5xl font-bold text-center text-[#26163c] dark:text-white mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-center gradient-text mb-4">
             {t("testimonials.title")}
           </h2>
         </ScrollReveal>
@@ -93,14 +93,14 @@ const TestimonialsSection = () => {
                 className="glass rounded-2xl p-6 neon-border card-3d relative group h-full"
               >
                 {/* Quote icon */}
-                <Quote className="absolute top-4 end-4 w-8 h-8 text-primary/15 group-hover:text-primary/30 transition-colors" />
+                <Quote className="absolute top-4 end-4 w-8 h-8 text-primary/30 group-hover:text-primary/50 transition-colors" />
 
                 {/* Stars */}
-                <div className="flex gap-1 mb-4">
+                <div className="flex gap-0.5 mb-4">
                   {Array.from({ length: item.rating }).map((_, s) => (
                     <Star
                       key={s}
-                      className="w-4 h-4 fill-primary text-primary"
+                      className="w-4 h-4 fill-primary text-primary drop-shadow-sm"
                     />
                   ))}
                 </div>

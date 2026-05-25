@@ -23,7 +23,7 @@ const ReadyWebsiteDetails = () => {
 
   if (!product) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
+      <div className="min-h-screen flex items-center justify-center bg-transparent text-foreground">
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">{isAr ? "الموقع غير موجود" : "Website Not Found"}</h1>
           <Button onClick={() => navigate("/")}>{isAr ? "العودة للرئيسية" : "Back to Home"}</Button>
@@ -40,7 +40,7 @@ const ReadyWebsiteDetails = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-body">
+    <div className="min-h-screen bg-transparent text-foreground font-body">
       <ScrollProgressBar />
       
       {/* Top Navigation */}
@@ -71,7 +71,7 @@ const ReadyWebsiteDetails = () => {
               <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 px-3 py-1 text-sm">
                 {isAr ? product.categoryAr : product.category}
               </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold mb-4">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 gradient-text">
                 {isAr ? product.titleAr : product.title}
               </h1>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
@@ -100,7 +100,7 @@ const ReadyWebsiteDetails = () => {
                 <Button 
                   onClick={handleBuy}
                   size="lg" 
-                  className="flex-1 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_30px_-5px_rgba(139,92,246,0.5)] transition-all h-14 text-lg"
+                  className="flex-1 rounded-xl bg-gradient-to-r from-primary to-accent hover:opacity-95 text-white shadow-[0_0_30px_-5px_rgba(139,92,246,0.5)] transition-all h-14 text-lg"
                 >
                   <ShoppingCart className="w-5 h-5 mr-2" />
                   {isAr ? "شراء وإطلاق الآن" : "Buy & Launch Now"}
@@ -148,7 +148,7 @@ const ReadyWebsiteDetails = () => {
         {/* Features Section */}
         <section className="px-6 md:px-12 max-w-7xl mx-auto mt-32">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">{isAr ? "ماذا يتضمن هذا المشروع؟" : "What's Included?"}</h2>
+            <h2 className="text-3xl font-bold mb-4 gradient-text">{isAr ? "ماذا يتضمن هذا المشروع؟" : "What's Included?"}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               {isAr ? "جميع مواقعنا الجاهزة تأتي مع الميزات التالية لضمان إطلاق ناجح لعملك." : "All our ready websites come with the following features to ensure a successful launch."}
             </p>
@@ -164,8 +164,8 @@ const ReadyWebsiteDetails = () => {
                 transition={{ delay: i * 0.1 }}
                 className="glass p-6 rounded-2xl border border-border/50 hover:border-primary/50 transition-colors flex flex-col items-center text-center gap-4"
               >
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <CheckCircle2 className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 rounded-full gradient-icon-box flex items-center justify-center shadow-sm">
+                  <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <h3 className="font-semibold text-lg">{feature}</h3>
               </motion.div>

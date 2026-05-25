@@ -392,7 +392,7 @@ const ContactSection = () => {
           <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold border border-primary/30 bg-primary/10 text-primary mb-4 uppercase tracking-widest">
             {t("contact.briefing.subtitle")}
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#26163c] dark:text-white leading-tight mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold gradient-text leading-tight mb-4">
             {t("contact.title")}
           </h2>
           <button
@@ -617,7 +617,7 @@ const ContactSection = () => {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="text-3xl font-bold text-[#26163c] dark:text-white mb-3"
+                className="text-3xl font-bold gradient-text mb-3"
               >
                 {t("contact.success.title")}
               </motion.h3>

@@ -83,11 +83,11 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
           key="intro"
           exit={{ opacity: 0, scale: 1.05 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-background"
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-gradient-to-tr from-[#e3e8ff] via-[#fbfcff] to-[#eddfff] dark:from-[#090714] dark:via-[#0e0b21] dark:to-[#171530] transition-colors duration-500"
         >
           {/* Optimized High-Performance Animated Glowing Background Elements */}
           <motion.div 
-            className="absolute -top-1/4 -left-1/4 w-[150%] h-[150%] opacity-80 mix-blend-multiply"
+            className="absolute -top-1/4 -left-1/4 w-[150%] h-[150%] opacity-80 mix-blend-multiply dark:mix-blend-screen"
             animate={{ rotate: 360 }}
             transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
           >
@@ -97,8 +97,8 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
             <div className="absolute bottom-[30%] left-[30%] w-[35%] h-[35%] rounded-full blur-[70px]" style={{ background: "radial-gradient(circle, rgba(14,165,233,0.3) 0%, transparent 70%)" }} />
           </motion.div>
           
-          {/* Light Overlay without heavy blur */}
-          <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px]" />
+          {/* Theme adaptive overlay without heavy blur */}
+          <div className="absolute inset-0 bg-white/10 dark:bg-black/40 backdrop-blur-[2px] transition-colors duration-500" />
 
           {/* Main Content */}
           <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-md px-6">
@@ -112,24 +112,24 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
                   className="flex flex-col items-center justify-center gap-6"
                 >
                   <div className="flex items-center justify-center relative">
-                    <div className="absolute inset-0 bg-white/40 blur-2xl rounded-full animate-pulse-glow" />
+                    <div className="absolute inset-0 bg-white/40 dark:bg-primary/20 blur-2xl rounded-full animate-pulse-glow" />
                     <img 
-                      src="/img/suriix_final.png" 
+                      src="/favicon-192x192.png" 
                       alt="Suriix Logo" 
-                      className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-full shadow-[0_0_50px_rgba(139,92,246,0.25)] border border-white/50 bg-white" 
+                      className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-full shadow-[0_0_50px_rgba(139,92,246,0.25)] border border-white/50 dark:border-white/10 bg-white dark:bg-[#110d29]" 
                     />
                   </div>
                   
                   <div className="text-center mt-2">
-                    <h1 className="text-4xl md:text-5xl font-bold text-[#26163c] mb-2 tracking-tight drop-shadow-sm">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-tight drop-shadow-sm gradient-text">
                       Suriix
                     </h1>
                     <div className="flex items-center justify-center gap-2 mt-3">
-                      <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-[#2c1558]/40" />
-                      <p className="text-xs md:text-sm tracking-[0.5em] text-[#2c1558]/80 uppercase font-bold">
+                      <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-[#2c1558]/40 dark:to-white/20" />
+                      <p className="text-xs md:text-sm tracking-[0.5em] text-[#2c1558]/80 dark:text-white/80 uppercase font-bold">
                         Digital
                       </p>
-                      <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-[#2c1558]/40" />
+                      <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-[#2c1558]/40 dark:to-white/20" />
                     </div>
                   </div>
                 </motion.div>
@@ -145,16 +145,16 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
                   transition={{ delay: 0.2 }}
                   className="space-y-4 text-center w-full"
                 >
-                  <p className="text-lg md:text-xl text-[#2c1558]/95 font-bold tracking-wide">
+                  <p className="text-lg md:text-xl text-[#2c1558]/95 dark:text-white font-bold tracking-wide">
                     {typedLine1}
                     {typedLine1.length < text.line1.length && (
-                      <span className="inline-block w-[2px] h-5 bg-[#462b78] animate-pulse ml-1 align-middle" />
+                      <span className="inline-block w-[2px] h-5 bg-[#462b78] dark:bg-primary animate-pulse ml-1 align-middle" />
                     )}
                   </p>
-                  <p className="text-sm md:text-base text-[#2c1558]/80 font-semibold tracking-wider">
+                  <p className="text-sm md:text-base text-[#2c1558]/80 dark:text-white/70 font-semibold tracking-wider">
                     {typedLine2}
                     {typedLine1.length >= text.line1.length && typedLine2.length < text.line2.length && (
-                      <span className="inline-block w-[2px] h-4 bg-[#462b78] animate-pulse ml-1 align-middle" />
+                      <span className="inline-block w-[2px] h-4 bg-[#462b78] dark:bg-primary animate-pulse ml-1 align-middle" />
                     )}
                   </p>
                 </motion.div>
@@ -166,13 +166,13 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
           <div className="absolute bottom-8 right-8 flex items-center gap-3 z-20">
             <button
               onClick={() => setMuted(!muted)}
-              className="p-3 bg-white/30 hover:bg-white/50 border border-white/40 backdrop-blur-md rounded-full text-[#2c1558]/80 hover:text-[#2c1558] transition-all shadow-lg"
+              className="p-3 bg-white/30 dark:bg-white/10 hover:bg-white/50 dark:hover:bg-white/20 border border-white/40 dark:border-white/10 backdrop-blur-md rounded-full text-[#2c1558]/80 dark:text-white/80 hover:text-[#2c1558] dark:hover:text-white transition-all shadow-lg"
             >
               {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
             <button
               onClick={skip}
-              className="flex items-center gap-2 px-5 py-3 bg-white/30 hover:bg-white/50 border border-white/40 backdrop-blur-md rounded-full text-[#2c1558]/80 hover:text-[#2c1558] transition-all shadow-lg text-sm font-bold tracking-wide"
+              className="flex items-center gap-2 px-5 py-3 bg-white/30 dark:bg-white/10 hover:bg-white/50 dark:hover:bg-white/20 border border-white/40 dark:border-white/10 backdrop-blur-md rounded-full text-[#2c1558]/80 dark:text-white/80 hover:text-[#2c1558] dark:hover:text-white transition-all shadow-lg text-sm font-bold tracking-wide"
             >
               <SkipForward className="w-4 h-4" />
               تخطي

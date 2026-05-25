@@ -27,6 +27,7 @@ const SideNav = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [active, setActive] = useState("#home");
   const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(false);
 
   const navigate = useNavigate();
 
@@ -50,6 +51,23 @@ const SideNav = () => {
   const cycleLang = () => {
     setLangMenuOpen(!langMenuOpen);
   };
+
+  // Scroll visibility threshold (show floating nav when user scrolls past 300px)
+  useEffect(() => {
+    const handleScrollVisibility = () => {
+      if (window.scrollY > 300) {
+        setShowNavbar(true);
+      } else {
+        setShowNavbar(false);
+      }
+    };
+    window.addEventListener("scroll", handleScrollVisibility, { passive: true });
+    // Check initial position
+    handleScrollVisibility();
+    return () => {
+      window.removeEventListener("scroll", handleScrollVisibility);
+    };
+  }, []);
 
   // ScrollSpy to update active state
   useEffect(() => {
@@ -92,49 +110,106 @@ const SideNav = () => {
   return (
     <>
       {/* Unified Mobile Top Navbar */}
-      <div className="fixed top-0 left-0 right-0 h-[72px] z-50 md:hidden glass-strong border-b border-border/40 flex items-center px-4 shadow-sm">
-        
-        {/* Toggle Button */}
-        <div className="flex-1 flex justify-start">
-          <button 
-            onClick={() => setMobileOpen(!mobileOpen)} 
-            className="p-2.5 rounded-xl bg-secondary/50 hover:bg-primary/20 transition-colors border border-border/50"
+      <AnimatePresence>
+        {showNavbar && (
+          <motion.div
+            initial={{ opacity: 0, y: -72 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -72 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 left-0 right-0 h-[72px] z-50 md:hidden glass-strong border-b border-border/40 flex items-center px-4 shadow-sm"
           >
-             {mobileOpen ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5 text-foreground" />}
-          </button>
-        </div>
+            {/* Toggle Button */}
+            <div className="flex-1 flex justify-start">
+              <button 
+                onClick={() => setMobileOpen(!mobileOpen)} 
+                className="p-2.5 rounded-xl bg-secondary/50 hover:bg-primary/20 transition-colors border border-border/50"
+              >
+                 {mobileOpen ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5 text-foreground" />}
+              </button>
+            </div>
 
-        {/* Center Logo */}
-        <div className="flex items-center gap-2.5 shrink-0 pointer-events-none">
-          <img src="/img/suriix_final.png" alt="Suriix Logo" className="w-10 h-10 object-cover rounded-full" />
-          <span className="font-bold text-xl text-[#26163c] dark:text-white tracking-wide">Suriix</span>
-        </div>
+            {/* Center Logo */}
+            <div className="flex items-center gap-2 shrink-0 pointer-events-none">
+              <div className="w-9 h-9 rounded-xl bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-md flex items-center justify-center">
+                <span className="font-display font-black text-base bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent leading-none">S</span>
+              </div>
+              <span className="font-bold text-xl gradient-text tracking-wide">Suriix</span>
+            </div>
 
-        {/* Language & Theme Controls */}
-        <div className="flex-1 flex justify-end items-center gap-1.5">
-          <ThemeToggle />
-          <div className="relative">
-            <button 
-              onClick={cycleLang} 
-              className="p-2.5 rounded-xl bg-secondary/50 border border-border/50 hover:bg-primary/20 text-sm font-semibold flex items-center gap-1.5 transition-colors"
+            {/* Language & Theme Controls */}
+            <div className="flex-1 flex justify-end items-center gap-1.5">
+              <ThemeToggle />
+              <div className="relative">
+                <button 
+                  onClick={cycleLang} 
+                  className="p-2.5 rounded-xl bg-secondary/50 border border-border/50 hover:bg-primary/20 text-sm font-semibold flex items-center gap-1.5 transition-colors"
+                >
+                  <Globe className="w-4 h-4" />
+                  <span className="hidden sm:inline-block">{langLabels[lang]}</span>
+                  <span className="sm:hidden uppercase">{lang}</span>
+                </button>
+                <AnimatePresence>
+                  {langMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                      className="absolute top-14 end-0 glass-strong border border-border/50 rounded-xl overflow-hidden min-w-[120px] shadow-xl z-50"
+                    >
+                      {langOrder.map((l) => (
+                        <button
+                          key={l}
+                          onClick={() => { setLang(l); setLangMenuOpen(false); }}
+                          className={`w-full px-4 py-3 text-sm text-start font-medium transition-colors ${
+                            lang === l ? "text-primary bg-primary/10" : "text-foreground hover:bg-secondary/50"
+                          }`}
+                        >
+                          {langLabels[l]}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Language switcher - top corner */}
+      <AnimatePresence>
+        {showNavbar && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-4 z-50 hidden md:flex items-center gap-2"
+            style={{ [isRtl ? "left" : "right"]: "1rem" }}
+          >
+            <ThemeToggle />
+            <button
+              onClick={cycleLang}
+              className="p-3 glass rounded-lg neon-border flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
             >
               <Globe className="w-4 h-4" />
-              <span className="hidden sm:inline-block">{langLabels[lang]}</span>
-              <span className="sm:hidden uppercase">{lang}</span>
+              {langLabels[lang]}
             </button>
             <AnimatePresence>
               {langMenuOpen && (
                 <motion.div
-                  initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                  initial={{ opacity: 0, y: -8, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                  className="absolute top-14 end-0 glass-strong border border-border/50 rounded-xl overflow-hidden min-w-[120px] shadow-xl z-50"
+                  exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute top-14 end-0 glass-strong rounded-xl neon-border overflow-hidden min-w-[120px]"
                 >
                   {langOrder.map((l) => (
                     <button
                       key={l}
                       onClick={() => { setLang(l); setLangMenuOpen(false); }}
-                      className={`w-full px-4 py-3 text-sm text-start font-medium transition-colors ${
+                      className={`w-full px-4 py-2.5 text-sm text-start transition-colors ${
                         lang === l ? "text-primary bg-primary/10" : "text-foreground hover:bg-secondary/50"
                       }`}
                     >
@@ -144,94 +219,69 @@ const SideNav = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
-        </div>
-      </div>
-
-      {/* Desktop Language switcher - top corner */}
-      <div className="fixed top-4 z-50 hidden md:flex items-center gap-2" style={{ [isRtl ? "left" : "right"]: "1rem" }}>
-        <ThemeToggle />
-        <button
-          onClick={cycleLang}
-          className="p-3 glass rounded-lg neon-border flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
-        >
-          <Globe className="w-4 h-4" />
-          {langLabels[lang]}
-        </button>
-        <AnimatePresence>
-          {langMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -8, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.95 }}
-              transition={{ duration: 0.15 }}
-              className="absolute top-14 end-0 glass-strong rounded-xl neon-border overflow-hidden min-w-[120px]"
-            >
-              {langOrder.map((l) => (
-                <button
-                  key={l}
-                  onClick={() => { setLang(l); setLangMenuOpen(false); }}
-                  className={`w-full px-4 py-2.5 text-sm text-start transition-colors ${
-                    lang === l ? "text-primary bg-primary/10" : "text-foreground hover:bg-secondary/50"
-                  }`}
-                >
-                  {langLabels[l]}
-                </button>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Desktop sidebar */}
-      <nav
-        className="fixed top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-2 p-3 glass-strong rounded-3xl neon-border shadow-2xl backdrop-blur-xl bg-background/40"
-        style={{ [isRtl ? "right" : "left"]: "1.5rem" }}
-      >
-        <div className="flex flex-col items-center justify-center mb-6 p-2 mt-2">
-          <img src="/img/suriix_final.png" alt="Suriix Logo" className="w-16 h-16 object-cover rounded-full" />
-        </div>
-        {navItems.map((item) => (
-          <div
-            key={item.key}
-            className="relative"
-            onMouseEnter={() => setHovered(item.key)}
-            onMouseLeave={() => setHovered(null)}
+      <AnimatePresence>
+        {showNavbar && (
+          <motion.nav
+            initial={{ opacity: 0, x: isRtl ? 100 : -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: isRtl ? 100 : -100 }}
+            transition={{ duration: 0.4, cubicBezier: [0.16, 1, 0.3, 1] }}
+            className="fixed top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-2 p-3 glass-strong rounded-3xl neon-border shadow-2xl backdrop-blur-xl bg-background/40"
+            style={{ [isRtl ? "right" : "left"]: "1.5rem" }}
           >
-            <button
-              onClick={() => handleClick(item.href)}
-              className={`p-3.5 rounded-2xl transition-all duration-300 flex items-center justify-center relative ${
-                active === item.href
-                  ? "bg-primary/15 text-primary shadow-[0_0_15px_rgba(var(--primary),0.2)] border border-primary/20 scale-105"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/60 hover:scale-105"
-              }`}
-            >
-              <item.icon className="w-5 h-5 shrink-0 relative z-10" />
-              {active === item.href && (
-                <motion.div 
-                  layoutId="activeNavBg"
-                  className="absolute inset-0 rounded-2xl bg-primary/10 border border-primary/20"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                />
-              )}
-              <AnimatePresence>
-                {hovered === item.key && (
-                  <motion.div
-                    initial={{ opacity: 0, x: isRtl ? 10 : -10, scale: 0.9 }}
-                    animate={{ opacity: 1, x: 0, scale: 1 }}
-                    exit={{ opacity: 0, x: isRtl ? 5 : -5, scale: 0.9 }}
-                    transition={{ duration: 0.2 }}
-                    className={`absolute top-1/2 -translate-y-1/2 ${isRtl ? 'right-[calc(100%+12px)]' : 'left-[calc(100%+12px)]'} px-4 py-2 glass-strong rounded-xl text-sm font-medium whitespace-nowrap shadow-xl border border-border/50 flex items-center gap-2`}
-                  >
-                    {active === item.href && <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />}
-                    {t(item.key)}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </button>
-          </div>
-        ))}
-      </nav>
+            <div className="flex flex-col items-center justify-center mb-6 p-2 mt-2">
+              <div className="w-14 h-14 rounded-2xl bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-md flex items-center justify-center shadow-sm">
+                <span className="font-display font-black text-2xl bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent leading-none">S</span>
+              </div>
+            </div>
+            {navItems.map((item) => (
+              <div
+                key={item.key}
+                className="relative"
+                onMouseEnter={() => setHovered(item.key)}
+                onMouseLeave={() => setHovered(null)}
+              >
+                <button
+                  onClick={() => handleClick(item.href)}
+                  className={`p-3.5 rounded-2xl transition-all duration-300 flex items-center justify-center relative ${
+                    active === item.href
+                      ? "bg-primary/15 text-primary shadow-[0_0_15px_rgba(var(--primary),0.2)] border border-primary/20 scale-105"
+                      : "text-muted-foreground hover:text-foreground hover:bg-secondary/60 hover:scale-105"
+                  }`}
+                >
+                  <item.icon className="w-5 h-5 shrink-0 relative z-10" />
+                  {active === item.href && (
+                    <motion.div 
+                      layoutId="activeNavBg"
+                      className="absolute inset-0 rounded-2xl bg-primary/10 border border-primary/20"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <AnimatePresence>
+                    {hovered === item.key && (
+                      <motion.div
+                        initial={{ opacity: 0, x: isRtl ? 10 : -10, scale: 0.9 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        exit={{ opacity: 0, x: isRtl ? 5 : -5, scale: 0.9 }}
+                        transition={{ duration: 0.2 }}
+                        className={`absolute top-1/2 -translate-y-1/2 ${isRtl ? 'right-[calc(100%+12px)]' : 'left-[calc(100%+12px)]'} px-4 py-2 glass-strong rounded-xl text-sm font-medium whitespace-nowrap shadow-xl border border-border/50 flex items-center gap-2`}
+                      >
+                        {active === item.href && <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />}
+                        {t(item.key)}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </button>
+              </div>
+            ))}
+          </motion.nav>
+        )}
+      </AnimatePresence>
 
       {/* Mobile menu */}
       <AnimatePresence>

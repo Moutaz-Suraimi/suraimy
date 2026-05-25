@@ -185,7 +185,7 @@ const PackagesSection = () => {
               <Star className="w-3 h-3 fill-current" />
               {lang === "ar" ? "باقاتنا" : lang === "zh" ? "我们的套餐" : "Our Packages"}
             </motion.span>
-            <h2 className="text-3xl md:text-5xl font-black text-[#26163c] dark:text-white mb-4">
+            <h2 className="text-3xl md:text-5xl font-black gradient-text mb-4">
               {title}
             </h2>
             <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
@@ -196,7 +196,11 @@ const PackagesSection = () => {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {packages.map((pkg, i) => (
-            <ScrollReveal key={i} delay={i * 0.1}>
+            <ScrollReveal 
+              key={i} 
+              delay={i * 0.1}
+              className={i === 2 ? "sm:col-span-2 lg:col-span-1" : ""}
+            >
               <PackageCard pkg={pkg} lang={lang as LangKey} />
             </ScrollReveal>
           ))}

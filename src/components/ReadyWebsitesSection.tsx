@@ -14,7 +14,7 @@ const ReadyWebsitesSection = () => {
   const isAr = lang === "ar";
 
   return (
-    <section id="ready-websites" className="section-padding relative overflow-hidden bg-background">
+    <section id="ready-websites" className="section-padding relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-[100px] pointer-events-none" />
@@ -37,7 +37,7 @@ const ReadyWebsitesSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-extrabold mb-6 gradient-text drop-shadow-lg tracking-tight leading-tight"
+            className="text-4xl md:text-5xl font-extrabold mb-6 gradient-text tracking-tight leading-tight"
           >
             {isAr ? "مواقع جاهزة للبيع" : "Ready Websites for Sale"}
           </motion.h2>
@@ -50,8 +50,8 @@ const ReadyWebsitesSection = () => {
             className="text-foreground/90 text-lg md:text-xl font-medium mb-8 leading-relaxed max-w-2xl mx-auto"
           >
             {isAr 
-              ? "أطلق أعمالك فوراً مع مواقع احترافية مبنية مسبقاً بجودة عالية وتصميم عصري."
-              : "Launch your business instantly with pre-built professional websites with high quality and modern design."}
+              ? "أطلق مشروعك بأسرع وقت مع مواقع احترافية جاهزة — صُممت بجودة عالية وأسلوب عصري ويمكنك تخصيصها لتناسب علامتك التجارية."
+              : "Launch your business instantly with pre-built professional websites — crafted with high quality, modern design, and ready to customize for your brand."}
           </motion.p>
           
           <motion.div 
@@ -62,15 +62,21 @@ const ReadyWebsitesSection = () => {
             className="flex flex-wrap justify-center gap-6 text-sm font-medium text-foreground/80"
           >
             <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 text-accent" />
+              <div className="w-6 h-6 rounded-lg gradient-icon-box flex items-center justify-center">
+                <Zap className="w-3.5 h-3.5" />
+              </div>
               <span>{isAr ? "تسليم فوري بعد الشراء" : "Instant delivery after purchase"}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-primary" />
+              <div className="w-6 h-6 rounded-lg gradient-icon-box flex items-center justify-center">
+                <Shield className="w-3.5 h-3.5" />
+              </div>
               <span>{isAr ? "نسخة واحدة فقط لكل تصميم" : "Only one copy per design"}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4 text-neon-blue" />
+              <div className="w-6 h-6 rounded-lg gradient-icon-box flex items-center justify-center">
+                <Globe className="w-3.5 h-3.5" />
+              </div>
               <span>{isAr ? "توفر محدود" : "Limited availability"}</span>
             </div>
           </motion.div>
@@ -86,8 +92,8 @@ const ReadyWebsitesSection = () => {
               transition={{ delay: index * 0.15 }}
               className="group glass rounded-2xl overflow-hidden border border-border/50 hover:border-primary/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] flex flex-col"
             >
-              <div className="relative h-64 overflow-hidden bg-muted/30 p-6 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10" />
+              <div className="relative h-56 overflow-hidden bg-muted/20 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent z-10" />
                 <Badge 
                   className={`absolute top-4 ${isAr ? 'left-4' : 'right-4'} z-20 ${
                     product.status === 'Available' ? 'bg-green-500/20 text-green-400 border-green-500/50' :
@@ -101,7 +107,7 @@ const ReadyWebsitesSection = () => {
                 <img 
                   src={product.image} 
                   alt={product.title} 
-                  className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-700 relative z-0"
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 relative z-0"
                 />
               </div>
               

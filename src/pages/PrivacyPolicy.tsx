@@ -1,3 +1,4 @@
+import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { ArrowLeft, Shield, Cookie, Lock, UserCheck, AlertTriangle } from "lucide-react";
@@ -102,12 +103,16 @@ const PrivacyPolicy = () => {
   const currentTexts = texts[lang as keyof typeof texts];
 
   return (
-    <div className="min-h-screen bg-background grid-bg flex flex-col">
+    <div className="min-h-screen bg-transparent flex flex-col">
       {/* Navbar for subpages */}
-      <nav className="sticky top-0 z-50 glass-strong border-b border-border/40 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/")}>
-          <img src="/img/suriix_final.png" alt="Suriix Logo" className="w-10 h-10 object-cover rounded-full" />
-          <span className="font-bold text-xl text-[#26163c] dark:text-white tracking-wide hidden sm:block">Suriix</span>
+      <nav className="sticky top-0 z-50 glass-strong px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>
+          <img
+            src="/favicon-192x192.png"
+            alt="Suriix Logo"
+            className="w-9 h-9 rounded-full object-cover border border-primary/20 shadow-sm"
+          />
+          <span className="font-bold text-xl gradient-text tracking-wide hidden sm:block">Suriix</span>
         </div>
         <div className="flex items-center gap-3">
           <ThemeToggle />
@@ -141,10 +146,10 @@ const PrivacyPolicy = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center justify-center p-4 rounded-full bg-primary/10 text-primary mb-6 ring-1 ring-primary/20 shadow-[0_0_30px_rgba(var(--primary),0.2)]">
+          <div className="inline-flex items-center justify-center p-4 rounded-2xl gradient-icon-box mb-6 shadow-lg">
             <Shield className="w-10 h-10" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-[#26163c] dark:text-white mb-4 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-bold gradient-text mb-4 tracking-tight">
             {currentTexts.title}
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -175,11 +180,11 @@ const PrivacyPolicy = () => {
                 transition={{ delay: i * 0.1 }}
                 className="group flex flex-col md:flex-row gap-6 items-start"
               >
-                <div className="p-4 rounded-2xl glass neon-border group-hover:bg-primary/5 group-hover:scale-105 transition-all duration-300 shrink-0">
-                  {section.icon}
+                <div className="p-4 rounded-2xl gradient-icon-box group-hover:scale-105 transition-all duration-300 shrink-0 shadow-sm">
+                  {React.cloneElement(section.icon as React.ReactElement, { className: 'w-6 h-6 text-white' })}
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+                  <h2 className="text-xl font-bold gradient-text mb-3">
                     {section.title}
                   </h2>
                   <p className="text-muted-foreground leading-relaxed text-base">
