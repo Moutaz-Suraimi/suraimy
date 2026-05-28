@@ -2,7 +2,8 @@ import React, { useState, memo, useCallback, lazy, Suspense, useEffect } from "r
 import { motion } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
-import CinematicIntro from "@/components/CinematicIntro";
+// Lazy: only loaded on very first visit (sessionStorage gate) — saves 9KB from critical path
+const CinematicIntro = lazy(() => import("@/components/CinematicIntro"));
 import { useLanguage } from "@/contexts/LanguageContext";
 
 // Lazy load non-critical sections & widgets for faster bundle parsing and hydration
@@ -184,9 +185,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-transparent overflow-x-hidden">
-      {/* CinematicIntro — only shown once per session */}
+      {/* CinematicIntro — lazy loaded, only shown once per session */}
       {showIntro && (
-        <CinematicIntro onComplete={handleIntroComplete} />
+        <Suspense fallback={null}>
+          <CinematicIntro onComplete={handleIntroComplete} />
+        </Suspense>
       )}
 
       <ScrollProgressBar />

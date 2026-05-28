@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
 
     <!-- ① Theme: runs sync before first paint — prevents dark/light flash (FOUC) -->
     <script>
@@ -33,9 +34,12 @@
       }
     </style>
 
-    <!-- ③ Performance: preconnect to font origins (saves 200-400ms DNS+TCP+TLS) -->
+    <!-- ③ Performance: preconnect and dns-prefetch to origins (saves 200-400ms DNS+TCP+TLS) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
 
     <!-- ④ Preload the logo — it is the LCP element on mobile -->
     <link rel="preload" as="image" href="/favicon-192x192.png" fetchpriority="high" />

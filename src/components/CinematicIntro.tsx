@@ -85,18 +85,17 @@ const CinematicIntro = ({ onComplete }: { onComplete: () => void }) => {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-gradient-to-tr from-[#e3e8ff] via-[#fbfcff] to-[#eddfff] dark:from-[#090714] dark:via-[#0e0b21] dark:to-[#171530] transition-colors duration-500"
         >
-          {/* Optimized High-Performance Animated Glowing Background Elements */}
-          <motion.div 
+          {/* Pure-CSS rotating ambient glows — zero JS runtime cost (GPU-composited).
+              Replaces Framer Motion animate={{ rotate }} which ran a JS RAF loop every frame. */}
+          <div
             className="absolute -top-1/4 -left-1/4 w-[150%] h-[150%] opacity-80 mix-blend-multiply dark:mix-blend-screen"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-            style={{ willChange: "transform" }}
+            style={{ animation: "introSpin 40s linear infinite", willChange: "transform" }}
           >
             <div className="absolute top-[20%] left-[20%] w-[40%] h-[40%] rounded-full" style={{ background: "radial-gradient(circle, rgba(139,92,246,0.2) 0%, rgba(139,92,246,0.05) 50%, transparent 70%)" }} />
             <div className="absolute bottom-[20%] right-[20%] w-[45%] h-[45%] rounded-full" style={{ background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, rgba(59,130,246,0.05) 50%, transparent 70%)" }} />
             <div className="absolute top-[40%] right-[30%] w-[40%] h-[40%] rounded-full" style={{ background: "radial-gradient(circle, rgba(217,70,239,0.18) 0%, rgba(217,70,239,0.04) 50%, transparent 70%)" }} />
             <div className="absolute bottom-[30%] left-[30%] w-[35%] h-[35%] rounded-full" style={{ background: "radial-gradient(circle, rgba(14,165,233,0.15) 0%, rgba(14,165,233,0.03) 50%, transparent 70%)" }} />
-          </motion.div>
+          </div>
           
           {/* Theme adaptive overlay without heavy blur */}
           <div className="absolute inset-0 bg-white/10 dark:bg-black/40 backdrop-blur-[2px] transition-colors duration-500" />
