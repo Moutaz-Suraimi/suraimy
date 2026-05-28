@@ -8,7 +8,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 // Lazy load non-critical sections & widgets for faster bundle parsing and hydration
 const AboutSection = lazy(() => import("@/components/AboutSection"));
-const DigitalMirror = lazy(() => import("@/components/DigitalMirror"));
 const SolutionsSection = lazy(() => import("@/components/SolutionsSection"));
 const PackagesSection = lazy(() => import("@/components/PackagesSection"));
 const ReadyWebsitesSection = lazy(() => import("@/components/ReadyWebsitesSection"));
@@ -16,7 +15,7 @@ const PortfolioSection = lazy(() => import("@/components/PortfolioSection"));
 const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
 const FAQSection = lazy(() => import("@/components/FAQSection"));
 const BlogSection = lazy(() => import("@/components/BlogSection"));
-const ContactSection = lazy(() => import("@/components/ContactSection"));
+const HomeCTA = lazy(() => import("@/components/HomeCTA"));
 const FooterSection = lazy(() => import("@/components/FooterSection"));
 const ChatbotWidget = lazy(() => import("@/components/ChatbotWidget"));
 
@@ -201,10 +200,6 @@ const Index = () => {
           <SectionReveal><AboutSection /></SectionReveal>
         </ScrollLazyContainer>
 
-        <ScrollLazyContainer placeholderHeight="350px">
-          <SectionReveal><DigitalMirror /></SectionReveal>
-        </ScrollLazyContainer>
-
         <ScrollLazyContainer placeholderHeight="300px">
           <SectionReveal><SolutionsSection /></SectionReveal>
         </ScrollLazyContainer>
@@ -218,23 +213,23 @@ const Index = () => {
         </ScrollLazyContainer>
 
         <ScrollLazyContainer placeholderHeight="600px">
-          <SectionReveal><PortfolioSection /></SectionReveal>
+          <SectionReveal><PortfolioSection isHome={true} /></SectionReveal>
         </ScrollLazyContainer>
 
         <ScrollLazyContainer placeholderHeight="400px">
-          <SectionReveal><TestimonialsSection /></SectionReveal>
+          <SectionReveal><TestimonialsSection isHome={true} /></SectionReveal>
         </ScrollLazyContainer>
 
         <ScrollLazyContainer placeholderHeight="300px">
-          <SectionReveal><FAQSection /></SectionReveal>
+          <SectionReveal><FAQSection isHome={true} /></SectionReveal>
         </ScrollLazyContainer>
 
         <ScrollLazyContainer placeholderHeight="450px">
-          <SectionReveal><BlogSection /></SectionReveal>
+          <SectionReveal><BlogSection isHome={true} /></SectionReveal>
         </ScrollLazyContainer>
 
-        <ScrollLazyContainer placeholderHeight="600px">
-          <SectionReveal><ContactSection /></SectionReveal>
+        <ScrollLazyContainer placeholderHeight="350px">
+          <SectionReveal><HomeCTA /></SectionReveal>
         </ScrollLazyContainer>
 
         <ScrollLazyContainer placeholderHeight="300px">

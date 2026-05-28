@@ -16,6 +16,8 @@ import InstallPWA from "./components/InstallPWA";
 // ── Lazy (route-split) imports ───────────────────────────────────────────────
 // Each page becomes its own JS chunk that only loads when the user navigates.
 // This shrinks the initial bundle by ~60%, directly improving FCP and TTI.
+const ReadyWebsites     = lazy(() => import("./pages/ReadyWebsites"));
+const Testimonials      = lazy(() => import("./pages/Testimonials"));
 const PrivacyPolicy     = lazy(() => import("./pages/PrivacyPolicy"));
 const AboutUs           = lazy(() => import("./pages/AboutUs"));
 const TermsOfUse        = lazy(() => import("./pages/TermsOfUse"));
@@ -66,10 +68,12 @@ const App = () => (
                 <Route path="/about"               element={<AboutUs />} />
                 <Route path="/terms"               element={<TermsOfUse />} />
                 <Route path="/contact"             element={<ContactUs />} />
+                <Route path="/ready-websites"      element={<ReadyWebsites />} />
                 <Route path="/ready-website/:id"   element={<ReadyWebsiteDetails />} />
                 <Route path="/solutions"           element={<Solutions />} />
                 <Route path="/packages"            element={<Packages />} />
                 <Route path="/portfolio"           element={<Portfolio />} />
+                <Route path="/testimonials"        element={<Testimonials />} />
                 <Route path="/faq"                 element={<FAQ />} />
                 <Route path="/blog"                element={<Blog />} />
                 <Route path="*"                    element={<NotFound />} />

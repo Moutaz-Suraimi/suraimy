@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import ScrollReveal from "./ScrollReveal";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, ArrowRight, X, BookOpen } from "lucide-react";
@@ -46,7 +46,7 @@ const blogPosts = [
   },
 ];
 
-const BlogSection = () => {
+const BlogSection = ({ isHome = false }: { isHome?: boolean }) => {
   const { t, lang } = useLanguage();
   const [expandedPost, setExpandedPost] = useState<number | null>(null);
   
@@ -83,7 +83,8 @@ const BlogSection = () => {
   };
 
   const location = useLocation();
-  const isDedicatedPage = location.pathname === "/blog";
+  const isDedicatedPage = location.pathname === "/blog" || !isHome;
+  const displayPosts = isHome ? blogPosts.slice(0, 3) : blogPosts;
 
   return (
     <section id="blog" className="section-padding relative">
@@ -105,8 +106,8 @@ const BlogSection = () => {
           </div>
         </ScrollReveal>
 
-        <div className="grid sm:grid-cols-2 gap-6">
-          {blogPosts.map((post, i) => (
+        <div className={`grid gap-6 ${isHome ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1 sm:grid-cols-2"}`}>
+          {displayPosts.map((post, i) => (
             <ScrollReveal
               key={i}
               delay={i * 0.1}
@@ -149,6 +150,29 @@ const BlogSection = () => {
             </ScrollReveal>
           ))}
         </div>
+
+        {isHome && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex justify-center mt-12"
+          >
+            <Link
+              to="/blog"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-base text-white bg-gradient-to-r from-primary to-accent hover:shadow-[0_12px_24px_rgba(139,92,246,0.3)] hover:opacity-98 transition-all scale-100 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-lg border border-white/10"
+            >
+              <span>
+                {lang === "ar" 
+                  ? "عرض جميع المقالات" 
+                  : lang === "zh" 
+                  ? "查看所有文章" 
+                  : "View All Blog Posts"}
+              </span>
+              <ArrowRight className="w-5 h-5 rtl:rotate-180" />
+            </Link>
+          </motion.div>
+        )}
       </div>
 
       {/* Expanded reading mode */}

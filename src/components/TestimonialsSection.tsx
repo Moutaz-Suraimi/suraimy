@@ -1,7 +1,8 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
-import { Star, Quote } from "lucide-react";
+import { Star, Quote, ArrowRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
+import { Link } from "react-router-dom";
 
 interface Testimonial {
   name: { ar: string; en: string; zh: string };
@@ -57,9 +58,11 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-const TestimonialsSection = () => {
+const TestimonialsSection = ({ isHome = false }: { isHome?: boolean }) => {
   const { t, lang } = useLanguage();
   const l = lang as "ar" | "en" | "zh";
+
+  const displayTestimonials = isHome ? testimonials.slice(0, 3) : testimonials;
 
   return (
     <section
@@ -81,8 +84,8 @@ const TestimonialsSection = () => {
           </p>
         </ScrollReveal>
 
-        <div className="grid sm:grid-cols-2 gap-6">
-          {testimonials.map((item, i) => (
+        <div className={`grid gap-6 ${isHome ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1 sm:grid-cols-2"}`}>
+          {displayTestimonials.map((item, i) => (
             <ScrollReveal
               key={i}
               delay={i * 0.12}
@@ -128,6 +131,26 @@ const TestimonialsSection = () => {
             </ScrollReveal>
           ))}
         </div>
+
+        {isHome && (
+          <ScrollReveal delay={0.2}>
+            <div className="flex justify-center mt-12">
+              <Link
+                to="/testimonials"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-base text-white bg-gradient-to-r from-primary to-accent hover:shadow-[0_12px_24px_rgba(139,92,246,0.3)] hover:opacity-98 transition-all scale-100 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-lg border border-white/10"
+              >
+                <span>
+                  {lang === "ar" 
+                    ? "عرض جميع آراء العملاء" 
+                    : lang === "zh" 
+                    ? "查看所有客户评价" 
+                    : "View All Reviews"}
+                </span>
+                <ArrowRight className="w-5 h-5 rtl:rotate-180" />
+              </Link>
+            </div>
+          </ScrollReveal>
+        )}
       </div>
     </section>
   );

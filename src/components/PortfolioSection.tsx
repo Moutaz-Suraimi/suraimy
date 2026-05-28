@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, MessageCircle, Globe, ShoppingBag, Palette, Megaphone, LayoutGrid } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { X, ExternalLink, MessageCircle, Globe, ShoppingBag, Palette, Megaphone, LayoutGrid, ArrowRight } from "lucide-react";
+import { useLocation, Link } from "react-router-dom";
 import ScrollReveal from "./ScrollReveal";
 
 const WHATSAPP_NUMBER = "967780930635";
@@ -414,12 +414,12 @@ const ProjectCard = ({
 };
 
 // ─── MAIN SECTION ──────────────────────────────────────────────────────────────
-const PortfolioSection = () => {
+const PortfolioSection = ({ isHome = false }: { isHome?: boolean }) => {
   const { t, lang } = useLanguage();
   const location = useLocation();
   const l = lang as LangKey;
   const isRtl = lang === "ar";
-  const isDedicatedPage = location.pathname === "/portfolio";
+  const isDedicatedPage = location.pathname === "/portfolio" || !isHome;
 
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -464,42 +464,44 @@ const PortfolioSection = () => {
         </ScrollReveal>
 
         {/* Filter Tabs */}
-        <ScrollReveal delay={0.1}>
-          <div className={`flex flex-wrap justify-center gap-2 md:gap-3 mb-12 ${isRtl ? "flex-row-reverse" : ""}`}>
-            {CATEGORIES.map(cat => {
-              const Icon = cat.icon;
-              const isActive = activeFilter === cat.key;
-              return (
-                <motion.button
-                  key={cat.key}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setActiveFilter(cat.key)}
-                  className={`relative px-4 py-2 md:px-5 md:py-2.5 rounded-2xl font-semibold text-xs md:text-sm transition-all duration-300 flex items-center gap-2
-                    ${isActive
-                      ? "gradient-purple text-primary-foreground neon-glow shadow-lg"
-                      : "glass neon-border text-muted-foreground hover:text-foreground hover:border-primary/50"
-                    }`}
-                >
-                  <Icon className="w-3.5 h-3.5 shrink-0" />
-                  {cat.label[l]}
-                  {isActive && (
-                    <motion.div
-                      layoutId="portfolioActiveTab"
-                      className="absolute inset-0 rounded-2xl ring-1 ring-primary/30"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
-                    />
-                  )}
-                  {/* Project count badge */}
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold transition-colors
-                    ${isActive ? "bg-white/20 text-white" : "bg-primary/10 text-primary"}`}>
-                    {cat.key === "all" ? projects.length : projects.filter(p => p.category === cat.key).length}
-                  </span>
-                </motion.button>
-              );
-            })}
-          </div>
-        </ScrollReveal>
+        {!isHome && (
+          <ScrollReveal delay={0.1}>
+            <div className={`flex flex-wrap justify-center gap-2 md:gap-3 mb-12 ${isRtl ? "flex-row-reverse" : ""}`}>
+              {CATEGORIES.map(cat => {
+                const Icon = cat.icon;
+                const isActive = activeFilter === cat.key;
+                return (
+                  <motion.button
+                    key={cat.key}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setActiveFilter(cat.key)}
+                    className={`relative px-4 py-2 md:px-5 md:py-2.5 rounded-2xl font-semibold text-xs md:text-sm transition-all duration-300 flex items-center gap-2
+                      ${isActive
+                        ? "gradient-purple text-primary-foreground neon-glow shadow-lg"
+                        : "glass neon-border text-muted-foreground hover:text-foreground hover:border-primary/50"
+                      }`}
+                  >
+                    <Icon className="w-3.5 h-3.5 shrink-0" />
+                    {cat.label[l]}
+                    {isActive && (
+                      <motion.div
+                        layoutId="portfolioActiveTab"
+                        className="absolute inset-0 rounded-2xl ring-1 ring-primary/30"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                      />
+                    )}
+                    {/* Project count badge */}
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold transition-colors
+                      ${isActive ? "bg-white/20 text-white" : "bg-primary/10 text-primary"}`}>
+                      {cat.key === "all" ? projects.length : projects.filter(p => p.category === cat.key).length}
+                    </span>
+                  </motion.button>
+                );
+              })}
+            </div>
+          </ScrollReveal>
+        )}
 
         {/* Cards Grid */}
         <AnimatePresence mode="wait">
@@ -511,7 +513,7 @@ const PortfolioSection = () => {
             transition={{ duration: 0.3 }}
             className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {filtered.map((project, i) => (
+            {(isHome ? projects.slice(0, 3) : filtered).map((project, i) => (
               <ScrollReveal key={project.id} delay={i * 0.07}>
                 <ProjectCard
                   project={project}
@@ -522,6 +524,26 @@ const PortfolioSection = () => {
             ))}
           </motion.div>
         </AnimatePresence>
+
+        {isHome && (
+          <ScrollReveal delay={0.2}>
+            <div className="flex justify-center mt-12">
+              <Link
+                to="/portfolio"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-base text-white bg-gradient-to-r from-primary to-accent hover:shadow-[0_12px_24px_rgba(139,92,246,0.3)] hover:opacity-98 transition-all scale-100 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-lg border border-white/10"
+              >
+                <span>
+                  {lang === "ar" 
+                    ? "عرض جميع المشاريع والأعمال" 
+                    : lang === "zh" 
+                    ? "查看所有项目与作品" 
+                    : "View All Projects & Works"}
+                </span>
+                <ArrowRight className="w-5 h-5 rtl:rotate-180" />
+              </Link>
+            </div>
+          </ScrollReveal>
+        )}
 
         {/* Empty state (shouldn't happen but safe) */}
         {filtered.length === 0 && (
