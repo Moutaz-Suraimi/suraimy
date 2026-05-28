@@ -1,223 +1,665 @@
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion } from "framer-motion";
-import { Check, Star, MessageCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Check, Star, MessageCircle, Sparkles, ArrowRight } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import ScrollReveal from "./ScrollReveal";
 
 const WHATSAPP_NUMBER = "967780930635";
 type LangKey = "ar" | "en" | "zh";
 
-interface PkgCard {
+interface PackageData {
+  id: string;
+  category: "design" | "web" | "store";
   icon: string;
   name: { ar: string; en: string; zh: string };
   desc: { ar: string; en: string; zh: string };
+  price: string;
+  oldPrice?: string;
+  currency: { ar: string; en: string; zh: string };
+  badge?: { ar: string; en: string; zh: string };
+  badgeType?: "popular" | "bestseller";
   features: { ar: string; en: string; zh: string }[];
-  target: { ar: string; en: string; zh: string };
-  badge?: "requested" | null;
+  cardStyle: "advanced" | "proweb" | "storepro" | "default";
 }
 
-const packages: PkgCard[] = [
+const packagesData: PackageData[] = [
+  // ================= DESIGN PACKAGES =================
   {
-    icon: "⚡",
-    name: { ar: "باقة الانطلاقة (Start)", en: "Start Package", zh: "启动套餐" },
-    desc: { ar: "ابدأ مشروعك الرقمي بسرعة واحتراف", en: "Start your digital project quickly and professionally", zh: "快速专业地启动您的数字项目" },
-    badge: null,
+    id: "design-single",
+    category: "design",
+    icon: "🎨",
+    name: {
+      ar: "باقة التصميم المفردة",
+      en: "Single Design Package",
+      zh: "单次设计套餐"
+    },
+    desc: {
+      ar: "مثالية للمشاريع الشخصية واحتياجات الهوية البسيطة.",
+      en: "Perfect for personal projects and simple branding needs.",
+      zh: "非常适合个人项目和简单的品牌需求。"
+    },
+    price: "5,000",
+    currency: { ar: "ريال يمني", en: "YER", zh: "YER" },
     features: [
-      { ar: "صفحة هبوط احترافية (Landing Page)", en: "Professional Landing Page", zh: "专业登陆页面" },
-      { ar: "تصميم متجاوب لجميع الأجهزة", en: "Responsive design for all devices", zh: "响应式设计" },
-      { ar: "ربط واتساب + وسائل التواصل", en: "WhatsApp + Social Media integration", zh: "WhatsApp与社交媒体整合" },
-      { ar: "تحسين أساسي للهوية", en: "Basic identity optimization", zh: "基础品牌优化" },
-      { ar: "تسليم سريع خلال 3–5 أيام", en: "Fast delivery within 3–5 days", zh: "3-5天内快速交付" },
+      { ar: "1 تصميم احترافي", en: "1 Professional Design", zh: "1 个专业设计" },
+      { ar: "كتابة محتوى مجانية", en: "Free Copywriting", zh: "免费文案写作" },
+      { ar: "تعديلين مجانيين (2)", en: "2 Free Revisions", zh: "2 次免费修改" },
+      { ar: "تسليم سريع ومميز", en: "Fast Delivery", zh: "快速交付" }
     ],
-    target: { ar: "👉 مناسبة للأفراد والمشاريع الجديدة", en: "👉 Ideal for individuals and new projects", zh: "👉 适合个人和新项目" },
+    cardStyle: "default"
   },
   {
+    id: "design-double",
+    category: "design",
+    icon: "✨",
+    name: {
+      ar: "باقة التصميم المزدوجة",
+      en: "Double Design Package",
+      zh: "双重设计套餐"
+    },
+    desc: {
+      ar: "تنوع أفضل للمحتوى لزيادة الحضور الاجتماعي المتنامي.",
+      en: "Better content variety for growing social presence.",
+      zh: "为不断增长的社交平台提供更丰富的内容多样性。"
+    },
+    price: "8,500",
+    currency: { ar: "ريال يمني", en: "YER", zh: "YER" },
+    features: [
+      { ar: "2 تصاميم احترافية", en: "2 Professional Designs", zh: "2 个专业设计" },
+      { ar: "محتوى تسويقي إبداعي", en: "Creative Marketing Content", zh: "创意营销内容" },
+      { ar: "تعديلين مجانيين (2)", en: "2 Free Revisions", zh: "2 次免费修改" },
+      { ar: "تسليم سريع ومميز", en: "Fast Delivery", zh: "快速交付" }
+    ],
+    cardStyle: "default"
+  },
+  {
+    id: "design-basic",
+    category: "design",
+    icon: "💎",
+    name: {
+      ar: "الباقة الأساسية",
+      en: "Basic Package",
+      zh: "基础设计套餐"
+    },
+    desc: {
+      ar: "حضور بصري قوي للعلامات التجارية والشركات.",
+      en: "Strong visual presence for brands and businesses.",
+      zh: "为品牌和企业打造强有力的视觉形象。"
+    },
+    price: "25,000",
+    currency: { ar: "ريال يمني", en: "YER", zh: "YER" },
+    features: [
+      { ar: "6 تصاميم احترافية", en: "6 Professional Designs", zh: "6 个专业设计" },
+      { ar: "كتابة محتوى مجانية", en: "Free Copywriting", zh: "免费文案写作" },
+      { ar: "تعديلات مجانية مفتوحة", en: "Free Revisions", zh: "免费修改" },
+      { ar: "ملحقات تصاميم شبكات التواصل", en: "Social Media Design Assets", zh: "社交媒体设计资产" }
+    ],
+    cardStyle: "default"
+  },
+  {
+    id: "design-advanced",
+    category: "design",
+    icon: "🔥",
+    name: {
+      ar: "الباقة المتقدمة",
+      en: "Advanced Package",
+      zh: "高级设计套餐"
+    },
+    desc: {
+      ar: "الباقة الأكثر طلباً لإنشاء محتوى متميز واحترافي.",
+      en: "The most requested package for premium content creation.",
+      zh: "最受欢迎的高级内容创作套餐。"
+    },
+    price: "45,000",
+    oldPrice: "55,000",
+    currency: { ar: "ريال يمني", en: "YER", zh: "YER" },
+    badge: { ar: "الأكثر طلباً 🔥", en: "Most Popular 🔥", zh: "最受欢迎 🔥" },
+    badgeType: "popular",
+    features: [
+      { ar: "12 تصميم + 1 تصميم مجاني", en: "12 Designs + 1 Free", zh: "12 个设计 + 1 个免费" },
+      { ar: "كتابة محتوى تسويقي متكامل", en: "Full Marketing Content", zh: "完整营销内容" },
+      { ar: "قالب قصص (Story Template)", en: "Story Template", zh: "快拍模板" },
+      { ar: "تصميم غلاف للحسابات", en: "Cover Design", zh: "封面设计" },
+      { ar: "3 تعديلات مجانية", en: "3 Free Revisions", zh: "3 次免费修改" },
+      { ar: "تحسين المظهر البصري للهوية", en: "Brand Visual Improvement", zh: "品牌视觉形象提升" }
+    ],
+    cardStyle: "advanced"
+  },
+  {
+    id: "design-ultimate",
+    category: "design",
+    icon: "👑",
+    name: {
+      ar: "الباقة النهائية (Ultimate)",
+      en: "Ultimate Package",
+      zh: "至尊设计套餐"
+    },
+    desc: {
+      ar: "حل متكامل للهوية البصرية وإدارة المحتوى بالكامل.",
+      en: "Complete visual identity and content management solution.",
+      zh: "完整的视觉识别与内容管理解决方案。"
+    },
+    price: "85,000",
+    oldPrice: "110,000",
+    currency: { ar: "ريال يمني", en: "YER", zh: "YER" },
+    features: [
+      { ar: "24 تصميم + 2 مجاني", en: "24 Designs + 2 Free", zh: "24 个设计 + 2 个免费" },
+      { ar: "خطة محتوى شهرية متكاملة", en: "Monthly Content Plan", zh: "月度内容规划" },
+      { ar: "أيقونات هايلايت مخصصة", en: "Highlight Icons", zh: "精选图标" },
+      { ar: "تصميم غلاف احترافي مميز", en: "Premium Cover Design", zh: "高级封面设计" },
+      { ar: "قوالب قصص (Story Templates)", en: "Story Templates", zh: "快拍模板" },
+      { ar: "تسليم منظم ومنسق أسبوعياً", en: "Weekly Organized Delivery", zh: "每周定期交付" },
+      { ar: "دعم فني كامل لإدارة المحتوى", en: "Content Management Support", zh: "内容管理支持" }
+    ],
+    cardStyle: "default"
+  },
+
+  // ================= WEB PACKAGES =================
+  {
+    id: "web-start",
+    category: "web",
     icon: "🚀",
-    name: { ar: "باقة النمو (Growth)", en: "Growth Package", zh: "成长套餐" },
-    desc: { ar: "لتحويل مشروعك إلى علامة تجارية قوية", en: "To transform your project into a strong brand", zh: "将您的项目转化为强大品牌" },
-    badge: "requested",
+    name: {
+      ar: "انطلاقة الويب (Start)",
+      en: "Start Web",
+      zh: "Start Web"
+    },
+    desc: {
+      ar: "مثالية للشركات الناشئة والمشاريع الصغيرة.",
+      en: "Ideal for startups and small businesses.",
+      zh: "初创公司和小微企业的理想之选。"
+    },
+    price: "149",
+    currency: { ar: "$", en: "$", zh: "$" },
     features: [
-      { ar: "موقع متعدد الصفحات (حتى 5 صفحات)", en: "Multi-page website (up to 5 pages)", zh: "多页网站（最多5页）" },
-      { ar: "تصميم UI/UX احترافي", en: "Professional UI/UX design", zh: "专业UI/UX设计" },
-      { ar: "هوية بصرية متناسقة", en: "Consistent visual identity", zh: "统一的视觉形象" },
-      { ar: "تحسين سرعة الأداء", en: "Performance & speed optimization", zh: "性能和速度优化" },
-      { ar: "إعداد SEO أساسي", en: "Basic SEO setup", zh: "基础SEO设置" },
-      { ar: "دعم الربط مع الأنظمة", en: "Systems integration support", zh: "系统集成支持" },
+      { ar: "صفحة هبوط احترافية (Landing Page)", en: "Professional Landing Page", zh: "专业落地页" },
+      { ar: "ربط وتكامل مع واتساب", en: "WhatsApp Integration", zh: "整合 WhatsApp" },
+      { ar: "نموذج اتصال للزوار", en: "Contact Form", zh: "联系表单" },
+      { ar: "تصميم متجاوب بالكامل مع الهواتف", en: "Responsive Design", zh: "响应式设计" },
+      { ar: "استضافة ودومين مجاني لمدة سنة كاملة", en: "1 Year Hosting + Domain", zh: "1 年免费主机 + 域名" },
+      { ar: "حماية وأمان للموقع", en: "Basic Security", zh: "基础安全防护" },
+      { ar: "تسليم سريع ومميز", en: "Fast Delivery", zh: "快速交付" }
     ],
-    target: { ar: "👉 مناسبة للشركات الصغيرة والمتوسطة", en: "👉 Suitable for small & medium businesses", zh: "👉 适合中小型企业" },
+    cardStyle: "default"
   },
   {
-    icon: "🏢",
-    name: { ar: "باقة الاحتراف (Premium)", en: "Premium Package", zh: "专业套餐" },
-    desc: { ar: "حل متكامل للشركات والعلامات التجارية", en: "A complete solution for companies and brands", zh: "针对公司和品牌的完整解决方案" },
-    badge: null,
+    id: "web-pro",
+    category: "web",
+    icon: "⚡",
+    name: {
+      ar: "الويب الاحترافي (Pro)",
+      en: "Pro Web",
+      zh: "Pro Web"
+    },
+    desc: {
+      ar: "حل احترافي متوازن للشركات والمشاريع المتنامية.",
+      en: "Balanced professional solution for companies and growing businesses.",
+      zh: "针对公司 and 成长型企业的平衡专业解决方案。"
+    },
+    price: "249",
+    currency: { ar: "$", en: "$", zh: "$" },
+    badge: { ar: "الأكثر طلباً 🔥", en: "Most Popular 🔥", zh: "最受欢迎 🔥" },
+    badgeType: "popular",
     features: [
-      { ar: "تصميم موقع احترافي كامل ومخصص", en: "Fully custom professional website", zh: "完全定制的专业网站" },
-      { ar: "تجربة مستخدم متقدمة", en: "Advanced user experience", zh: "高级用户体验" },
-      { ar: "تحسين SEO احترافي", en: "Professional SEO optimization", zh: "专业SEO优化" },
-      { ar: "إعدادات أداء وسرعة عالية", en: "High performance & speed settings", zh: "高性能和速度设置" },
-      { ar: "دعم فني بعد التسليم", en: "Post-delivery technical support", zh: "交付后技术支持" },
-      { ar: "ربط دومين + استضافة", en: "Domain + Hosting setup", zh: "域名与主机设置" },
-      { ar: "إمكانية إضافة لوحة تحكم", en: "Control panel capability", zh: "可添加控制面板" },
+      { ar: "جميع ميزات باقة انطلاقة الويب", en: "Everything in Start Web", zh: "包含 Web 基础版的所有内容" },
+      { ar: "موقع متعدد الصفحات (حتى 5 صفحات)", en: "Multi-page Website", zh: "多页网站" },
+      { ar: "تهيئة أساسية لمحركات البحث SEO", en: "Basic SEO Optimization", zh: "基础 SEO 优化" },
+      { ar: "بريد إلكتروني رسمي للشركة", en: "Professional Email", zh: "专业企业邮箱" },
+      { ar: "لوحة تحكم للمحتوى سهلة الإدارة", en: "Easy Admin Panel", zh: "易用管理后台" },
+      { ar: "تحسين كامل لسرعة وأداء الموقع", en: "Performance Optimization", zh: "性能与加载速度优化" },
+      { ar: "تنسيق وتصميم داخلي احترافي", en: "Professional Internal Layout", zh: "专业内部页面布局" },
+      { ar: "ربط وتفعيل خرائط جوجل", en: "Google Maps Integration", zh: "集成谷歌地图" }
     ],
-    target: { ar: "👉 مناسبة للشركات الجادة في السوق", en: "👉 Suitable for serious businesses in the market", zh: "👉 适合市场上的认真企业" },
+    cardStyle: "proweb"
+  },
+  {
+    id: "web-elite",
+    category: "web",
+    icon: "👑",
+    name: {
+      ar: "الويب الممتاز (Elite)",
+      en: "Elite Web",
+      zh: "Elite Web"
+    },
+    desc: {
+      ar: "تجربة ويب راقية للعلامات التجارية والشركات المتقدمة.",
+      en: "Premium web experience for brands and advanced businesses.",
+      zh: "为品牌和先进企业量身打造的顶级网页体验。"
+    },
+    price: "399",
+    currency: { ar: "$", en: "$", zh: "$" },
+    features: [
+      { ar: "جميع ميزات باقة الويب الاحترافي", en: "Everything in Pro Web", zh: "包含 Web 专业版的所有内容" },
+      { ar: "تصميم واجهات UI/UX احترافي ومبتكر", en: "Professional UI/UX", zh: "专业且深度的 UI/UX 设计" },
+      { ar: "أمان متطور وحماية إضافية للبيانات", en: "Advanced Security", zh: "高级安全与防护系统" },
+      { ar: "تهيئة متقدمة لمحركات البحث SEO", en: "Advanced SEO", zh: "高级 SEO 搜索引擎优化" },
+      { ar: "تجربة مستخدم تفاعلية ومحسنة", en: "Enhanced User Experience", zh: "更佳的用户交互体验" },
+      { ar: "دعم فني متميز ومباشر VIP", en: "VIP Support", zh: "VIP 专属技术支持" },
+      { ar: "تحسين شامل لسرعة التحميل والأداء", en: "Full Performance Optimization", zh: "极致性能与速度优化" },
+      { ar: "تأثيرات وحركات تفاعلية جذابة", en: "Interactive Animations", zh: "丰富高级的交互式动效" },
+      { ar: "صفحات أعمال مخصصة ومصممة خصيصاً", en: "Custom Business Pages", zh: "根据业务需求定制开发页面" }
+    ],
+    cardStyle: "default"
+  },
+
+  // ================= STORE PACKAGES =================
+  {
+    id: "store-start",
+    category: "store",
+    icon: "🛍️",
+    name: {
+      ar: "انطلاقة المتجر (Start)",
+      en: "Store Start",
+      zh: "Store Start"
+    },
+    desc: {
+      ar: "نقطة انطلاق مثالية لبدء التجارة الإلكترونية.",
+      en: "Perfect starting point for eCommerce businesses.",
+      zh: "开启电子商务的理想起点。"
+    },
+    price: "299",
+    currency: { ar: "$", en: "$", zh: "$" },
+    features: [
+      { ar: "متجر إلكتروني متكامل", en: "Full Online Store", zh: "完整独立的电子商务网站" },
+      { ar: "لوحة تحكم لإدارة المنتجات والطلبات", en: "Product Management", zh: "商品与品类轻松管理" },
+      { ar: "ربط وتكامل بوابات الدفع الإلكتروني", en: "Payment Integration", zh: "对接在线支付网关" },
+      { ar: "تصميم متجاوب وسلس على جميع الهواتف", en: "Responsive Design", zh: "完美兼容移动端响应式设计" },
+      { ar: "صفحات السياسات والشروط القانونية", en: "Policies Page", zh: "政策与条款相关页面" },
+      { ar: "استضافة ودومين مجاني لمدة سنة", en: "Hosting + Domain", zh: "包含主机与域名" },
+      { ar: "لوحة تحكم إدارية مبسطة وسهلة", en: "Admin Dashboard", zh: "直观的管理后台面板" },
+      { ar: "ربط أيقونة الواتساب للمبيعات المباشرة", en: "WhatsApp Integration", zh: "集成 WhatsApp 快捷联系" }
+    ],
+    cardStyle: "default"
+  },
+  {
+    id: "store-pro",
+    category: "store",
+    icon: "⭐",
+    name: {
+      ar: "المتجر الاحترافي (Pro)",
+      en: "Store Pro",
+      zh: "Store Pro"
+    },
+    desc: {
+      ar: "حل مثالي لتوسيع وزيادة مبيعات المتاجر الإلكترونية.",
+      en: "Optimized solution for scaling online stores.",
+      zh: "助力在线商店规模化增长的优化方案。"
+    },
+    price: "499",
+    currency: { ar: "$", en: "$", zh: "$" },
+    badge: { ar: "الأكثر مبيعاً ⭐", en: "Best Seller ⭐", zh: "畅销热卖 ⭐" },
+    badgeType: "bestseller",
+    features: [
+      { ar: "جميع ميزات باقة انطلاقة المتجر", en: "Everything in Store Start", zh: "包含商城 Entry的所有功能" },
+      { ar: "ربط شركات الشحن والتوصيل التلقائي", en: "Shipping Integration", zh: "对接主流物流配送服务" },
+      { ar: "صفحات العروض الخاصة وكوبونات الخصم", en: "Offer & Discount Pages", zh: "专属优惠与促销活动页面" },
+      { ar: "تحسين سرعة وأداء المتجر الإلكتروني", en: "Store Speed Optimization", zh: "独立站整站速度与性能优化" },
+      { ar: "تحسين SEO لصفحات ومنتجات المتجر", en: "Product SEO", zh: "商品详情页 SEO 搜索引擎优化" },
+      { ar: "تنسيق وتخطيط احترافي لعرض المنتجات", en: "Professional Product Layouts", zh: "专业级的商品展示排版" },
+      { ar: "تقارير وتحليلات المبيعات والأرباح", en: "Basic Sales Reports", zh: "基础销售额与订单数据报表" },
+      { ar: "تحسين تجربة السلة والدفع لزيادة المبيعات", en: "Improved Checkout Experience", zh: "优化结账流程以提升付款率" }
+    ],
+    cardStyle: "storepro"
+  },
+  {
+    id: "store-elite",
+    category: "store",
+    icon: "💎",
+    name: {
+      ar: "المتجر الممتاز (Elite)",
+      en: "Store Elite",
+      zh: "Store Elite"
+    },
+    desc: {
+      ar: "نظام تجاري متكامل ومتميز للعلامات التجارية الكبرى.",
+      en: "Complete premium eCommerce ecosystem for brands.",
+      zh: "为品牌打造的高级全渠道电商生态系统。"
+    },
+    price: "799",
+    currency: { ar: "$", en: "$", zh: "$" },
+    features: [
+      { ar: "جميع ميزات باقة المتجر الاحترافي", en: "Everything in Store Pro", zh: "包含商城 Pro的所有功能" },
+      { ar: "تصميم متجر إلكتروني راقي ومخصص بالكامل", en: "Premium Store Design", zh: "品牌定制的高端视觉独立站设计" },
+      { ar: "نظام متطور لإدارة الكوبونات والخصومات", en: "Advanced Coupon System", zh: "高级优惠券及精细化促销系统" },
+      { ar: "أتمتة الطلبات وإرسال الفواتير تلقائياً", en: "Order Automation", zh: "订单处理与通知流程自动化" },
+      { ar: "أمان متطور لحماية بوابات الدفع والبيانات", en: "Advanced Security", zh: "全站高级安全加密与防欺诈系统" },
+      { ar: "تحسين معدلات التحويل CRO لزيادة الأرباح", en: "Conversion Optimization", zh: "转化率优化（CRO）以最大化利润" },
+      { ar: "صفحات هبوط ترويجية مخصصة للمنتجات", en: "Landing Pages", zh: "高转化单品特写推广落地页" },
+      { ar: "دعم فني مباشر على مدار الساعة VIP", en: "VIP Support", zh: "VIP 级优先响应与运维支持" },
+      { ar: "تحسين كامل وشامل لأداء وسرعة المتجر", en: "Full Store Optimization", zh: "整站全面诊断与极致性能调优" },
+      { ar: "تجربة مستخدم راقية واستثنائية للشراء", en: "Premium User Experience", zh: "极致流畅尊贵的买家购物体验" }
+    ],
+    cardStyle: "default"
   }
 ];
 
-const PackageCard = ({ pkg, lang }: { pkg: PkgCard; lang: LangKey }) => {
-  const { t } = useLanguage();
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+// ================= SUB-COMPONENTS =================
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const cx = e.clientX - rect.left - rect.width / 2;
-    const cy = e.clientY - rect.top - rect.height / 2;
-    setTilt({ x: (cy / rect.height) * 10, y: -(cx / rect.width) * 10 });
-  };
+// 1. Badge Component
+const Badge = ({ text, type }: { text: string; type?: "popular" | "bestseller" }) => {
+  const gradientClass = type === "bestseller" 
+    ? "bg-gradient-to-r from-amber-500 to-orange-500" 
+    : "gradient-purple";
 
-  const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
+  return (
+    <motion.span
+      initial={{ scale: 0.9, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-white shadow-lg ${gradientClass} border border-white/10`}
+    >
+      <Star className="w-3.5 h-3.5 fill-current text-white text-2xs" />
+      <span>{text}</span>
+    </motion.span>
+  );
+};
+
+// 2. FeatureList Component
+const FeatureList = ({ features, lang }: { features: { ar: string; en: string; zh: string }[]; lang: LangKey }) => {
+  return (
+    <ul className="space-y-3 my-5 flex-1">
+      {features.map((feature, i) => (
+        <li
+          key={i}
+          className="flex items-start gap-2.5 text-sm text-foreground/80 dark:text-foreground/90 font-medium"
+        >
+          <div className="rounded-full p-0.5 bg-primary/10 dark:bg-primary/20 shrink-0 mt-0.5">
+            <Check className="w-3.5 h-3.5 text-primary" />
+          </div>
+          <span className="leading-tight text-start">{feature[lang]}</span>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+// 3. PricingHeader Component
+const PricingHeader = ({ lang, isDedicatedPage }: { lang: LangKey; isDedicatedPage: boolean }) => {
+  const title = lang === "ar" ? "باقاتنا والأسعار" : lang === "zh" ? "我们的套餐与价格" : "Our Packages & Pricing";
+  const subtitle = lang === "ar" 
+    ? "حلول رقمية احترافية مصممة لتنمية علامتك التجارية وأعمالك." 
+    : lang === "zh" 
+    ? "专为您的品牌和业务增长而设计的专业数字解决方案。" 
+    : "Professional digital solutions designed to grow your brand and business.";
+  
+  const badgeLabel = lang === "ar" ? "خطط الأسعار" : lang === "zh" ? "价格方案" : "Pricing Plans";
+
+  return (
+    <ScrollReveal>
+      <div className="text-center mb-12 relative px-4">
+        <div className="absolute left-1/2 -top-12 -translate-x-1/2 w-64 h-64 bg-primary/10 blur-[90px] rounded-full pointer-events-none" />
+
+        <motion.span
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 text-xs font-bold text-primary mb-5"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-primary" />
+          {badgeLabel}
+        </motion.span>
+
+        {isDedicatedPage ? (
+          <h1 className="text-2xl md:text-5.5xl font-black gradient-text mb-4 leading-tight tracking-tight">
+            {title}
+          </h1>
+        ) : (
+          <h2 className="text-2xl md:text-5.5xl font-black gradient-text mb-4 leading-tight tracking-tight">
+            {title}
+          </h2>
+        )}
+        <p className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
+          {subtitle}
+        </p>
+      </div>
+    </ScrollReveal>
+  );
+};
+
+// 4. FilterTabs Component
+const FilterTabs = ({
+  activeTab,
+  setActiveTab,
+  lang,
+}: {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  lang: LangKey;
+}) => {
+  const tabs = [
+    { id: "all", label: { ar: "الكل", en: "All", zh: "全部" } },
+    { id: "design", label: { ar: "باقات التصميم", en: "Design Packages", zh: "设计套餐" } },
+    { id: "web", label: { ar: "باقات الويب", en: "Web Packages", zh: "网页套餐" } },
+    { id: "store", label: { ar: "باقات المتاجر", en: "Store Packages", zh: "电商套餐" } },
+  ];
+
+  return (
+    <div className="w-full overflow-x-auto scrollbar-none mb-12 px-4">
+      <div className="flex justify-start md:justify-center items-center gap-2 p-1 py-1.5 min-w-max md:min-w-0 md:max-w-max mx-auto rounded-2xl glass border border-border/40">
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`relative px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition-colors duration-300 whitespace-nowrap shrink-0 ${
+                isActive ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="activeTabIndicator"
+                  className="absolute inset-0 rounded-xl gradient-purple shadow-[0_0_20px_hsl(var(--neon-purple)/0.35)]"
+                  transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                />
+              )}
+              <span className="relative z-10">{tab.label[lang]}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// 5. PackageCard Component
+const PackageCard = ({ pkg, lang }: { pkg: PackageData; lang: LangKey }) => {
 
   const sendWhatsApp = () => {
-    const msg = lang === "ar" 
-      ? `مرحباً، أنا مهتم بـ ${pkg.name.ar} وأريد معرفة المزيد.`
-      : lang === "zh"
-      ? `你好，我对 ${pkg.name.zh} 感兴趣，想了解更多。`
-      : `Hello, I'm interested in the ${pkg.name.en} and would like to know more.`;
+    const currencyName = pkg.currency[lang];
+    const messageTemplate = {
+      ar: `مرحباً Suriix، أنا مهتم بـ "${pkg.name.ar}" (بسعر ${pkg.price} ${currencyName}) وأريد معرفة التفاصيل والبدء بالمشروع.`,
+      en: `Hello Suriix, I'm interested in the "${pkg.name.en}" (priced at ${pkg.price} ${currencyName}) and would like to get more details to start.`,
+      zh: `您好 Suriix，我对您的“${pkg.name.zh}”（价格：${pkg.price} ${currencyName}）套餐非常感兴趣，希望能了解详情并开始项目合作。`
+    };
+    const msg = messageTemplate[lang] || messageTemplate.en;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
-  const isRequested = pkg.badge === "requested";
+  const ctaLabel = lang === "ar" ? "اطلب هذه الباقة الآن" : lang === "zh" ? "立即订购此套餐" : "Order This Package Now";
+
+  const isAdvanced = pkg.cardStyle === "advanced";
+  const isProWeb = pkg.cardStyle === "proweb";
+  const isStorePro = pkg.cardStyle === "storepro";
+  const isFeatured = isAdvanced || isProWeb || isStorePro;
+
+  // Outer container border classes for uniform layout matching
+  let borderBgClass = "bg-border/30 dark:bg-border/20";
+  if (isAdvanced) {
+    borderBgClass = "bg-transparent";
+  } else if (isProWeb) {
+    borderBgClass = "bg-gradient-to-b from-primary/50 via-accent/30 to-transparent";
+  } else if (isStorePro) {
+    borderBgClass = "bg-gradient-to-b from-accent/50 via-primary/30 to-transparent";
+  }
+
+  // Inner background styles
+  let innerBgClass = "bg-card/75 dark:bg-card/45";
+  if (isFeatured) {
+    innerBgClass = "bg-card/90 dark:bg-[#070b1a]/90 backdrop-blur-xl shadow-lg";
+  }
+
+  // Pure CSS pulsing neon glow for Store Pro to prevent state re-renders
+  const glowShadow = isStorePro
+    ? "shadow-[0_0_30px_hsl(var(--neon-purple)/0.25)] border border-primary/40"
+    : "";
 
   return (
     <motion.div
       layout
-      style={{ rotateX: tilt.x, rotateY: tilt.y, transformStyle: "preserve-3d" }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      whileHover={{ scale: 1.03, y: -8 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className={`relative rounded-2xl p-6 glass neon-border flex flex-col overflow-hidden cursor-default ${
-        isRequested
-          ? "ring-2 ring-primary/60 shadow-[0_0_30px_hsl(var(--neon-purple)/0.25)]"
-          : ""
-      }`}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.4 }}
+      whileHover={{
+        scale: isAdvanced ? 1.03 : 1.02,
+        y: isFeatured ? -12 : -6,
+        boxShadow: isFeatured
+          ? "0 20px 40px rgba(168, 85, 247, 0.25)"
+          : "0 10px 25px rgba(0, 0, 0, 0.2)",
+      }}
+      className={`relative rounded-2xl flex flex-col justify-between overflow-hidden cursor-default transition-all duration-300 p-[1.5px] h-full ${
+        isAdvanced ? "lg:scale-[1.03] z-10" : ""
+      } ${borderBgClass} ${glowShadow}`}
     >
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
-
-      {isRequested && (
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="absolute top-4 end-4 z-10"
-        >
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold gradient-purple text-primary-foreground neon-glow shadow-lg">
-            <Star className="w-3 h-3 fill-current" />
-            {t("packages.requested")}
-          </span>
-        </motion.div>
+      {/* 1. Rotating Conic border gradient animation for Advanced Design Package */}
+      {isAdvanced && (
+        <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
+          <motion.div
+            className="absolute inset-[-120%] bg-[conic-gradient(from_0deg,transparent_30%,hsl(var(--primary))_50%,hsl(var(--accent))_70%,transparent_100%)]"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+          />
+        </div>
       )}
 
-      <div className="text-4xl mb-4">{pkg.icon}</div>
-      <h4 className={`text-xl font-black text-[#26163c] dark:text-white mb-2 ${isRequested ? "pe-24" : ""}`}>
-        {pkg.name[lang]}
-      </h4>
-      <p className="text-sm text-muted-foreground mb-6">
-        {pkg.desc[lang]}
-      </p>
+      {/* Actual inner card content container */}
+      <div className={`relative z-10 rounded-[15px] p-5 md:p-6 h-full w-full flex flex-col justify-between transition-colors duration-300 ${innerBgClass}`}>
+        
+        {/* Floating wrapper for Pro Web. Separating continuous y-axis float from hover lifts prevents animation fight lag */}
+        <motion.div
+          className="flex-1 flex flex-col justify-between"
+          animate={isProWeb ? { y: [0, -6, 0] } : {}}
+          transition={isProWeb ? { duration: 5, repeat: Infinity, ease: "easeInOut" } : {}}
+        >
+          <div>
+            {/* Top Row: Icon and Badge */}
+            <div className="flex justify-between items-start mb-5">
+              <div className="text-4xl bg-primary/10 rounded-xl w-14 h-14 flex items-center justify-center border border-primary/20">
+                {pkg.icon}
+              </div>
+              {pkg.badge && (
+                <Badge text={pkg.badge[lang]} type={pkg.badgeType} />
+              )}
+            </div>
 
-      <ul className="space-y-3 mb-6 flex-1">
-        {pkg.features.map((f, i) => (
-          <li key={i} className="flex items-start gap-2 text-sm text-secondary-foreground">
-            <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-            <span>{f[lang]}</span>
-          </li>
-        ))}
-      </ul>
-      
-      <div className="mb-6 pt-4 border-t border-border/30">
-        <p className="text-sm font-semibold text-primary">{pkg.target[lang]}</p>
+            {/* Name & Description */}
+            <h3 className="text-xl md:text-2xl font-black text-foreground mb-2 text-start">
+              {pkg.name[lang]}
+            </h3>
+            <p className="text-xs md:text-sm text-muted-foreground mb-6 text-start leading-relaxed h-12 line-clamp-2">
+              {pkg.desc[lang]}
+            </p>
+
+            {/* Price Container */}
+            <div className="pt-5 border-t border-border/30 mb-6 flex flex-col items-start">
+              {pkg.oldPrice && (
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs md:text-sm line-through text-muted-foreground/60 decoration-destructive/70 decoration-2">
+                    {pkg.oldPrice} {pkg.currency[lang]}
+                  </span>
+                  <span className="text-2xs font-bold text-destructive px-1.5 py-0.5 rounded bg-destructive/10">
+                    {lang === "ar" ? "خصم" : lang === "zh" ? "特惠" : "SAVE"}
+                  </span>
+                </div>
+              )}
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-3xl md:text-4.5xl font-black text-foreground tracking-tight">
+                  {pkg.price}
+                </span>
+                <span className="text-xs md:text-sm font-bold text-primary">
+                  {pkg.currency[lang]}
+                </span>
+              </div>
+            </div>
+
+            {/* Features Header */}
+            <div className="text-2xs font-bold uppercase tracking-wider text-muted-foreground/80 mb-3 text-start">
+              {lang === "ar" ? "ماذا تشمل هذه الباقة؟" : lang === "zh" ? "套餐包含内容" : "What's included"}
+            </div>
+
+            {/* Features List */}
+            <FeatureList features={pkg.features} lang={lang} />
+          </div>
+
+          {/* Action Button */}
+          <div className="mt-6 pt-5 border-t border-border/30">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={sendWhatsApp}
+              className="w-full py-3 md:py-3.5 rounded-xl gradient-purple text-primary-foreground font-bold flex items-center justify-center gap-2.5 neon-glow hover:shadow-[0_0_35px_hsl(var(--neon-purple)/0.45)] transition-all duration-300 text-sm border border-white/10"
+            >
+              <MessageCircle className="w-4.5 h-4.5 fill-current" />
+              <span>{ctaLabel}</span>
+              <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+            </motion.button>
+          </div>
+        </motion.div>
+
       </div>
-
-      <motion.button
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.97 }}
-        onClick={sendWhatsApp}
-        className="w-full py-3 rounded-xl gradient-purple text-primary-foreground font-semibold flex items-center justify-center gap-2 neon-glow hover:shadow-[0_0_40px_hsl(var(--neon-purple)/0.4)] transition-shadow text-sm"
-      >
-        <MessageCircle className="w-4 h-4" />
-        {t("packages.cta")}
-      </motion.button>
     </motion.div>
   );
 };
+
+// ================= MAIN COMPONENT =================
 
 const PackagesSection = () => {
   const { lang } = useLanguage();
   const location = useLocation();
   const isDedicatedPage = location.pathname === "/packages";
-  
-  const title = lang === "ar" ? "باقات Suriix" : lang === "zh" ? "Suriix 套餐" : "Suriix Packages";
-  const subtitle = lang === "ar" 
-    ? "اختر الباقة المناسبة لمشروعك" 
-    : lang === "zh" 
-    ? "选择适合您项目的套餐" 
-    : "Choose the right package for your project";
-  
+  const [activeTab, setActiveTab] = useState("all");
+
+  const filteredPackages = packagesData.filter((pkg) => {
+    if (activeTab === "all") return true;
+    return pkg.category === activeTab;
+  });
+
   const noteText = lang === "ar"
-    ? "جميع الباقات قابلة للتخصيص حسب احتياج مشروعك، تواصل معنا لنصمم لك الحل المناسب."
+    ? "جميع الباقات قابلة للتخصيص بالكامل حسب متطلبات مشروعك. تواصل معنا لنصمم لك الحل الأمثل."
     : lang === "zh"
-    ? "所有套餐均可根据您的项目需求进行定制，请联系我们为您设计合适的解决方案。"
-    : "All packages are customizable according to your project needs, contact us to design the right solution for you.";
+    ? "所有套餐均可根据您的项目需求进行完全定制。联系我们为您设计最完美的解决方案。"
+    : "All packages are fully customizable according to your project requirements. Contact us to design the perfect solution for you.";
 
   return (
-    <section id="packages" className="section-padding relative overflow-hidden">
-      <div className="absolute inset-0 grid-bg opacity-20" />
-      <div className="absolute top-1/3 start-1/4 w-96 h-96 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 end-1/4 w-64 h-64 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
+    <section id="packages" className="py-14 md:py-32 px-4 sm:px-6 md:px-12 relative overflow-hidden bg-transparent">
+      {/* Decorative Particle Grid Background */}
+      <div className="absolute inset-0 grid-bg opacity-15 pointer-events-none" />
+
+      {/* Decorative Glow Orbs */}
+      <div className="absolute top-1/4 start-0 w-[450px] h-[450px] rounded-full bg-primary/5 blur-[120px] pointer-events-none animate-glow-pulse" />
+      <div className="absolute bottom-1/4 end-0 w-[350px] h-[350px] rounded-full bg-accent/5 blur-[100px] pointer-events-none animate-glow-pulse" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <ScrollReveal>
-          <div className="text-center mb-14">
-            <motion.span
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass neon-border text-xs font-semibold text-primary mb-4"
-            >
-              <Star className="w-3 h-3 fill-current" />
-              {lang === "ar" ? "باقاتنا" : lang === "zh" ? "我们的套餐" : "Our Packages"}
-            </motion.span>
-            {isDedicatedPage ? (
-              <h1 className="text-3xl md:text-5xl font-black gradient-text mb-4">
-                {title}
-              </h1>
-            ) : (
-              <h2 className="text-3xl md:text-5xl font-black gradient-text mb-4">
-                {title}
-              </h2>
-            )}
-            <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
-              {subtitle}
-            </p>
-          </div>
-        </ScrollReveal>
+        <PricingHeader lang={lang as LangKey} isDedicatedPage={isDedicatedPage} />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {packages.map((pkg, i) => (
-            <ScrollReveal 
-              key={i} 
-              delay={i * 0.1}
-              className={i === 2 ? "sm:col-span-2 lg:col-span-1" : ""}
-            >
-              <PackageCard pkg={pkg} lang={lang as LangKey} />
-            </ScrollReveal>
-          ))}
-        </div>
+        <FilterTabs activeTab={activeTab} setActiveTab={setActiveTab} lang={lang as LangKey} />
 
-        <ScrollReveal delay={0.3}>
-          <p className="text-center text-sm font-medium text-foreground mt-12 max-w-2xl mx-auto p-4 rounded-xl glass neon-border">
-            {noteText}
+        {/* Dynamic Grid list of package cards with items-stretch to align card heights */}
+        <motion.div 
+          layout
+          className="grid gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredPackages.map((pkg) => (
+              <PackageCard key={pkg.id} pkg={pkg} lang={lang as LangKey} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        <ScrollReveal delay={0.2}>
+          <p className="text-center text-xs md:text-sm font-semibold text-foreground/80 mt-14 max-w-2xl mx-auto p-4 md:p-5 rounded-2xl glass border border-primary/25 shadow-md">
+            ✨ {noteText}
           </p>
         </ScrollReveal>
       </div>
@@ -226,4 +668,3 @@ const PackagesSection = () => {
 };
 
 export default PackagesSection;
-

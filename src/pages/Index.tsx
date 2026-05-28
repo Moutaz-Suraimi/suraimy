@@ -86,21 +86,12 @@ const Index = () => {
     }
   }, [showIntro]);
 
-  // Defer Google AdSense script loading until actual user interaction occurs (scroll, click, keydown, touch)
-  // This keeps initial CPU main-thread blocking time at 0ms for crawler bots and Lighthouse audits.
+  // Defer Google AdSense script loading until 2500ms after cinematic intro finishes.
+  // This avoids main-thread script evaluation during scroll interactions or initial animations,
+  // preventing scroll jank while keeping page load speeds high.
   useEffect(() => {
     if (!showIntro) {
-      let loaded = false;
-      const loadAdSense = () => {
-        if (loaded) return;
-        loaded = true;
-
-        // Clean up listeners immediately
-        window.removeEventListener("mousemove", loadAdSense);
-        window.removeEventListener("scroll", loadAdSense);
-        window.removeEventListener("touchstart", loadAdSense);
-        window.removeEventListener("keydown", loadAdSense);
-
+      const timer = setTimeout(() => {
         try {
           const script = document.createElement("script");
           script.async = true;
@@ -110,23 +101,9 @@ const Index = () => {
         } catch (e) {
           console.error("Failed to load Google AdSense:", e);
         }
-      };
+      }, 2500);
 
-      // Safety timeout: fallback load after 5 seconds of complete idle time
-      const safetyTimer = setTimeout(loadAdSense, 5000);
-
-      window.addEventListener("mousemove", loadAdSense, { passive: true });
-      window.addEventListener("scroll", loadAdSense, { passive: true });
-      window.addEventListener("touchstart", loadAdSense, { passive: true });
-      window.addEventListener("keydown", loadAdSense, { passive: true });
-
-      return () => {
-        clearTimeout(safetyTimer);
-        window.removeEventListener("mousemove", loadAdSense);
-        window.removeEventListener("scroll", loadAdSense);
-        window.removeEventListener("touchstart", loadAdSense);
-        window.removeEventListener("keydown", loadAdSense);
-      };
+      return () => clearTimeout(timer);
     }
   }, [showIntro]);
 
