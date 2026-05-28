@@ -40,57 +40,47 @@ const HeroSection = memo(({ isIntroActive = false }: HeroSectionProps) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   
-  // Interactive 3D Tilt states
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  
   const isRtl = lang === "ar";
 
-  // Simple mobile screen size detection for responsive layout elements
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    setIsHovered(true);
     const card = e.currentTarget;
     const box = card.getBoundingClientRect();
     const x = e.clientX - box.left - box.width / 2;
     const y = e.clientY - box.top - box.height / 2;
     // Calculate rotation angles (max 8 degrees)
-    setRotateX(-(y / (box.height / 2)) * 8);
-    setRotateY((x / (box.width / 2)) * 8);
+    const rx = -(y / (box.height / 2)) * 8;
+    const ry = (x / (box.width / 2)) * 8;
+    card.style.setProperty("--rotate-x", `${rx}deg`);
+    card.style.setProperty("--rotate-y", `${ry}deg`);
+    card.style.setProperty("--tilt-transition", "none");
   }, []);
 
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false);
-    setRotateX(0);
-    setRotateY(0);
+  const handleMouseLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    card.style.setProperty("--rotate-x", "0deg");
+    card.style.setProperty("--rotate-y", "0deg");
+    card.style.removeProperty("--tilt-transition");
   }, []);
 
   const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
-    setIsHovered(true);
     const card = e.currentTarget;
     const box = card.getBoundingClientRect();
     const touch = e.touches[0];
     const x = touch.clientX - box.left - box.width / 2;
     const y = touch.clientY - box.top - box.height / 2;
     // Calculate rotation angles (max 10 degrees for touch feedback)
-    setRotateX(-(y / (box.height / 2)) * 10);
-    setRotateY((x / (box.width / 2)) * 10);
+    const rx = -(y / (box.height / 2)) * 10;
+    const ry = (x / (box.width / 2)) * 10;
+    card.style.setProperty("--rotate-x", `${rx}deg`);
+    card.style.setProperty("--rotate-y", `${ry}deg`);
+    card.style.setProperty("--tilt-transition", "none");
   }, []);
 
-  const handleTouchEnd = useCallback(() => {
-    setIsHovered(false);
-    setRotateX(0);
-    setRotateY(0);
+  const handleTouchEnd = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    card.style.setProperty("--rotate-x", "0deg");
+    card.style.setProperty("--rotate-y", "0deg");
+    card.style.removeProperty("--tilt-transition");
   }, []);
 
   const handleNavClick = useCallback((href: string) => {
@@ -275,13 +265,11 @@ const HeroSection = memo(({ isIntroActive = false }: HeroSectionProps) => {
         
         {/* Left Column: Text Content */}
         <div className="col-span-12 lg:col-span-5 flex flex-col justify-center text-start">
-          
-          {/* Badge */}
+                   {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             animate={isIntroActive ? { opacity: 0, y: 25 } : { opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            style={{ willChange: "transform, opacity" }}
             className="self-start inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 dark:border-primary/30 bg-primary/5 dark:bg-primary/10 text-primary mb-6 shadow-sm"
           >
             <span className="text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5">
@@ -295,7 +283,6 @@ const HeroSection = memo(({ isIntroActive = false }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 30 }}
             animate={isIntroActive ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.05 }}
-            style={{ willChange: "transform, opacity" }}
             className="font-display font-extrabold text-4xl sm:text-5xl xl:text-6xl tracking-tight leading-[1.15] mb-6 text-foreground"
           >
             {t("hero.title1")}{" "}
@@ -309,7 +296,6 @@ const HeroSection = memo(({ isIntroActive = false }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 20 }}
             animate={isIntroActive ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            style={{ willChange: "transform, opacity" }}
             className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-8 max-w-xl"
           >
             {t("hero.desc")}
@@ -320,7 +306,6 @@ const HeroSection = memo(({ isIntroActive = false }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 25 }}
             animate={isIntroActive ? { opacity: 0, y: 25 } : { opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.15 }}
-            style={{ willChange: "transform, opacity" }}
             className="flex flex-wrap items-center gap-4 mb-12"
           >
             {/* Start Project CTA */}
@@ -353,7 +338,6 @@ const HeroSection = memo(({ isIntroActive = false }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 30 }}
             animate={isIntroActive ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            style={{ willChange: "transform, opacity" }}
             className="w-full max-w-2xl rounded-3xl p-5 md:p-6 glass shadow-xl grid grid-cols-4 gap-4 divide-x divide-border/40 dark:divide-border/10 rtl:divide-x-reverse"
           >
             {/* Stat 1: Happy Clients */}
@@ -402,23 +386,19 @@ const HeroSection = memo(({ isIntroActive = false }: HeroSectionProps) => {
             animate={isIntroActive ? { opacity: 0, scale: 0.9, rotateY: 5 } : { opacity: 1, scale: 1, rotateY: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             className="w-full max-w-[620px] aspect-[4/3] relative flex items-center justify-center"
-            style={{ perspective: 1200, willChange: "transform, opacity" }}
+            style={{ perspective: 1200 }}
           >
             {/* Interactive Tilt Panel */}
             <div
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              onMouseEnter={() => setIsHovered(true)}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
-              onTouchStart={() => setIsHovered(true)}
-              className="w-full h-full relative cursor-grab active:cursor-grabbing transition-shadow duration-300 rounded-[2rem]"
+              className="w-full h-full relative cursor-grab active:cursor-grabbing rounded-[2rem]"
               style={{
-                transform: isHovered
-                  ? `rotateY(${-15 + rotateY}deg) rotateX(${10 + rotateX}deg) rotateZ(-2deg)`
-                  : "rotateY(-15deg) rotateX(10deg) rotateZ(-2deg)",
+                transform: "rotateY(calc(-15deg + var(--rotate-y, 0deg))) rotateX(calc(10deg + var(--rotate-x, 0deg))) rotateZ(-2deg)",
                 transformStyle: "preserve-3d",
-                transition: isHovered ? "none" : "transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)",
+                transition: "var(--tilt-transition, transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1))"
               }}
             >
               {/* --- MAIN DASHBOARD BOARD --- */}

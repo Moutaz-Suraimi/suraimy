@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Star, MessageCircle, Sparkles, ArrowRight } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import ScrollReveal from "./ScrollReveal";
 
 const WHATSAPP_NUMBER = "967780930635";
@@ -614,16 +614,24 @@ const PackageCard = ({ pkg, lang }: { pkg: PackageData; lang: LangKey }) => {
 
 // ================= MAIN COMPONENT =================
 
-const PackagesSection = () => {
+interface PackagesSectionProps {
+  isHome?: boolean;
+}
+
+const PackagesSection = ({ isHome = false }: PackagesSectionProps) => {
   const { lang } = useLanguage();
   const location = useLocation();
-  const isDedicatedPage = location.pathname === "/packages";
+  const isDedicatedPage = location.pathname === "/packages" || !isHome;
   const [activeTab, setActiveTab] = useState("all");
 
-  const filteredPackages = packagesData.filter((pkg) => {
-    if (activeTab === "all") return true;
-    return pkg.category === activeTab;
-  });
+  // On home page, we only show 2 high-converting featured packages to optimize load times and DOM size.
+  const featuredIds = ["web-pro", "store-pro"];
+  const displayPackages = isHome 
+    ? packagesData.filter((pkg) => featuredIds.includes(pkg.id))
+    : packagesData.filter((pkg) => {
+        if (activeTab === "all") return true;
+        return pkg.category === activeTab;
+      });
 
   const noteText = lang === "ar"
     ? "جميع الباقات قابلة للتخصيص بالكامل حسب متطلبات مشروعك. تواصل معنا لنصمم لك الحل الأمثل."
@@ -636,26 +644,62 @@ const PackagesSection = () => {
       {/* Decorative Particle Grid Background */}
       <div className="absolute inset-0 grid-bg opacity-15 pointer-events-none" />
 
-      {/* Decorative Glow Orbs */}
-      <div className="absolute top-1/4 start-0 w-[450px] h-[450px] rounded-full bg-primary/5 blur-[120px] pointer-events-none animate-glow-pulse" />
-      <div className="absolute bottom-1/4 end-0 w-[350px] h-[350px] rounded-full bg-accent/5 blur-[100px] pointer-events-none animate-glow-pulse" />
+      {/* Decorative Glow Orbs (Static radial-gradient for zero paint overhead) */}
+      <div 
+        className="absolute top-1/4 start-0 w-[450px] h-[450px] rounded-full pointer-events-none" 
+        style={{
+          background: "radial-gradient(circle, hsl(var(--primary) / 0.05) 0%, transparent 70%)"
+        }}
+      />
+      <div 
+        className="absolute bottom-1/4 end-0 w-[350px] h-[350px] rounded-full pointer-events-none" 
+        style={{
+          background: "radial-gradient(circle, hsl(var(--accent) / 0.05) 0%, transparent 70%)"
+        }}
+      />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <PricingHeader lang={lang as LangKey} isDedicatedPage={isDedicatedPage} />
 
-        <FilterTabs activeTab={activeTab} setActiveTab={setActiveTab} lang={lang as LangKey} />
+        {!isHome && (
+          <FilterTabs activeTab={activeTab} setActiveTab={setActiveTab} lang={lang as LangKey} />
+        )}
 
         {/* Dynamic Grid list of package cards with items-stretch to align card heights */}
         <motion.div 
           layout
-          className="grid gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+          className={`grid gap-6 md:gap-8 items-stretch ${
+            isHome 
+              ? "grid-cols-1 sm:grid-cols-2 max-w-4xl mx-auto" 
+              : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          }`}
         >
           <AnimatePresence mode="popLayout">
-            {filteredPackages.map((pkg) => (
+            {displayPackages.map((pkg) => (
               <PackageCard key={pkg.id} pkg={pkg} lang={lang as LangKey} />
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {isHome && (
+          <ScrollReveal delay={0.1}>
+            <div className="flex justify-center mt-12">
+              <Link
+                to="/packages"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-base text-white bg-gradient-to-r from-primary to-accent hover:shadow-[0_12px_24px_rgba(139,92,246,0.3)] hover:opacity-98 transition-all scale-100 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-lg border border-white/10"
+              >
+                <span>
+                  {lang === "ar" 
+                    ? "عرض جميع الباقات والأسعار" 
+                    : lang === "zh" 
+                    ? "查看所有套餐与价格" 
+                    : "View All Packages & Pricing"}
+                </span>
+                <ArrowRight className="w-5 h-5 rtl:rotate-180" />
+              </Link>
+            </div>
+          </ScrollReveal>
+        )}
 
         <ScrollReveal delay={0.2}>
           <p className="text-center text-xs md:text-sm font-semibold text-foreground/80 mt-14 max-w-2xl mx-auto p-4 md:p-5 rounded-2xl glass border border-primary/25 shadow-md">

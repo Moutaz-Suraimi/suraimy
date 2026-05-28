@@ -111,26 +111,21 @@ const PageBackground = memo(({ children }: { children: React.ReactNode }) => {
             Gradients are GPU texture samples (near-zero cost) vs blur kernels (expensive per-frame).
             Visual result is identical; GPU load drops ~80% on integrated graphics. */}
         <div
-          className="absolute top-[-5%] right-[-5%] w-[600px] h-[600px] rounded-full animate-glow-pulse pointer-events-none"
+          className="absolute top-[-5%] right-[-5%] w-[600px] h-[600px] rounded-full pointer-events-none"
           style={{
-            background: "radial-gradient(circle, hsl(var(--primary) / 0.18) 0%, hsl(var(--primary) / 0.06) 45%, transparent 70%)",
-            willChange: "opacity, transform",
+            background: "radial-gradient(circle, hsl(var(--primary) / 0.16) 0%, hsl(var(--primary) / 0.04) 45%, transparent 70%)",
           }}
         />
         <div
-          className="absolute bottom-[5%] left-[-5%] w-[550px] h-[550px] rounded-full animate-glow-pulse pointer-events-none"
+          className="absolute bottom-[5%] left-[-5%] w-[550px] h-[550px] rounded-full pointer-events-none"
           style={{
-            background: "radial-gradient(circle, hsl(var(--accent) / 0.18) 0%, hsl(var(--accent) / 0.06) 45%, transparent 70%)",
-            animationDelay: "1.5s",
-            willChange: "opacity, transform",
+            background: "radial-gradient(circle, hsl(var(--accent) / 0.16) 0%, hsl(var(--accent) / 0.04) 45%, transparent 70%)",
           }}
         />
         <div
-          className="absolute top-[40%] right-[15%] w-[400px] h-[400px] rounded-full animate-glow-pulse pointer-events-none"
+          className="absolute top-[40%] right-[15%] w-[400px] h-[400px] rounded-full pointer-events-none"
           style={{
-            background: "radial-gradient(circle, hsl(270 60% 75% / 0.12) 0%, hsl(270 60% 75% / 0.04) 45%, transparent 70%)",
-            animationDelay: "3s",
-            willChange: "opacity, transform",
+            background: "radial-gradient(circle, hsl(270 60% 75% / 0.10) 0%, hsl(270 60% 75% / 0.03) 45%, transparent 70%)",
           }}
         />
 

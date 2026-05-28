@@ -65,10 +65,10 @@ const DigitalMirror = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.03, rotateY: -2 }}
+                whileHover={{ y: -4, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => toggle(opt.key)}
-                className={`p-6 rounded-2xl text-start transition-all duration-300 card-3d ${
+                className={`p-6 rounded-2xl text-start transition-colors duration-300 hover:shadow-lg hover:shadow-primary/5 ${
                   isSelected
                     ? "glass-strong neon-glow-strong border-primary/50"
                     : "glass neon-border hover:border-primary/30"

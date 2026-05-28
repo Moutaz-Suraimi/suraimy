@@ -41,9 +41,8 @@ const AboutSection = () => {
               direction={i === 0 ? "left" : i === 2 ? "right" : "up"}
             >
               <motion.div
-                whileHover={{ y: -8, rotateY: -3, rotateX: 3 }}
-                className="glass rounded-2xl p-8 neon-border card-3d h-full"
-                style={{ transformStyle: "preserve-3d" }}
+                whileHover={{ y: -6 }}
+                className="glass rounded-2xl p-8 neon-border h-full hover:shadow-lg hover:shadow-primary/5 transition-shadow duration-300"
               >
                 <div className="w-14 h-14 rounded-xl gradient-purple flex items-center justify-center mb-6 neon-glow">
                   <card.icon className="w-7 h-7 text-primary-foreground" />

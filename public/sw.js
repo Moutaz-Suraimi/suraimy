@@ -2,8 +2,7 @@ const CACHE_NAME = 'suriix-pwa-cache-v10';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/manifest.json',
-  '/favicon.png'
+  '/manifest.json'
 ];
 
 self.addEventListener('install', event => {
@@ -33,6 +32,30 @@ self.addEventListener('fetch', event => {
   // Disable caching for development environment (localhost)
   if (event.request.url.includes('localhost') || event.request.url.includes('127.0.0.1')) {
     return; // Let the browser handle the network request directly without SW interference
+  }
+
+  // Handle fonts (Google Fonts) with Stale-While-Revalidate strategy
+  const isFont = event.request.url.includes('fonts.googleapis.com') || 
+                 event.request.url.includes('fonts.gstatic.com') ||
+                 event.request.url.endsWith('.woff2') ||
+                 event.request.url.endsWith('.woff') ||
+                 event.request.url.endsWith('.ttf');
+
+  if (isFont) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(cache => {
+        return cache.match(event.request).then(cachedResponse => {
+          const fetchPromise = fetch(event.request).then(networkResponse => {
+            if (networkResponse && networkResponse.status === 200) {
+              cache.put(event.request, networkResponse.clone());
+            }
+            return networkResponse;
+          }).catch(() => {});
+          return cachedResponse || fetchPromise;
+        });
+      })
+    );
+    return;
   }
 
   const acceptHeader = event.request.headers.get('accept') || '';

@@ -120,16 +120,18 @@
 }
 
 @layer components {
-  /* Glassmorphism — tuned blur radii for maximum GPU throughput */
-  /* backdrop-blur-md = 12px (vs xl=24px): visually identical on gradients, 2x faster to composite */
   .glass {
-    @apply bg-card/40 backdrop-blur-md border border-border/30;
+    @apply bg-card/40 border border-border/30;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     contain: layout style;
   }
 
-  /* backdrop-blur-lg = 16px (vs 2xl=40px): retains depth illusion, eliminates GPU overdraw */
+  /* backdrop-blur reduced to 10px to minimize GPU composition time */
   .glass-strong {
-    @apply bg-card/60 backdrop-blur-lg border border-border/40;
+    @apply bg-card/60 border border-border/40;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     contain: layout style;
   }
 
@@ -252,15 +254,13 @@
     border-color: transparent !important;
   }
 
-  /* 3D card hover */
+  /* 2D optimized card hover to prevent layout paint stutters on desktop and mobile */
   .card-3d {
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
   }
 
   .card-3d:hover {
-    transform: rotateY(-3deg) rotateX(3deg) scale(1.02);
+    transform: translateY(-4px) scale(1.015);
   }
 
   /* Floating animation */

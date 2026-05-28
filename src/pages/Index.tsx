@@ -59,14 +59,14 @@ const Index = () => {
   React.useEffect(() => {
     // Dynamic SEO update for Main Page
     const titles = {
-      ar: "Suriix | تصميم مواقع ومتاجر إلكترونية احترافية",
+      ar: "Suriix | سوريكس - تصميم مواقع ومتاجر إلكترونية احترافية",
       en: "Suriix | Professional Web Design & E-Commerce Solutions",
-      zh: "Suriix | 专业网页设计与电子商务解决方案"
+      zh: "Suriix | 专业网页设计与智能电商独立站开发"
     };
     const descriptions = {
-      ar: "وكالة رقمية متخصصة في تصميم المواقع والمتاجر الإلكترونية وتطوير الهوية البصرية والحلول الرقمية الحديثة.",
-      en: "Premium digital agency specializing in professional website design, e-commerce development, branding, and modern digital growth solutions.",
-      zh: "专业的数字化代理商，专注于企业网站设计、电商平台开发、品牌视觉形象升级与创新的数字化增长策略。"
+      ar: "Suriix | سوريكس هي وكالة رقمية متخصصة في تصميم مواقع الإنترنت الاحترافية، وتطوير المتاجر الإلكترونية، وبناء الهوية البصرية، والحلول البرمجية المدعومة بالذكاء الاصطناعي.",
+      en: "Suriix is a premier digital agency specializing in professional web design, customized e-commerce development, branding, and AI-driven business automation.",
+      zh: "Suriix 是一家顶尖的数字化代理商，专注于高转化率网页设计、企业出海电商独立站开发、品牌视觉升级与人工智能系统定制服务。"
     };
 
     document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
@@ -123,7 +123,7 @@ const Index = () => {
           <SectionReveal><AboutSection /></SectionReveal>
           <SectionReveal><DigitalMirror /></SectionReveal>
           <SectionReveal><SolutionsSection /></SectionReveal>
-          <SectionReveal><PackagesSection /></SectionReveal>
+          <SectionReveal><PackagesSection isHome={true} /></SectionReveal>
           <SectionReveal><ReadyWebsitesSection /></SectionReveal>
           <SectionReveal><PortfolioSection /></SectionReveal>
           <SectionReveal><TestimonialsSection /></SectionReveal>

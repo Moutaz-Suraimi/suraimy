@@ -4,129 +4,85 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Blocking Script to Resolve FOUC Theme Flashing -->
+    <!-- ① Theme: runs sync before first paint — prevents dark/light flash (FOUC) -->
     <script>
-      (function() {
-        try {
-          var saved = localStorage.getItem("suriix_theme");
-          var isDark = saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches);
-          if (isDark) {
-            document.documentElement.classList.remove("light");
-            document.documentElement.classList.add("dark");
-          } else {
-            document.documentElement.classList.remove("dark");
-            document.documentElement.classList.add("light");
-          }
-        } catch (e) {}
-      })();
+      (function(){try{var s=localStorage.getItem("suriix_theme");var d=s==="dark"||(!s&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.className=d?"dark":"light";}catch(e){}})();
     </script>
 
-    <!-- Inline Styles to Lock Background and Fade In Seamlessly -->
+    <!-- ② Critical inline CSS: locks background + hides body until JS hydrates
+         The body reveal is driven by the 'loaded' class added in main.tsx.
+         Using visibility:hidden instead of opacity:0 lets Lighthouse measure LCP
+         correctly (element is in DOM and sized, just not visible). -->
     <style>
-      html.dark {
-        background-color: #090714 !important;
-      }
-      html.light {
-        background-color: #ffffff !important;
-      }
+      html.dark  { background-color: #090714; color-scheme: dark;  }
+      html.light { background-color: #ffffff; color-scheme: light; }
       body {
         margin: 0;
         padding: 0;
-        opacity: 0;
-        transition: opacity 0.25s ease-in;
+        /* visibility:hidden means the element is measured (no CLS) but not painted.
+           opacity:0 was preventing Lighthouse from detecting LCP correctly. */
+        visibility: hidden;
       }
       body.loaded {
-        opacity: 1 !important;
+        visibility: visible;
+        animation: body-reveal 0.2s ease-out both;
+      }
+      @keyframes body-reveal {
+        from { opacity: 0; }
+        to   { opacity: 1; }
       }
     </style>
 
-    <!-- Production Runtime Debugger (Auto-catches and displays startup crashes) -->
-    <script>
-      window.addEventListener('error', function(e) {
-        var errorDiv = document.getElementById('runtime-error-banner');
-        if (!errorDiv) {
-          errorDiv = document.createElement('div');
-          errorDiv.id = 'runtime-error-banner';
-          errorDiv.style.position = 'fixed';
-          errorDiv.style.top = '0';
-          errorDiv.style.left = '0';
-          errorDiv.style.width = '100%';
-          errorDiv.style.backgroundColor = '#ef4444';
-          errorDiv.style.color = '#ffffff';
-          errorDiv.style.padding = '16px';
-          errorDiv.style.zIndex = '999999';
-          errorDiv.style.fontSize = '14px';
-          errorDiv.style.fontFamily = 'monospace';
-          errorDiv.style.whiteSpace = 'pre-wrap';
-          errorDiv.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
-          document.body.appendChild(errorDiv);
-        }
-        errorDiv.innerText = '⚠️ Startup Crash Detected:\n' + e.message + '\nFile: ' + e.filename + '\nLine: ' + e.lineno + ':' + e.colno + '\nStack: ' + (e.error ? e.error.stack : 'No stack trace');
-      });
-      window.addEventListener('unhandledrejection', function(e) {
-        var errorDiv = document.getElementById('runtime-error-banner');
-        if (!errorDiv) {
-          errorDiv = document.createElement('div');
-          errorDiv.id = 'runtime-error-banner';
-          errorDiv.style.position = 'fixed';
-          errorDiv.style.top = '0';
-          errorDiv.style.left = '0';
-          errorDiv.style.width = '100%';
-          errorDiv.style.backgroundColor = '#ef4444';
-          errorDiv.style.color = '#ffffff';
-          errorDiv.style.padding = '16px';
-          errorDiv.style.zIndex = '999999';
-          errorDiv.style.fontSize = '14px';
-          errorDiv.style.fontFamily = 'monospace';
-          errorDiv.style.whiteSpace = 'pre-wrap';
-          errorDiv.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
-          document.body.appendChild(errorDiv);
-        }
-        errorDiv.innerText = '⚠️ Unhandled Promise Rejection:\n' + e.reason;
-      });
-    </script>
-
-    <!-- Font Preconnect & Performance Preloading -->
+    <!-- ③ Performance: preconnect to font origins (saves 200-400ms DNS+TCP+TLS) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="preload" as="image" href="/favicon-192x192.png" fetchpriority="high" />
-    <!-- Pruned to absolute critical weights: Cairo 400/700 (Arabic body/headers), Space Grotesk 700 (English headers), Inter 400/600 (English body/medium) -->
-    <!-- display=swap ensures text renders immediately with system font, web font swapped in invisibly -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Space+Grotesk:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Space+Grotesk:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet" /></noscript>
 
-    <!-- Primary SEO -->
-    <title>Suriix | تصميم مواقع ومتاجر إلكترونية احترافية</title>
-    <meta name="description" content="وكالة رقمية متخصصة في تصميم المواقع والمتاجر الإلكترونية وتطوير الهوية البصرية والحلول الرقمية الحديثة." />
-    <meta name="keywords" content="تصميم مواقع, تصميم متاجر إلكترونية, برمجة مواقع, هوية بصرية, تسويق رقمي, وكالة رقمية, Suriix, سريكس" />
-    <meta name="author" content="Suriix" />
-    <meta name="robots" content="index, follow" />
+    <!-- ④ Preload the logo — it is the LCP element on mobile -->
+    <link rel="preload" as="image" href="/favicon-192x192.png" fetchpriority="high" />
+
+    <!-- ⑤ Fonts: load async via media="print" trick, swap in on load.
+         Only the 4 weights actually used in the design are requested. -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Space+Grotesk:wght@700&family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Space+Grotesk:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    </noscript>
+
+    <!-- ⑥ Primary SEO -->
+    <title>Suriix | سوريكس - تصميم مواقع ومتاجر إلكترونية احترافية</title>
+    <meta name="description" content="Suriix | سوريكس هي وكالة رقمية متخصصة في تصميم مواقع الإنترنت الاحترافية، وتطوير المتاجر الإلكترونية، وبناء الهوية البصرية، والحلول البرمجية المدعومة بالذكاء الاصطناعي." />
+    <meta name="keywords" content="تصميم مواقع, تصميم متاجر إلكترونية, برمجة مواقع, هوية بصرية, تسويق رقمي, وكالة رقمية, Suriix, سريكس, سوريكس, وكالة سوريكس" />
+    <meta name="author" content="Suriix | سوريكس" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <link rel="canonical" href="https://suriix.com/" />
 
-   <!--auth google adsenes    -->
-    <meta name="google-adsense-account" content="ca-pub-4479803404171955">
-     
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://suriix.com/" />
-    <meta property="og:title" content="Suriix | تصميم مواقع ومتاجر إلكترونية احترافية" />
-    <meta property="og:description" content="وكالة رقمية متخصصة في تصميم المواقع والمتاجر الإلكترونية وتطوير الهوية البصرية والحلول الرقمية الحديثة." />
-    <meta property="og:image" content="/favicon-192x192.png" />
-    <meta property="og:image:width" content="192" />
-    <meta property="og:image:height" content="192" />
-    <meta property="og:locale" content="ar_YE" />
-    <meta property="og:locale:alternate" content="en_US" />
-    <meta property="og:site_name" content="Suriix" />
+    <!-- Google AdSense verification -->
+    <meta name="google-adsense-account" content="ca-pub-4479803404171955" />
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@Suriix" />
-    <meta name="twitter:title" content="Suriix | تصميم مواقع ومتاجر إلكترونية احترافية" />
-    <meta name="twitter:description" content="وكالة رقمية متخصصة في تصميم المواقع والمتاجر الإلكترونية وتطوير الهوية البصرية والحلول الرقمية الحديثة." />
-    <meta name="twitter:image" content="/favicon-192x192.png" />
+    <!-- ⑦ Open Graph -->
+    <meta property="og:type"              content="website" />
+    <meta property="og:url"               content="https://suriix.com/" />
+    <meta property="og:title"             content="Suriix | سوريكس - تصميم مواقع ومتاجر إلكترونية احترافية" />
+    <meta property="og:description"       content="Suriix | سوريكس هي وكالة رقمية رائدة متخصصة في تصميم المواقع، وتطوير المتاجر الإلكترونية، وتصميم الهوية البصرية، وحلول الأتمتة المبتكرة." />
+    <meta property="og:image"             content="https://suriix.com/favicon-192x192.png" />
+    <meta property="og:image:width"       content="192" />
+    <meta property="og:image:height"      content="192" />
+    <meta property="og:locale"            content="ar_YE" />
+    <meta property="og:locale:alternate"  content="en_US" />
+    <meta property="og:site_name"         content="Suriix" />
 
-    <!-- JSON-LD Structured Data -->
+    <!-- ⑧ Twitter Card -->
+    <meta name="twitter:card"        content="summary" />
+    <meta name="twitter:site"        content="@Suriix" />
+    <meta name="twitter:title"       content="Suriix | سوريكس - تصميم مواقع ومتاجر إلكترونية احترافية" />
+    <meta name="twitter:description" content="Suriix | سوريكس هي وكالة رقمية رائدة متخصصة في تصميم المواقع، وتطوير المتاجر الإلكترونية، وتصميم الهوية البصرية، وحلول الأتمتة المبتكرة." />
+    <meta name="twitter:image"       content="https://suriix.com/favicon-192x192.png" />
+
+    <!-- ⑨ JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -134,58 +90,73 @@
         {
           "@type": "Organization",
           "@id": "https://suriix.com/#organization",
-          "name": "Suriix Digital",
+          "name": "Suriix | سوريكس",
+          "alternateName": ["سوريكس", "Suriix", "Suriix Digital", "وكالة سوريكس الرقمية"],
           "url": "https://suriix.com/",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://suriix.com/favicon.png"
+            "url": "https://suriix.com/favicon-192x192.png",
+            "width": "192",
+            "height": "192"
           },
-          "description": "AI-powered digital agency specializing in websites, e-commerce, branding, and digital growth strategies.",
+          "image": "https://suriix.com/favicon-192x192.png",
+          "description": "Suriix | سوريكس هي وكالة رقمية رائدة متخصصة في تصميم المواقع، وتطوير المتاجر الإلكترونية، وتصميم الهوية البصرية، وحلول الأتمتة المبتكرة المدعومة بالذكاء الاصطناعي.",
           "contactPoint": {
             "@type": "ContactPoint",
             "telephone": "+967780930635",
             "contactType": "customer service",
-            "availableLanguage": ["Arabic", "English", "Chinese"]
+            "availableLanguage": ["Arabic", "English", "Chinese"],
+            "areaServed": "Worldwide"
           },
-          "sameAs": []
+          "sameAs": [
+            "https://wa.me/967780930635",
+            "https://suriix.com/"
+          ]
         },
         {
           "@type": "WebSite",
           "@id": "https://suriix.com/#website",
           "url": "https://suriix.com/",
-          "name": "Suriix Digital",
-          "publisher": {
-            "@id": "https://suriix.com/#organization"
+          "name": "Suriix | سوريكس",
+          "alternateName": "سوريكس",
+          "description": "وكالة رقمية متخصصة في تصميم المواقع والمتاجر الإلكترونية وتطوير الهوية البصرية والحلول الرقمية الحديثة.",
+          "publisher": { "@id": "https://suriix.com/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://suriix.com/?s={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
           }
         },
         {
           "@type": "Service",
-          "name": "Digital Agency Services",
-          "provider": {
-            "@id": "https://suriix.com/#organization"
-          },
-          "serviceType": ["Website Development", "E-Commerce", "SEO", "Digital Marketing", "AI Automation", "Brand Identity"],
+          "name": "Suriix Digital Services | خدمات سوريكس الرقمية",
+          "provider": { "@id": "https://suriix.com/#organization" },
+          "serviceType": ["Website Development","E-Commerce","SEO","Digital Marketing","AI Automation","Brand Identity"],
+          "areaServed": "Worldwide",
           "offers": [
             {
               "@type": "Offer",
-              "name": "WordPress Website",
-              "price": "300",
+              "name": "Start Web | انطلاقة الويب",
+              "price": "149",
               "priceCurrency": "USD",
-              "description": "Professional, mobile-responsive website with basic SEO"
+              "description": "Professional landing page with WhatsApp integration, responsive design, and 1-year hosting"
             },
             {
               "@type": "Offer",
-              "name": "E-Commerce Web Store",
-              "price": "1000",
+              "name": "Store Start | انطلاقة المتجر",
+              "price": "299",
               "priceCurrency": "USD",
-              "description": "Full-featured online store with payment gateway and order tracking"
+              "description": "Full online store with product management, payment integration, and admin dashboard"
             },
             {
               "@type": "Offer",
-              "name": "Starter Growth Package",
-              "price": "200",
+              "name": "Pro Web | الويب الاحترافي",
+              "price": "249",
               "priceCurrency": "USD",
-              "description": "SEO optimization, monthly reports, and free consultation"
+              "description": "Multi-page website with SEO optimization, professional email, and performance tuning"
             }
           ]
         },
@@ -194,26 +165,26 @@
           "mainEntity": [
             {
               "@type": "Question",
-              "name": "How long does it take to build a website?",
+              "name": "ما هي خدمات وكالة Suriix | سوريكس؟",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Depends on the project type, usually 5 to 30 business days."
+                "text": "تقدم سوريكس خدمات متكاملة تشمل تصميم المواقع التعريفية، وتطوير المتاجر الإلكترونية، وتصميم الهويات البصرية والشعارات، والحلول البرمجية الذكية المدعومة بالذكاء الاصطناعي."
               }
             },
             {
               "@type": "Question",
-              "name": "Do you offer post-delivery support?",
+              "name": "كم يستغرق بناء الموقع الإلكتروني في سوريكس؟",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes, we provide ongoing technical support and regular maintenance."
+                "text": "يعتمد ذلك على حجم ونوع المشروع، وعادةً ما يستغرق العمل من 5 إلى 30 يوم عمل للمشاريع المخصصة."
               }
             },
             {
               "@type": "Question",
-              "name": "Can I customize a package?",
+              "name": "هل تدعم باقات سوريكس التخصيص؟",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Absolutely! Contact us and we'll design a custom package for your needs."
+                "text": "نعم، جميع باقاتنا قابلة للتخصيص بالكامل لتناسب متطلبات مشروعك. يمكنك التواصل معنا لتصميم الخطة المثالية لأعمالك."
               }
             }
           ]
@@ -222,27 +193,29 @@
     }
     </script>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/favicon-192x192.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-192x192.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-192x192.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
-    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-192x192.png" />
-    <link rel="apple-touch-icon" href="/favicon-192x192.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-192x192.png" />
+    <!-- ⑩ Favicons -->
+    <link rel="icon"             type="image/png" href="/favicon-192x192.png" />
+    <link rel="icon"             type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="apple-touch-icon"                  href="/favicon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="180x180"  href="/favicon-192x192.png" />
 
-    <!-- PWA Manifest -->
+    <!-- ⑪ PWA -->
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#090714" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff"  media="(prefers-color-scheme: light)" />
   </head>
 
   <body>
     <div id="root"></div>
+
+    <!-- ⑫ Main entry — type="module" defers automatically (non-blocking) -->
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- ⑬ Service Worker — registered after page load to avoid competing with LCP -->
     <script>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js');
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' });
         });
       }
     </script>

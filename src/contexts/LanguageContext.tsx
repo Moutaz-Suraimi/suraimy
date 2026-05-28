@@ -112,19 +112,19 @@ export const translations: Translations = {
     zh: "助力业务增长的一站式数字解决方案",
   },
   "hero.title1": {
-    ar: "نصمم حلول رقمية",
-    en: "We design digital solutions",
-    zh: "我们设计数字解决方案",
+    ar: "Suriix | سوريكس - نصمم حلولاً رقمية",
+    en: "Suriix | We design digital solutions",
+    zh: "Suriix | 我们设计数字解决方案",
   },
   "hero.title2": {
-    ar: "تصنع الفرق.",
-    en: "that make a difference.",
-    zh: "创造与众不同。",
+    ar: "تصنع الفارق الحقيقي.",
+    en: "that drive growth.",
+    zh: "助力企业实现数字化增长。",
   },
   "hero.desc": {
-    ar: "في Suriix نقدم لك مواقع احترافية، هوية قوية، وأتمتة ذكية تساعد عملك على النمو بشكل أسرع وأكثر استدامة.",
-    en: "At Suriix, we offer you professional websites, a strong brand identity, and smart automation that helps your business grow faster and more sustainably.",
-    zh: "在Suriix，我们为您提供专业的网站、强大的品牌形象和智能自动化，助力您的业务更快速、更可持续地增长。",
+    ar: "في Suriix | سوريكس نقدم لك مواقع إنترنت احترافية، هوية بصرية قوية، وأنظمة أتمتة ذكية تساعد عملك على النمو والانتشار بشكل أسرع.",
+    en: "At Suriix, we provide professional websites, strong brand identities, and smart automation systems that help your business grow and scale faster.",
+    zh: "在 Suriix，我们为您提供专业的网站、强大的品牌视觉形象和智能自动化系统，助力您的业务更快速地增长和扩张。",
   },
   "hero.btn.start": {
     ar: "ابدأ مشروعك الآن",
