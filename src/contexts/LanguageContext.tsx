@@ -1130,6 +1130,18 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [lang, setLang] = useState<Language>(() => {
     try {
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        const urlLang = params.get("lang") as Language;
+        if (urlLang && ["ar", "en", "zh"].includes(urlLang)) {
+          return urlLang;
+        }
+      }
+    } catch (e) {
+      // Ignore URL parsing errors
+    }
+
+    try {
       // استخدمنا مفتاح جديد لتجاوز أي تخزين سابق في المتصفح 
       const savedLang = localStorage.getItem("suriix_lang_v2") as Language;
       if (savedLang && ["ar", "en", "zh"].includes(savedLang)) {

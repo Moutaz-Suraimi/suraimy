@@ -8,6 +8,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import FooterSection from "@/components/FooterSection";
 import ThemeToggle from "@/components/ThemeToggle";
+import SEO from "@/components/SEO";
 
 const AboutUs = () => {
   const { t, lang, setLang, langLabels, langOrder } = useLanguage();
@@ -15,26 +16,8 @@ const AboutUs = () => {
   const isRtl = lang === "ar";
 
   useEffect(() => {
-    const titles = {
-      ar: "من نحن | وكالة Suriix للحلول الرقمية وتصميم المواقع",
-      en: "About Us | Suriix Digital Solutions & Web Agency",
-      zh: "关于我们 | Suriix 数字化解决方案与网页定制开发团队"
-    };
-    const descriptions = {
-      ar: "تعرف على وكالة Suriix الرقمية. رؤيتنا، قيمنا، ومنهجيتنا الاحترافية في تصميم وتطوير المواقع، المتاجر الإلكترونية وحلول الأتمتة المتقدمة.",
-      en: "Learn more about Suriix Digital Agency. Our vision, core values, and professional methodology for custom web design, e-commerce, and advanced AI business solutions.",
-      zh: "深入了解 Suriix 数字化代理商：我们的核心价值观、技术愿景以及为您量身打造的高效独立站开发与人工智能系统部署流程。"
-    };
-
-    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
-    }
-    
     window.scrollTo(0, 0);
-  }, [lang]);
+  }, []);
 
   const texts = {
     ar: {
@@ -145,6 +128,7 @@ const AboutUs = () => {
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">
+      <SEO />
       {/* Navbar header */}
       <nav className="sticky top-0 z-50 glass-strong px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>

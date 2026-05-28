@@ -5,35 +5,19 @@ import { Link, useNavigate } from "react-router-dom";
 import FooterSection from "@/components/FooterSection";
 import ThemeToggle from "@/components/ThemeToggle";
 import PortfolioSection from "@/components/PortfolioSection";
+import SEO from "@/components/SEO";
 
 const Portfolio = () => {
   const { t, lang, setLang, langLabels, langOrder } = useLanguage();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const titles = {
-      ar: "أعمالنا | مشاريع وتصاميم Suriix",
-      en: "Our Portfolio | Suriix Projects & Custom Designs",
-      zh: "我们的作品集 | Suriix 精选项目与定制设计"
-    };
-    const descriptions = {
-      ar: "استعرض أحدث مشاريع وتصاميم Suriix الاحترافية في تصميم المواقع والمتاجر الإلكترونية والهوية البصرية.",
-      en: "Browse the latest professional projects and custom web designs by Suriix digital agency.",
-      zh: "展示 Suriix 团队在网页设计、电商系统开发、品牌视觉形象升级等领域的精选成功案例。"
-    };
-
-    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
-    }
-    
     window.scrollTo(0, 0);
-  }, [lang]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">
+      <SEO />
       <nav className="sticky top-0 z-50 glass-strong px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>
           <img

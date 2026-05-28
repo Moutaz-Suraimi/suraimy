@@ -5,35 +5,19 @@ import { Link, useNavigate } from "react-router-dom";
 import FooterSection from "@/components/FooterSection";
 import ThemeToggle from "@/components/ThemeToggle";
 import BlogSection from "@/components/BlogSection";
+import SEO from "@/components/SEO";
 
 const Blog = () => {
   const { t, lang, setLang, langLabels, langOrder } = useLanguage();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const titles = {
-      ar: "مدونة Suriix | مقالات ونصائح تقنية ورقمية",
-      en: "Suriix Blog | Tech Insights, Web Design & Digital Tips",
-      zh: "Suriix 博客 | 技术分享与数字化商业指南"
-    };
-    const descriptions = {
-      ar: "اقرأ مقالات ونصائح خبراء Suriix في تصميم المواقع، زيادة مبيعات المتاجر، اتجاهات الذكاء الاصطناعي، واستراتيجيات التسويق الحديثة.",
-      en: "Read articles and expert tips from Suriix on custom website design, e-commerce conversion optimization, AI trends, and digital marketing.",
-      zh: "获取来自 Suriix 专家的独家干货：高转化率网页设计技巧、独立站运营增长方案及前沿人工智能商业化指南。"
-    };
-
-    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
-    }
-    
     window.scrollTo(0, 0);
-  }, [lang]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">
+      <SEO />
       <nav className="sticky top-0 z-50 glass-strong px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>
           <img

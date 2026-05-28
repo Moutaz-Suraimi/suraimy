@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { lazy, Suspense, memo } from "react";
 import PageBackground from "./components/PageBackground";
+import { HelmetProvider } from "react-helmet-async";
 
 // ── Eager (critical-path) imports ───────────────────────────────────────────
 // Index is the landing page — always needed on first load.
@@ -53,37 +54,39 @@ const queryClient = new QueryClient({
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <PageBackground>
-            {/* Suspense boundary wraps ALL routes.
-                Index renders immediately (eager). All others stream in lazily. */}
-            <Suspense fallback={<PageFallback />}>
-              <Routes>
-                <Route path="/"                    element={<Index />} />
-                <Route path="/privacy"             element={<PrivacyPolicy />} />
-                <Route path="/about"               element={<AboutUs />} />
-                <Route path="/terms"               element={<TermsOfUse />} />
-                <Route path="/contact"             element={<ContactUs />} />
-                <Route path="/ready-websites"      element={<ReadyWebsites />} />
-                <Route path="/ready-website/:id"   element={<ReadyWebsiteDetails />} />
-                <Route path="/solutions"           element={<Solutions />} />
-                <Route path="/packages"            element={<Packages />} />
-                <Route path="/portfolio"           element={<Portfolio />} />
-                <Route path="/testimonials"        element={<Testimonials />} />
-                <Route path="/faq"                 element={<FAQ />} />
-                <Route path="/blog"                element={<Blog />} />
-                <Route path="*"                    element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </PageBackground>
-          <InstallPWA />
-        </BrowserRouter>
-      </TooltipProvider>
-    </LanguageProvider>
+    <HelmetProvider>
+      <LanguageProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <PageBackground>
+              {/* Suspense boundary wraps ALL routes.
+                  Index renders immediately (eager). All others stream in lazily. */}
+              <Suspense fallback={<PageFallback />}>
+                <Routes>
+                  <Route path="/"                    element={<Index />} />
+                  <Route path="/privacy"             element={<PrivacyPolicy />} />
+                  <Route path="/about"               element={<AboutUs />} />
+                  <Route path="/terms"               element={<TermsOfUse />} />
+                  <Route path="/contact"             element={<ContactUs />} />
+                  <Route path="/ready-websites"      element={<ReadyWebsites />} />
+                  <Route path="/ready-website/:id"   element={<ReadyWebsiteDetails />} />
+                  <Route path="/solutions"           element={<Solutions />} />
+                  <Route path="/packages"            element={<Packages />} />
+                  <Route path="/portfolio"           element={<Portfolio />} />
+                  <Route path="/testimonials"        element={<Testimonials />} />
+                  <Route path="/faq"                 element={<FAQ />} />
+                  <Route path="/blog"                element={<Blog />} />
+                  <Route path="*"                    element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </PageBackground>
+            <InstallPWA />
+          </BrowserRouter>
+        </TooltipProvider>
+      </LanguageProvider>
+    </HelmetProvider>
   </QueryClientProvider>
 );
 

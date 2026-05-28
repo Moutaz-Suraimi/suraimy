@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ArrowRight, CheckCircle2, ShoppingCart, Globe, Shield, Zap } from "lucide-react";
 import FooterSection from "@/components/FooterSection";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
+import SEO from "@/components/SEO";
 
 const ReadyWebsiteDetails = () => {
   const { id } = useParams();
@@ -18,27 +19,24 @@ const ReadyWebsiteDetails = () => {
   const product = readyWebsitesData.find((p) => p.id === id);
 
   useEffect(() => {
-    if (product) {
-      const titles = {
-        ar: `${product.titleAr} | موقع جاهز فاخر للبيع - Suriix`,
-        en: `${product.title} | Premium Ready-Made Website - Suriix`,
-        zh: `${product.title} | 精选成品网站出售 - Suriix`
-      };
-      const descriptions = {
-        ar: `${product.descriptionAr || product.description} - احصل على هذا الموقع الجاهز والمصمم باحترافية الآن مع تسليم وإعداد فوري خلال ساعات من Suriix.`,
-        en: `${product.description} - Get this professionally designed ready-made website now with instant delivery and setup from Suriix.`,
-        zh: `${product.description} - 立即购买这款由 Suriix 团队精心定制的成品网站，尊享数小时内极速部署上线服务。`
-      };
-
-      document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
-
-      const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) {
-        metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
-      }
-    }
     window.scrollTo(0, 0);
-  }, [id, lang, product]);
+  }, [id]);
+
+  const schema = product ? {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": isAr ? product.titleAr : product.title,
+    "image": product.image.startsWith("http") ? product.image : `https://suriix.com${product.image}`,
+    "description": isAr ? product.descriptionAr : product.description,
+    "offers": {
+      "@type": "Offer",
+      "price": product.price,
+      "priceCurrency": "USD",
+      "availability": product.status === "Available" 
+        ? "https://schema.org/InStock" 
+        : "https://schema.org/LimitedAvailability"
+    }
+  } : undefined;
 
   if (!product) {
     return (
@@ -60,6 +58,11 @@ const ReadyWebsiteDetails = () => {
 
   return (
     <div className="min-h-screen bg-transparent text-foreground font-body">
+      <SEO 
+        title={isAr ? `${product.titleAr} | موقع جاهز فاخر للبيع - Suriix` : `${product.title} | Premium Ready-Made Website - Suriix`}
+        description={isAr ? `${product.descriptionAr} - احصل على هذا الموقع الجاهز والمصمم باحترافية الآن مع تسليم وإعداد فوري خلال ساعات من Suriix.` : `${product.description} - Get this professionally designed ready-made website now with instant delivery and setup from Suriix.`}
+        schema={schema}
+      />
       <ScrollProgressBar />
       
       {/* Top Navigation */}

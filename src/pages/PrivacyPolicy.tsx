@@ -6,15 +6,15 @@ import { Link, useNavigate } from "react-router-dom";
 import FooterSection from "@/components/FooterSection";
 import { useEffect } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
+import SEO from "@/components/SEO";
 
 const PrivacyPolicy = () => {
   const { t, lang, setLang, langLabels, langOrder } = useLanguage();
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = lang === "ar" ? "سياسة الخصوصية | Suriix" : "Privacy Policy | Suriix";
     window.scrollTo(0, 0);
-  }, [lang]);
+  }, []);
 
   const texts = {
     ar: {
@@ -104,6 +104,7 @@ const PrivacyPolicy = () => {
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">
+      <SEO />
       {/* Navbar for subpages */}
       <nav className="sticky top-0 z-50 glass-strong px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>

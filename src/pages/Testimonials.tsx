@@ -5,35 +5,19 @@ import { Link, useNavigate } from "react-router-dom";
 import FooterSection from "@/components/FooterSection";
 import ThemeToggle from "@/components/ThemeToggle";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import SEO from "@/components/SEO";
 
 const Testimonials = () => {
   const { t, lang, setLang, langLabels, langOrder } = useLanguage();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const titles = {
-      ar: "آراء وعملاء Suriix | قصص نجاح حقيقية",
-      en: "Testimonials & Reviews | Suriix Success Stories",
-      zh: "客户评价与成功案例 | Suriix 客户之声"
-    };
-    const descriptions = {
-      ar: "ماذا يقول عملائنا عن خدمات تصميم المواقع، المتاجر الإلكترونية وحلول الأتمتة البرمجية مع Suriix.",
-      en: "Read reviews and success stories from businesses that grew their presence with Suriix digital agency.",
-      zh: "阅读来自全球合作伙伴对 Suriix 网页设计、商城系统定制与业务流自动化服务的真实反馈与成功故事。"
-    };
-
-    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
-    }
-    
     window.scrollTo(0, 0);
-  }, [lang]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">
+      <SEO />
       <nav className="sticky top-0 z-50 glass-strong px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>
           <img

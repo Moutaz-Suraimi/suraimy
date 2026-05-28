@@ -5,35 +5,19 @@ import { Link, useNavigate } from "react-router-dom";
 import FooterSection from "@/components/FooterSection";
 import ThemeToggle from "@/components/ThemeToggle";
 import ReadyWebsitesSection from "@/components/ReadyWebsitesSection";
+import SEO from "@/components/SEO";
 
 const ReadyWebsites = () => {
   const { t, lang, setLang, langLabels, langOrder } = useLanguage();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const titles = {
-      ar: "مواقع جاهزة للبيع | جاهزة ومخصصة لمشروعك",
-      en: "Ready Websites for Sale | Pre-built & Customized for You",
-      zh: "现成网页独立站出售 | 极速上线与品牌定制开发"
-    };
-    const descriptions = {
-      ar: "تصفح واشترِ مواقع إنترنت ومتاجر إلكترونية جاهزة بأفضل الأسعار وبأعلى جودة برمجية وتصميم متجاوب.",
-      en: "Browse and buy pre-built, high-quality websites and online stores customized for your brand instantly.",
-      zh: "浏览并购买现成的、高品质的网站和在线商城，即时为您的品牌进行定制开发与极速上线服务。"
-    };
-
-    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
-    }
-    
     window.scrollTo(0, 0);
-  }, [lang]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">
+      <SEO />
       <nav className="sticky top-0 z-50 glass-strong px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>
           <img

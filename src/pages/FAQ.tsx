@@ -5,35 +5,74 @@ import { Link, useNavigate } from "react-router-dom";
 import FooterSection from "@/components/FooterSection";
 import ThemeToggle from "@/components/ThemeToggle";
 import FAQSection from "@/components/FAQSection";
+import SEO from "@/components/SEO";
 
 const FAQ = () => {
   const { t, lang, setLang, langLabels, langOrder } = useLanguage();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const titles = {
-      ar: "الأسئلة الشائعة والمساعدة | Suriix FAQ",
-      en: "Frequently Asked Questions & Help | Suriix",
-      zh: "常见问题与客户支持 | Suriix FAQ"
-    };
-    const descriptions = {
-      ar: "هل لديك استفسار؟ ابحث عن إجابات واضحة لجميع الأسئلة المتعلقة ببرمجة المواقع، أمن المتاجر الإلكترونية، طرق الدفع والتعاقد مع Suriix.",
-      en: "Got questions? Find clear answers regarding website design, e-commerce security, payment gateways, and project delivery with Suriix.",
-      zh: "有任何疑问？在此查找关于网页定制、电商资金安全、全球支付接口对接及 Suriix 服务交付周期的完整解答。"
-    };
-
-    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
-    }
-    
     window.scrollTo(0, 0);
-  }, [lang]);
+  }, []);
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": t("faq.q1"),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t("faq.a1")
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t("faq.q2"),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t("faq.a2")
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t("faq.q3"),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t("faq.a3")
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t("faq.q4"),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t("faq.a4")
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t("faq.q5"),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t("faq.a5")
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t("faq.q6"),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t("faq.a6")
+        }
+      }
+    ]
+  };
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">
+      <SEO schema={faqSchema} />
       <nav className="sticky top-0 z-50 glass-strong px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>
           <img

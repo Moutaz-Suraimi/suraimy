@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import FooterSection from "@/components/FooterSection";
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
+import SEO from "@/components/SEO";
 
 const WHATSAPP_NUMBER = "967780930635";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
@@ -148,26 +149,8 @@ const ContactUs = () => {
   };
 
   useEffect(() => {
-    const titles = {
-      ar: "تواصل معنا | Suriix",
-      en: "Contact Us | Suriix",
-      zh: "联系我们 | Suriix"
-    };
-    const descriptions = {
-      ar: "تواصل مع فريق Suriix للحصول على حلول رقمية احترافية وتصميم مواقع ومتاجر إلكترونية حديثة.",
-      en: "Get in touch with Suriix for premium digital solutions, custom web design, and advanced systems development.",
-      zh: "联系 Suriix 团队，获取专业的数字化解决方案、现代化网站与电商平台定制开发服务。"
-    };
-
-    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
-    }
-    
     window.scrollTo(0, 0);
-  }, [lang]);
+  }, []);
 
   const texts = {
     ar: {
@@ -218,6 +201,7 @@ const ContactUs = () => {
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">
+      <SEO />
       {/* Dynamic Nav Header */}
       <nav className="sticky top-0 z-50 glass-strong px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>

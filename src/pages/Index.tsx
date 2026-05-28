@@ -2,6 +2,7 @@ import React, { useState, memo, useCallback, lazy, Suspense, useEffect } from "r
 import { motion } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
+import SEO from "@/components/SEO";
 // Lazy: only loaded on very first visit (sessionStorage gate) — saves 9KB from critical path
 const CinematicIntro = lazy(() => import("@/components/CinematicIntro"));
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -106,26 +107,98 @@ const Index = () => {
     }
   }, []);
 
-  React.useEffect(() => {
-    // Dynamic SEO update for Main Page
-    const titles = {
-      ar: "Suriix | سوريكس - تصميم مواقع ومتاجر إلكترونية احترافية",
-      en: "Suriix | Professional Web Design & E-Commerce Solutions",
-      zh: "Suriix | 专业网页设计与智能电商独立站开发"
-    };
-    const descriptions = {
-      ar: "Suriix | سوريكس هي وكالة رقمية متخصصة في تصميم مواقع الإنترنت الاحترافية، وتطوير المتاجر الإلكترونية، وبناء الهوية البصرية، والحلول البرمجية المدعومة بالذكاء الاصطناعي.",
-      en: "Suriix is a premier digital agency specializing in professional web design, customized e-commerce development, branding, and AI-driven business automation.",
-      zh: "Suriix 是一家顶尖的数字化代理商，专注于高转化率网页设计、企业出海电商独立站开发、品牌视觉升级与人工智能系统定制服务。"
-    };
-
-    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
-
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
-    }
-  }, [lang]);
+  const homeSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://suriix.com/#organization",
+        "name": "Suriix | سوريكس",
+        "alternateName": ["سوريكس", "Suriix", "Suriix Digital", "وكالة سوريكس الرقمية"],
+        "url": "https://suriix.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://suriix.com/favicon-192x192.png",
+          "width": "192",
+          "height": "192"
+        },
+        "image": "https://suriix.com/favicon-192x192.png",
+        "description": lang === "ar"
+          ? "Suriix | سوريكس هي وكالة رقمية رائدة متخصصة في تصميم المواقع، وتطوير المتاجر الإلكترونية، وتصميم الهوية البصرية، وحلول الأتمتة المبتكرة المدعومة بالذكاء الاصطناعي."
+          : lang === "zh"
+          ? "Suriix 是一家顶尖的数字化代理商，专注于高转化率网页设计、企业出海电商独立站开发、品牌视觉升级与人工智能系统定制服务。"
+          : "Suriix is a premier digital agency specializing in professional web design, customized e-commerce development, branding, and AI-driven business automation.",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+967780930635",
+          "contactType": "customer service",
+          "availableLanguage": ["Arabic", "English", "Chinese"],
+          "areaServed": "Worldwide"
+        },
+        "sameAs": [
+          "https://wa.me/967780930635",
+          "https://suriix.com/"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://suriix.com/#website",
+        "url": "https://suriix.com/",
+        "name": "Suriix | سوريكس",
+        "alternateName": "سوريكس",
+        "description": lang === "ar"
+          ? "وكالة رقمية متخصصة في تصميم المواقع والمتاجر الإلكترونية وتطوير الهوية البصرية والحلول الرقمية الحديثة."
+          : lang === "zh"
+          ? "一站式数字解决方案，助力业务增长。"
+          : "Digital agency specialized in web design, e-commerce, and digital branding.",
+        "publisher": { "@id": "https://suriix.com/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://suriix.com/?s={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Service",
+        "name": "Suriix Digital Services | خدمات سوريكس الرقمية",
+        "provider": { "@id": "https://suriix.com/#organization" },
+        "serviceType": ["Website Development","E-Commerce","SEO","Digital Marketing","AI Automation","Brand Identity"],
+        "areaServed": "Worldwide",
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": lang === "ar" ? "انطلاقة الويب" : "Start Web",
+            "price": "149",
+            "priceCurrency": "USD",
+            "description": lang === "ar"
+              ? "صفحة هبوط احترافية مع ربط واتساب وتصميم متجاوب واستضافة مجانية لسنة"
+              : "Professional landing page with WhatsApp integration, responsive design, and 1-year hosting"
+          },
+          {
+            "@type": "Offer",
+            "name": lang === "ar" ? "انطلاقة المتجر" : "Store Start",
+            "price": "299",
+            "priceCurrency": "USD",
+            "description": lang === "ar"
+              ? "متجر إلكتروني متكامل مع إدارة منتجات وبوابة دفع ولوحة تحكم للمدير"
+              : "Full online store with product management, payment integration, and admin dashboard"
+          },
+          {
+            "@type": "Offer",
+            "name": lang === "ar" ? "الويب الاحترافي" : "Pro Web",
+            "price": "249",
+            "priceCurrency": "USD",
+            "description": lang === "ar"
+              ? "موقع متعدد الصفحات مع تهيئة SEO وبريد مهني وتحسين الأداء"
+              : "Multi-page website with SEO optimization, professional email, and performance tuning"
+          }
+        ]
+      }
+    ]
+  };
 
   React.useEffect(() => {
     if (!showIntro && window.location.hash) {
@@ -184,6 +257,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-transparent overflow-x-hidden">
+      <SEO schema={homeSchema} />
       {/* CinematicIntro — lazy loaded, only shown once per session */}
       {showIntro && (
         <Suspense fallback={null}>

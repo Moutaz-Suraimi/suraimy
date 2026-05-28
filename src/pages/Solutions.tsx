@@ -7,6 +7,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import FooterSection from "@/components/FooterSection";
 import ThemeToggle from "@/components/ThemeToggle";
+import SEO from "@/components/SEO";
 
 const WHATSAPP_URL = "https://wa.me/967780930635";
 
@@ -16,26 +17,8 @@ const Solutions = () => {
   const isRtl = lang === "ar";
 
   useEffect(() => {
-    const titles = {
-      ar: "خدمات Suriix | تصميم مواقع وتسويق رقمي وبرمجة",
-      en: "Suriix Services | Web Design, Digital Marketing & Coding",
-      zh: "Suriix 服务 | 网页设计、数字营销与编程"
-    };
-    const descriptions = {
-      ar: "خدمات احترافية تشمل تصميم المواقع، المتاجر الإلكترونية، تطوير الهوية البصرية، التسويق الرقمي، وإدارة المحتوى.",
-      en: "Professional digital services including web design, e-commerce stores, brand identity development, digital marketing, and content management.",
-      zh: "专业的数字化服务，包括网页设计、电商平台开发、品牌视觉形象升级、数字营销与内容管理。"
-    };
-
-    document.title = titles[lang as "ar" | "en" | "zh"] || titles.en;
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", descriptions[lang as "ar" | "en" | "zh"] || descriptions.en);
-    }
-    
     window.scrollTo(0, 0);
-  }, [lang]);
+  }, []);
 
   const texts = {
     ar: {
@@ -347,6 +330,7 @@ const Solutions = () => {
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col">
+      <SEO />
       {/* Navbar Header */}
       <nav className="sticky top-0 z-50 glass-strong px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>
