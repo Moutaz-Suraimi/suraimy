@@ -17,8 +17,8 @@ export default defineConfig(({ mode }) => ({
   },
 
   build: {
-    // Target modern browsers — removes legacy polyfills
-    target: "es2020",
+    // Target es2015 to support older Chromium versions used by react-snap (Chromium 78 does not support ES2020 optional chaining)
+    target: "es2015",
 
     // Inline small assets ≤ 4 KB as base64 (saves HTTP requests for icons/svgs)
     assetsInlineLimit: 4096,
