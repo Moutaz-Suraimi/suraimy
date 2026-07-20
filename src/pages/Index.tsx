@@ -13,7 +13,6 @@ const SolutionsSection = lazy(() => import("@/components/SolutionsSection"));
 const PackagesSection = lazy(() => import("@/components/PackagesSection"));
 const ReadyWebsitesSection = lazy(() => import("@/components/ReadyWebsitesSection"));
 const PortfolioSection = lazy(() => import("@/components/PortfolioSection"));
-const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
 const FAQSection = lazy(() => import("@/components/FAQSection"));
 const BlogSection = lazy(() => import("@/components/BlogSection"));
 const HomeCTA = lazy(() => import("@/components/HomeCTA"));
@@ -288,10 +287,6 @@ const Index = () => {
 
         <ScrollLazyContainer placeholderHeight="600px">
           <SectionReveal><PortfolioSection isHome={true} /></SectionReveal>
-        </ScrollLazyContainer>
-
-        <ScrollLazyContainer placeholderHeight="400px">
-          <SectionReveal><TestimonialsSection isHome={true} /></SectionReveal>
         </ScrollLazyContainer>
 
         <ScrollLazyContainer placeholderHeight="300px">

@@ -57,6 +57,7 @@ export const translations: Translations = {
   },
   // Nav
   "nav.home": { ar: "الرئيسية", en: "Home", zh: "首页" },
+  "nav.store": { ar: "متجر سوريكس", en: "Suriix Store", zh: "Suriix Store" },
   "nav.about": { ar: "من نحن", en: "About", zh: "关于我们" },
   "nav.mirror": { ar: "المرآة الرقمية", en: "Digital Mirror", zh: "数字镜像" },
   "nav.solutions": { ar: "الحلول", en: "Solutions", zh: "解决方案" },
@@ -70,6 +71,7 @@ export const translations: Translations = {
   "nav.faq": { ar: "الأسئلة", en: "FAQ", zh: "常见问题" },
   "nav.contact": { ar: "تواصل معنا", en: "Contact", zh: "联系我们" },
   "nav.blog": { ar: "المدونة", en: "Blog", zh: "博客" },
+  "nav.admin": { ar: "لوحة التحكم", en: "Admin", zh: "控制台" },
 
   // Hero
   "hero.build": { ar: "ابنِ", en: "Build", zh: "建立" },
@@ -246,11 +248,6 @@ export const translations: Translations = {
     ar: "الباقات",
     en: "Packages",
     zh: "套餐",
-  },
-  "packages.websites": {
-    ar: "باقات المواقع",
-    en: "Website Packages",
-    zh: "网站套餐",
   },
   "packages.ecommerce": {
     ar: "باقات المتاجر",
@@ -752,21 +749,6 @@ export const translations: Translations = {
     en: "Paid Ads",
     zh: "付费广告",
   },
-  "packages.tab.website": {
-    ar: "تصميم المواقع",
-    en: "Website Design",
-    zh: "网站设计",
-  },
-  "packages.tab.ecommerce": {
-    ar: "المتاجر الإلكترونية",
-    en: "E-Commerce",
-    zh: "电子商务",
-  },
-  "packages.tab.mixed": {
-    ar: "الباقات المدمجة",
-    en: "Mixed Packages",
-    zh: "混合套餐",
-  },
   "packages.hub.label": {
     ar: "مركز الباقات الرقمية",
     en: "Digital Packages Hub",
@@ -850,40 +832,6 @@ export const translations: Translations = {
     ar: "حملات متعددة المنصات مع تحليلات متقدمة وتعديل استراتيجي مستمر.",
     en: "Multi-platform campaigns with advanced analytics and continuous strategy refinement.",
     zh: "多平台活动，高级分析和持续策略调整。",
-  },
-
-  // Website Design package names
-  "packages.web.basic.name": {
-    ar: "WordPress الأساسي",
-    en: "WordPress Basic",
-    zh: "WordPress基础",
-  },
-  "packages.web.dynamic.name": {
-    ar: "موقع ديناميكي",
-    en: "Dynamic Website",
-    zh: "动态网站",
-  },
-  "packages.web.custom.name": {
-    ar: "موقع مخصص",
-    en: "Custom Website",
-    zh: "定制网站",
-  },
-
-  // Website Design – expanded description
-  "packages.web.basic.name.desc": {
-    ar: "موقع WordPress بسيط يشمل الصفحات الأساسية ونموذج الاتصال.",
-    en: "Simple WordPress site with essential pages and a contact form.",
-    zh: "简单的WordPress网站，包含基础页面和联系表单。",
-  },
-  "packages.web.dynamic.name.desc": {
-    ar: "موقع تفاعلي مع نظام إدارة المحتوى، محسّن للجوال ومحركات البحث.",
-    en: "Interactive website with CMS, optimised for mobile and search engines.",
-    zh: "带CMS的交互式网站，针对移动端和搜索引擎优化。",
-  },
-  "packages.web.custom.name.desc": {
-    ar: "تصميم ومميزات مخصصة بالكامل حسب احتياجات مشروعك.",
-    en: "Fully custom design and features tailored to your project's requirements.",
-    zh: "完全定制设计和功能，根据项目需求量身打造。",
   },
 
   // E-Commerce package names
@@ -986,23 +934,6 @@ export const translations: Translations = {
     ar: "مرحباً، أنا مهتم بباقة الإعلانات الاحترافية بسعر 225$. أرجو التواصل لبدء مشروعي.",
     en: "Hello, I am interested in the Pro Ads Package at $225. Please contact me to start my project.",
     zh: "您好，我对225美元的专业广告套餐感兴趣，请联系我开始项目。",
-  },
-
-  // WhatsApp pre-filled messages – Website Design
-  "packages.wa.web.basic": {
-    ar: "مرحباً، أنا مهتم بباقة WordPress الأساسية بسعر 100$. أرجو التواصل لبدء مشروعي.",
-    en: "Hello, I am interested in the WordPress Basic Website Package at $100. Please contact me to start my project.",
-    zh: "您好，我对100美元的WordPress基础网站套餐感兴趣，请联系我开始项目。",
-  },
-  "packages.wa.web.dynamic": {
-    ar: "مرحباً، أنا مهتم بباقة الموقع الديناميكي بسعر 150$. أرجو التواصل لبدء مشروعي.",
-    en: "Hello, I am interested in the Dynamic Website Package at $150. Please contact me to start my project.",
-    zh: "您好，我对150美元的动态网站套餐感兴趣，请联系我开始项目。",
-  },
-  "packages.wa.web.custom": {
-    ar: "مرحباً، أنا مهتم بباقة الموقع المخصص بسعر 225$. أرجو التواصل لبدء مشروعي.",
-    en: "Hello, I am interested in the Custom Website Package at $225. Please contact me to start my project.",
-    zh: "您好，我对225美元的定制网站套餐感兴趣，请联系我开始项目。",
   },
 
   // WhatsApp pre-filled messages – E-Commerce

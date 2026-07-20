@@ -18,7 +18,6 @@ import InstallPWA from "./components/InstallPWA";
 // Each page becomes its own JS chunk that only loads when the user navigates.
 // This shrinks the initial bundle by ~60%, directly improving FCP and TTI.
 const ReadyWebsites     = lazy(() => import("./pages/ReadyWebsites"));
-const Testimonials      = lazy(() => import("./pages/Testimonials"));
 const PrivacyPolicy     = lazy(() => import("./pages/PrivacyPolicy"));
 const AboutUs           = lazy(() => import("./pages/AboutUs"));
 const TermsOfUse        = lazy(() => import("./pages/TermsOfUse"));
@@ -30,6 +29,9 @@ const Portfolio         = lazy(() => import("./pages/Portfolio"));
 const FAQ               = lazy(() => import("./pages/FAQ"));
 const Blog              = lazy(() => import("./pages/Blog"));
 const NotFound          = lazy(() => import("./pages/NotFound"));
+const AdminDashboard    = lazy(() => import("./pages/AdminDashboard"));
+const AdminLogin        = lazy(() => import("./pages/AdminLogin"));
+const SuriixStore       = lazy(() => import("./pages/SuriixStore"));
 
 // Minimal fallback — avoids layout shift while lazy chunk loads.
 // Uses the same background color as the page so no flash occurs.
@@ -66,6 +68,7 @@ const App = () => (
               <Suspense fallback={<PageFallback />}>
                 <Routes>
                   <Route path="/"                    element={<Index />} />
+                  <Route path="/store"               element={<SuriixStore />} />
                   <Route path="/privacy"             element={<PrivacyPolicy />} />
                   <Route path="/about"               element={<AboutUs />} />
                   <Route path="/terms"               element={<TermsOfUse />} />
@@ -75,9 +78,10 @@ const App = () => (
                   <Route path="/solutions"           element={<Solutions />} />
                   <Route path="/packages"            element={<Packages />} />
                   <Route path="/portfolio"           element={<Portfolio />} />
-                  <Route path="/testimonials"        element={<Testimonials />} />
                   <Route path="/faq"                 element={<FAQ />} />
                   <Route path="/blog"                element={<Blog />} />
+                  <Route path="/admin"              element={<AdminDashboard />} />
+                  <Route path="/admin-login"        element={<AdminLogin />} />
                   <Route path="*"                    element={<NotFound />} />
                 </Routes>
               </Suspense>

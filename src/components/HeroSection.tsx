@@ -13,6 +13,7 @@ const WHATSAPP = "https://wa.me/967780930635";
 // Static data defined outside component — avoids re-creation on every render
 const NAV_ITEMS = [
   { key: "nav.home", href: "/" },
+  { key: "nav.store", href: "/store" },
   { key: "nav.packages", href: "/packages" },
   { key: "nav.portfolio", href: "/portfolio" },
   { key: "nav.solutions", href: "/solutions" },
@@ -123,7 +124,7 @@ const HeroSection = memo(({ isIntroActive = false }: HeroSectionProps) => {
       {/* --- Horizontal Top Navbar --- */}
       <header className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 transition-all duration-300 md:px-12 ${
         isScrolled
-          ? "py-4 bg-background/80 dark:bg-background/75 backdrop-blur-md md:backdrop-blur-lg border-b border-border/30 shadow-lg"
+          ? "py-4 bg-background/95 dark:bg-background/95 md:bg-background/80 md:dark:bg-background/75 backdrop-blur-none md:backdrop-blur-lg border-b border-border/30 shadow-lg"
           : "py-5 bg-transparent"
       }`}>
         {/* Logo */}
@@ -334,7 +335,7 @@ const HeroSection = memo(({ isIntroActive = false }: HeroSectionProps) => {
 
             {/* Watch Portfolio CTA */}
             <button
-              onClick={() => handleNavClick("#portfolio")}
+              onClick={() => handleNavClick("/portfolio")}
               className="flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-base bg-white/40 dark:bg-white/5 border border-white/50 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 text-foreground transition-all scale-100 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-sm"
             >
               <span className="w-6 h-6 rounded-full bg-foreground/10 flex items-center justify-center">

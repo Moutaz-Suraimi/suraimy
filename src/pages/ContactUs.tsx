@@ -9,6 +9,7 @@ import FooterSection from "@/components/FooterSection";
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import SEO from "@/components/SEO";
+import { supabase } from "@/lib/supabase";
 
 const WHATSAPP_NUMBER = "967780930635";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
@@ -123,11 +124,22 @@ const ContactUs = () => {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSending(true);
+
+    // Save to database
+    try {
+      await supabase.from('support_messages').insert({
+        name,
+        email,
+        message
+      });
+    } catch(err) {
+      console.error('Failed to save message:', err);
+    }
 
     // Format WhatsApp message
     const waText = [
@@ -138,14 +150,12 @@ const ContactUs = () => {
       message
     ].join("\n");
 
-    setTimeout(() => {
-      setSubmitted(true);
-      setIsSending(false);
-      window.open(
-        `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`,
-        "_blank"
-      );
-    }, 1200);
+    setSubmitted(true);
+    setIsSending(false);
+    window.open(
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`,
+      "_blank"
+    );
   };
 
   useEffect(() => {

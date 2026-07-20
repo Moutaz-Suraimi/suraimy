@@ -3,7 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Home, Users, Layers, Package, Lightbulb,
-  HelpCircle, MessageSquare, Menu, X, Globe, Briefcase, Star, BookOpen
+  HelpCircle, MessageSquare, Menu, X, Globe, Briefcase, Star, BookOpen, Store, ShieldCheck
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
@@ -15,10 +15,10 @@ const navItems = [
   { key: "nav.solutions", icon: Lightbulb, href: "#solutions" },
   { key: "nav.packages", icon: Package, href: "#packages" },
   { key: "nav.portfolio", icon: Briefcase, href: "#portfolio" },
-  { key: "nav.testimonials", icon: Star, href: "#testimonials" },
   { key: "nav.faq", icon: HelpCircle, href: "#faq" },
   { key: "nav.blog", icon: BookOpen, href: "#blog" },
   { key: "nav.contact", icon: MessageSquare, href: "/contact" },
+  { key: "nav.admin", icon: ShieldCheck, href: "/admin" },
 ];
 
 const SideNav = () => {
@@ -113,28 +113,28 @@ const SideNav = () => {
       <AnimatePresence>
         {showNavbar && (
           <motion.div
-            initial={{ opacity: 0, y: -72 }}
+            initial={{ opacity: 0, y: -42 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -72 }}
+            exit={{ opacity: 0, y: -42 }}
             transition={{ duration: 0.3 }}
-            className="fixed top-0 left-0 right-0 h-[72px] z-50 md:hidden glass-strong border-b border-border/40 flex items-center px-4 shadow-sm"
+            className="fixed top-0 left-0 right-0 h-[42px] z-50 md:hidden glass-strong border-b border-border/40 flex items-center px-3 shadow-sm"
           >
             {/* Toggle Button */}
             <div className="flex-1 flex justify-start">
               <button 
                 onClick={() => setMobileOpen(!mobileOpen)} 
-                className="p-2.5 rounded-xl bg-secondary/50 hover:bg-primary/20 transition-colors border border-border/50"
+                className="p-1.5 rounded-lg bg-secondary/50 hover:bg-primary/20 transition-colors border border-border/50"
               >
-                 {mobileOpen ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5 text-foreground" />}
+                 {mobileOpen ? <X className="w-4 h-4 text-foreground" /> : <Menu className="w-4 h-4 text-foreground" />}
               </button>
             </div>
 
             {/* Center Logo */}
-            <div className="flex items-center gap-2 shrink-0 pointer-events-none">
-              <div className="w-9 h-9 rounded-xl bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-md flex items-center justify-center">
-                <span className="font-display font-black text-base bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent leading-none">S</span>
+            <div className="flex items-center gap-1.5 shrink-0 pointer-events-none">
+              <div className="w-6 h-6 rounded-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-md flex items-center justify-center">
+                <span className="font-display font-black text-xs bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent leading-none">S</span>
               </div>
-              <span className="font-bold text-xl gradient-text tracking-wide">Suriix</span>
+              <span className="font-bold text-base gradient-text tracking-wide">Suriix</span>
             </div>
 
             {/* Language & Theme Controls */}
@@ -143,11 +143,11 @@ const SideNav = () => {
               <div className="relative">
                 <button 
                   onClick={cycleLang} 
-                  className="p-2.5 rounded-xl bg-secondary/50 border border-border/50 hover:bg-primary/20 text-sm font-semibold flex items-center gap-1.5 transition-colors"
+                  className="p-1.5 rounded-full bg-secondary/50 border border-border/50 hover:bg-primary/20 text-xs font-semibold flex items-center gap-1 transition-colors h-8 w-8 justify-center"
                 >
-                  <Globe className="w-4 h-4" />
-                  <span className="hidden sm:inline-block">{langLabels[lang]}</span>
-                  <span className="sm:hidden uppercase">{lang}</span>
+                  <Globe className="w-3.5 h-3.5" />
+                  {/* Hide text on mobile to save space completely as requested */}
+                  <span className="hidden leading-none">{lang}</span>
                 </button>
                 <AnimatePresence>
                   {langMenuOpen && (
