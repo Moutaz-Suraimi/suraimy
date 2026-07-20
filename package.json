@@ -102,7 +102,6 @@
     },
     "inlineCss": false,
     "delay": 2000,
-    "puppeteerExecutablePath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
     "puppeteerArgs": [
       "--no-sandbox",
       "--disable-setuid-sandbox"
