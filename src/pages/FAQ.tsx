@@ -66,6 +66,22 @@ const FAQ = () => {
           "@type": "Answer",
           "text": t("faq.a6")
         }
+      },
+      {
+        "@type": "Question",
+        "name": t("faq.q7"),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t("faq.a7")
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t("faq.q8"),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t("faq.a8")
+        }
       }
     ]
   };

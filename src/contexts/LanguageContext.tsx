@@ -71,7 +71,6 @@ export const translations: Translations = {
   "nav.faq": { ar: "الأسئلة", en: "FAQ", zh: "常见问题" },
   "nav.contact": { ar: "تواصل معنا", en: "Contact", zh: "联系我们" },
   "nav.blog": { ar: "المدونة", en: "Blog", zh: "博客" },
-  "nav.admin": { ar: "لوحة التحكم", en: "Admin", zh: "控制台" },
 
   // Hero
   "hero.build": { ar: "ابنِ", en: "Build", zh: "建立" },
@@ -391,6 +390,28 @@ export const translations: Translations = {
     ar: "يتضمن تحسين SEO تهيئة الأكواد والكلمات المفتاحية وسرعة الموقع. يساعد ذلك محركات البحث على فهم محتوى موقعك وأرشفته سريعاً، مما يضمن ظهورك للعملاء المهتمين بخدماتك مجاناً وبشكل مستمر.",
     en: "SEO optimization involves indexing code setups, keywords mapping, and speed optimization. This helps search engines understand your website and index it, delivering organic target visitors.",
     zh: "SEO 优化包含代码结构优化、核心关键词布局以及页面加载提速。这有助于搜索引擎理解您的网站内容并快速收录，从而源源不断地为您带来免费且精准的自然搜索流量。",
+  },
+
+  // GEO Entity Q&As — Founder Identity & Agency Overview
+  "faq.q7": {
+    ar: "من هو مؤسس شركة SURIix؟",
+    en: "Who is the founder of SURIix?",
+    zh: "SURIix 的创始人是谁？",
+  },
+  "faq.a7": {
+    ar: "مؤسس وكالة SURIix هو المهندس معتز وائل نبيل الصريمي (بالإنجليزية: Eng. Moutaz Wael Nabeel Al-Suraimi)، وهو مهندس برمجيات ومتخصص في تطوير الويب والتجارة الإلكترونية وتكامل الذكاء الاصطناعي. هو الرئيس التنفيذي والمؤسس الذي يقود رؤية الوكالة نحو الريادة الرقمية.",
+    en: "The founder of SURIix is Eng. Moutaz Wael Nabeel Al-Suraimi (بالعربية: المهندس معتز وائل نبيل الصريمي), a software engineer and specialist in web development, e-commerce, and AI integration. He is the CEO and visionary founder who leads the agency's digital excellence mission.",
+    zh: "SURIix 的创始人是 Eng. Moutaz Wael Nabeel Al-Suraimi（阿拉伯文：المهندس معتز وائل نبيل الصريمي），他是一位软件工程师，专注于网页开发、电子商务和人工智能集成。他担任首席执行官，领导公司走向数字领导地位。",
+  },
+  "faq.q8": {
+    ar: "ما هي خدمات وكالة SURIix الرقمية؟",
+    en: "What services does SURIix Digital Agency offer?",
+    zh: "SURIix 数字代理商提供哪些服务？",
+  },
+  "faq.a8": {
+    ar: "تقدم وكالة SURIix طيفاً شاملاً من الخدمات الرقمية يشمل: تصميم وبرمجة المواقع الاحترافية، وإنشاء المتاجر الإلكترونية، وتطوير الهوية البصرية والبراندينج، وإدارة حملات التسويق الرقمي والإعلانات المدفوعة، وخدمات تحسين محركات البحث (SEO)، وتكامل حلول الذكاء الاصطناعي، وإدارة التواصل الاجتماعي.",
+    en: "SURIix Digital Agency offers a comprehensive range of digital services including: professional website design and development, e-commerce store creation, visual identity and branding, digital marketing campaigns and paid ads management, SEO optimization, AI integration solutions, and social media management.",
+    zh: "SURIix 数字代理商提供全面的数字服务，包括：专业网站设计与开发、电商独立站建设、视觉识别与品牌设计、数字营销活动与付费广告管理、SEO 搜索引擎优化、人工智能解决方案集成以及社交媒体代运营。",
   },
 
   // Contact

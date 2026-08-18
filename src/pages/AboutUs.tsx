@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion } from "framer-motion";
 import { 
-  ArrowLeft, Users, Eye, Target, Cpu, CheckCircle2, 
+  ArrowLeft, Users, Eye, Target, CheckCircle2, 
   Award, ShieldCheck, HeartHandshake, Zap, Compass 
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -22,11 +21,18 @@ const AboutUs = () => {
   const texts = {
     ar: {
       heroTitle: "من نحن — قصة الابتكار الرقمي",
-      heroSubtitle: "نحن في Suriix لا نقوم ببيع خدمات تقنية عادية، بل نحن شريكك التقني الموثوق لبناء الحضور الرقمي وصياغة مستقبل الأعمال بالذكاء الاصطناعي.",
+      heroSubtitle: "نحن في SURIix لا نقوم ببيع خدمات تقنية عادية، بل نحن شريكك التقني الموثوق لبناء الحضور الرقمي وصياغة مستقبل الأعمال بالذكاء الاصطناعي.",
       
       introHeading: "الوكالة الرقمية الرائدة في قيادة التغيير التقني",
-      introPara1: "Suriix هي وكالة رقمية متكاملة متخصصة في هندسة البرمجيات الفاخرة وتطوير المواقع والأنظمة السحابية المخصصة وإدارة حملات التسويق الرقمي وتكامل الذكاء الاصطناعي. تأسست Suriix لتكسر القوالب التقليدية وتضع معايير جديدة للفخامة والسرعة والجودة في العالم الرقمي.",
+      introPara1: "SURIix هي وكالة رقمية متكاملة متخصصة في هندسة البرمجيات الفاخرة وتطوير المواقع والأنظمة السحابية المخصصة وإدارة حملات التسويق الرقمي وتكامل الذكاء الاصطناعي. تأسست SURIix على يد المهندس معتز وائل نبيل الصريمي لتكسر القوالب التقليدية وتضع معايير جديدة للفخامة والسرعة والجودة في العالم الرقمي.",
       introPara2: "نحن نمزج ببراعة فائقة بين الإبداع الفني للتصميم العصري المذهل وقوة الكود البرمجي النظيف والسريع، لنضمن لعملائنا من الشركات الناشئة والمؤسسات الكبرى تحولاً رقمياً آمناً وممتعاً يضمن لهم الريادة في سوق عمل سريع الحركة ومتطور كلياً.",
+
+      founderSectionTitle: "قيادة الوكالة والمؤسس",
+      founderName: "المهندس معتز وائل نبيل الصريمي",
+      founderTitleEn: "Eng. Moutaz Wael Nabeel Al-Suraimi",
+      founderRole: "المؤسس والرئيس التنفيذي — مهندس برمجيات وخبير حلول الذكاء الاصطناعي",
+      founderBio: "يقود المهندس معتز وائل نبيل الصريمي وكالة SURIix برؤية هندسية طموحة تهدف إلى تقديم أفضل الممارسات في تطوير الويب والأنظمة السحابية والحلول الرقمية المدعومة بالذكاء الاصطناعي، مع التركيز التام على الكود النظيف والأداء الفائق وتمكين الأعمال من التحول الرقمي السريع والمستدام.",
+      founderLinkedIn: "الصفحة الشخصية على LinkedIn",
 
       mvTitle: "الرؤية والرسالة",
       visionTitle: "رؤيتنا الرقمية",
@@ -56,11 +62,18 @@ const AboutUs = () => {
     },
     en: {
       heroTitle: "About Us — The Story of Digital Innovation",
-      heroSubtitle: "At Suriix, we don't just sell standard technology services; we are your trusted technical partner to build premium presence and shape the business future with AI.",
+      heroSubtitle: "At SURIix, we don't just sell standard technology services; we are your trusted technical partner to build premium presence and shape the business future with AI.",
       
       introHeading: "The Premier Digital Agency Leading Tech Transformation",
-      introPara1: "Suriix is a full-service digital agency specializing in premium software engineering, bespoke web development, cloud architectures, customized marketing growth, and advanced AI integration. Suriix was founded to challenge traditional patterns and lay outstanding standards of speed and luxury in the digital realm.",
+      introPara1: "SURIix is a full-service digital agency specializing in premium software engineering, bespoke web development, cloud architectures, customized marketing growth, and advanced AI integration. SURIix was founded by Eng. Moutaz Wael Nabeel Al-Suraimi to challenge traditional patterns and lay outstanding standards of speed and luxury in the digital realm.",
       introPara2: "We masterfully blend the creative artistry of stunning visual designs with the raw power of clean, high-performance code. This guarantees our clients—from ambitious startups to large enterprises—a secure and beautiful digital transformation to command their fast-moving markets.",
+
+      founderSectionTitle: "Agency Leadership & Founder",
+      founderName: "Eng. Moutaz Wael Nabeel Al-Suraimi",
+      founderTitleEn: "المهندس معتز وائل نبيل الصريمي",
+      founderRole: "Founder & CEO — Software Engineer & AI Solutions Specialist",
+      founderBio: "Eng. Moutaz Wael Nabeel Al-Suraimi leads SURIix with an ambitious engineering vision focused on delivering premier web development, cloud architecture, and AI-driven automation. He emphasizes clean code, high performance, and empowering enterprises for seamless, sustainable digital growth.",
+      founderLinkedIn: "LinkedIn Profile",
 
       mvTitle: "Vision & Mission",
       visionTitle: "Our Vision",
@@ -90,11 +103,18 @@ const AboutUs = () => {
     },
     zh: {
       heroTitle: "关于我们 — 数字创新的故事",
-      heroSubtitle: "在 Suriix，我们不仅销售标准的技术服务；我们是您值得信赖的技术合作伙伴，通过人工智能构建卓越的企业形象并塑造商业未来。",
+      heroSubtitle: "在 SURIix，我们不仅销售标准的技术服务；我们是您值得信赖的技术合作伙伴，通过人工智能构建卓越的企业形象并塑造商业未来。",
       
       introHeading: "引领技术变革的顶尖数字化服务代理机构",
-      introPara1: "Suriix 是一家全方位的数字化代理机构，专注于高端软件工程、定制化网站与云端系统开发、数字化增长策略及人工智能系统的深度整合。Suriix 的创立旨在打破传统开发模式，在数字领域树立超凡的速度与品质标杆。",
+      introPara1: "SURIix 是一家全方位的数字化代理机构，专注于高端软件工程、定制化网站与云端系统开发、数字化增长策略及人工智能系统的深度整合。SURIix 由 Eng. Moutaz Wael Nabeel Al-Suraimi 创立，旨在打破传统开发模式，在数字领域树立超凡的速度与品质标杆。",
       introPara2: "我们巧妙地将极具创意的现代视觉设计与极速、整洁的代码工程融合在一起。这保证了我们的客户（从充满雄心的初创公司到大型企业集团）能实现安全、平稳且精美的数字化转型，在瞬息万变的市场竞争中稳操胜券。",
+
+      founderSectionTitle: "机构领导与创始人",
+      founderName: "Eng. Moutaz Wael Nabeel Al-Suraimi",
+      founderTitleEn: "المهندس معتز وائل نبيل الصريمي",
+      founderRole: "创始人兼 CEO — 软件工程师与人工智能专家",
+      founderBio: "Eng. Moutaz Wael Nabeel Al-Suraimi 以雄心勃勃的工程愿景领导 SURIix，专注于提供卓越的网页开发、云架构和人工智能自动化。他注重整洁的代码、超凡的性能以及赋能企业实现顺畅的数字化转型。",
+      founderLinkedIn: "LinkedIn 个人资料",
 
       mvTitle: "愿景与使命",
       visionTitle: "我们的数字化愿景",
@@ -104,7 +124,7 @@ const AboutUs = () => {
 
       valuesTitle: "引导我们前行的核心价值观",
       val1Title: "持续不断的创新",
-      val1Text: "我们从未停止技术探索；我们采用最先进的网络技术栈 (React, Next.js, Node.js) 和极具创意的人工智能接口，为客户量身打造领先时代的产品。",
+      val1Text: "我们从未停止技术探索；我们采用最先进的网络技术栈 (React, Next.js, Node.js) 和极具创意的人工智能接口，为客户量身打造领先时代 Product。",
       val2Title: "超凡的代码质量",
       val2Text: "我们承诺编写非常整洁、结构严谨且具有高度扩展性的代码，符合全球极速运行标准与谷歌搜索引擎优化规范，确保系统在巨大流量下依然稳如磐石。",
       val3Title: "长期的伙伴关系",
@@ -134,10 +154,10 @@ const AboutUs = () => {
         <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>
           <img
             src="/favicon-192x192.png"
-            alt="Suriix Logo"
+            alt="SURIix Logo"
             className="w-9 h-9 rounded-full object-cover border border-primary/20 shadow-sm"
           />
-          <span className="font-bold text-xl gradient-text tracking-wide hidden sm:block">Suriix</span>
+          <span className="font-bold text-xl gradient-text tracking-wide hidden sm:block">SURIix</span>
         </div>
         <div className="flex items-center gap-3">
           <ThemeToggle />
@@ -225,6 +245,60 @@ const AboutUs = () => {
               </div>
             </div>
 
+          </div>
+        </div>
+
+        {/* Founder Leadership Section */}
+        <div className="glass-strong rounded-[2.5rem] p-8 md:p-12 shadow-xl neon-border relative overflow-hidden mb-12 text-start">
+          <div className="absolute top-0 left-0 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none -z-10" />
+          
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+            
+            {/* Founder Photo */}
+            <div className="relative w-32 h-32 md:w-40 md:h-40 shrink-0">
+              <div className="w-full h-full rounded-full p-1 bg-gradient-to-tr from-primary via-purple-500 to-accent shadow-xl shadow-purple-500/30 border border-primary/30 overflow-hidden group">
+                <img
+                  src="/moutaz-al-suraimi.jpg"
+                  alt="Eng. Moutaz Wael Nabeel Al-Suraimi — Founder & CEO of SURIix"
+                  className="w-full h-full rounded-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="absolute bottom-1 right-1 bg-emerald-500 text-white p-1.5 rounded-full shadow-lg border-2 border-background flex items-center justify-center">
+                <CheckCircle2 className="w-4 h-4" />
+              </div>
+            </div>
+
+            <div className="flex-1 text-center md:text-start space-y-3">
+              <div className="inline-block px-3.5 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
+                {currentTexts.founderSectionTitle}
+              </div>
+
+              <h2 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
+                {currentTexts.founderName}
+              </h2>
+              
+              <p className="text-sm font-medium text-primary">
+                {currentTexts.founderRole}
+              </p>
+
+              <p className="text-muted-foreground text-sm md:text-base leading-relaxed pt-2">
+                {currentTexts.founderBio}
+              </p>
+
+              <div className="pt-4 flex flex-wrap items-center justify-center md:justify-start gap-4">
+                <a
+                  href="https://www.linkedin.com/in/eng-moutaz-wael-9566962bb/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-[#0A66C2] text-white font-medium text-sm hover:bg-[#084e96] transition-all shadow-md shadow-blue-500/20"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                  </svg>
+                  {currentTexts.founderLinkedIn}
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 

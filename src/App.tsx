@@ -29,8 +29,6 @@ const Portfolio         = lazy(() => import("./pages/Portfolio"));
 const FAQ               = lazy(() => import("./pages/FAQ"));
 const Blog              = lazy(() => import("./pages/Blog"));
 const NotFound          = lazy(() => import("./pages/NotFound"));
-const AdminDashboard    = lazy(() => import("./pages/AdminDashboard"));
-const AdminLogin        = lazy(() => import("./pages/AdminLogin"));
 const SuriixStore       = lazy(() => import("./pages/SuriixStore"));
 
 // Minimal fallback — avoids layout shift while lazy chunk loads.
@@ -80,8 +78,6 @@ const App = () => (
                   <Route path="/portfolio"           element={<Portfolio />} />
                   <Route path="/faq"                 element={<FAQ />} />
                   <Route path="/blog"                element={<Blog />} />
-                  <Route path="/admin"              element={<AdminDashboard />} />
-                  <Route path="/admin-login"        element={<AdminLogin />} />
                   <Route path="*"                    element={<NotFound />} />
                 </Routes>
               </Suspense>

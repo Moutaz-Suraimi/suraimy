@@ -1,11 +1,39 @@
-# Robots.txt for Suriix | سوريكس
-# Website: https://suriix.com
+# robots.txt for SURIix.com
+# Brand: SURIix | Digital Agency
+# Founder: Eng. Moutaz Wael Nabeel Al-Suraimi (المهندس معتز وائل نبيل الصريمي)
 
+# Allow all major web crawlers
 User-agent: *
 Allow: /
-Disallow: /cdn-cgi/
-Disallow: /api/
 
-# Host and Sitemap locations
-Host: https://suriix.com
+# Allow major AI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# Disallow admin paths (none used, but good practice)
+Disallow: /admin
+Disallow: /admin-login
+
+# Sitemap
 Sitemap: https://suriix.com/sitemap.xml

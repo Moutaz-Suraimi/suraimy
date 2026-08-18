@@ -3,7 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Home, Users, Layers, Package, Lightbulb,
-  HelpCircle, MessageSquare, Menu, X, Globe, Briefcase, Star, BookOpen, Store, ShieldCheck
+  HelpCircle, MessageSquare, Menu, X, Globe, Briefcase, Star, BookOpen, Store
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
@@ -18,7 +18,6 @@ const navItems = [
   { key: "nav.faq", icon: HelpCircle, href: "#faq" },
   { key: "nav.blog", icon: BookOpen, href: "#blog" },
   { key: "nav.contact", icon: MessageSquare, href: "/contact" },
-  { key: "nav.admin", icon: ShieldCheck, href: "/admin" },
 ];
 
 const SideNav = () => {
