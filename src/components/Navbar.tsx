@@ -74,14 +74,7 @@ const Navbar = memo(() => {
       {/* --- Floating Pill Top Navbar (Light & Dark Theme Adaptive) --- */}
       <div className="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl mx-auto transition-all duration-300">
         <nav
-          className={`w-full backdrop-blur-xl rounded-full px-4 sm:px-6 py-2.5 flex items-center justify-between transition-all duration-300
-            bg-white/85 text-slate-800 border border-slate-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.08),0_0_20px_rgba(124,58,237,0.1)]
-            dark:bg-[#0b0c16]/95 dark:text-white dark:border-white/15 dark:shadow-[0_10px_35px_rgba(0,0,0,0.6),0_0_25px_rgba(124,58,237,0.22)]
-            ${
-              isScrolled 
-                ? "border-purple-500/40 shadow-[0_12px_40px_rgba(124,58,237,0.18)] dark:border-purple-500/30 dark:shadow-[0_12px_40px_rgba(0,0,0,0.8),0_0_30px_rgba(139,92,246,0.3)]" 
-                : ""
-            }`}
+          className={`pill-navbar-container ${isScrolled ? "scrolled" : ""}`}
         >
           {/* Logo & Brand Name */}
           <div
@@ -108,7 +101,7 @@ const Navbar = memo(() => {
                 <button
                   key={item.key}
                   onClick={() => handleNavClick(item.href)}
-                  className={`relative text-sm font-semibold transition-all duration-200 py-1.5 cursor-pointer ${
+                  className={`pill-nav-btn relative text-sm font-semibold transition-all duration-200 ${
                     active
                       ? "text-purple-700 dark:text-white font-bold"
                       : "text-slate-600 hover:text-slate-900 dark:text-white/70 dark:hover:text-white"
@@ -118,7 +111,7 @@ const Navbar = memo(() => {
                   {active && (
                     <motion.div
                       layoutId="activePillNavUnderline"
-                      className="absolute -bottom-1 left-0 right-0 h-[2.5px] bg-gradient-to-r from-purple-600 to-indigo-500 dark:from-purple-500 dark:to-indigo-400 rounded-full shadow-[0_0_8px_rgba(168,85,247,0.6)]"
+                      className="absolute -bottom-1 left-0 right-0 h-[2.5px] bg-gradient-to-r from-purple-600 to-indigo-500 dark:from-purple-500 dark:to-indigo-400 rounded-full shadow-sm"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -134,7 +127,7 @@ const Navbar = memo(() => {
               href={WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
-              className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-500 border border-purple-400/30 shadow-[0_0_20px_rgba(139,92,246,0.35)] hover:shadow-[0_0_30px_rgba(139,92,246,0.65)] hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 cursor-pointer overflow-hidden group"
+              className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-500 border border-purple-400/30 shadow-md hover:shadow-lg hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 cursor-pointer overflow-hidden group"
             >
               <span className="relative z-10 flex items-center gap-1.5">
                 {lang === "ar" ? "ابدأ مشروعك الآن" : lang === "zh" ? "立即启动项目" : "Start Project Now"}
@@ -150,7 +143,7 @@ const Navbar = memo(() => {
                 aria-haspopup="listbox"
                 aria-expanded={langMenuOpen}
                 aria-label="Select language"
-                className="px-3.5 py-2 rounded-full text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm
+                className="pill-nav-btn px-3.5 py-2 rounded-full text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm
                   bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/80 hover:border-purple-300
                   dark:bg-[#14142b]/90 dark:hover:bg-[#1f1f3d] dark:text-white/90 dark:border-white/10 dark:hover:border-purple-500/50"
               >
@@ -174,7 +167,7 @@ const Navbar = memo(() => {
                       <button
                         key={l}
                         onClick={() => { setLang(l); setLangMenuOpen(false); }}
-                        className={`w-full px-3.5 py-2 rounded-xl text-xs text-start font-bold transition-all cursor-pointer ${
+                        className={`pill-nav-btn w-full px-3.5 py-2 rounded-xl text-xs text-start font-bold transition-all cursor-pointer ${
                           lang === l 
                             ? "text-purple-700 bg-purple-100 dark:text-purple-300 dark:bg-purple-600/30 dark:border dark:border-purple-500/40" 
                             : "text-slate-700 hover:bg-slate-100 dark:text-white/80 dark:hover:bg-white/10"
@@ -201,7 +194,7 @@ const Navbar = memo(() => {
             </div>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-full transition-colors cursor-pointer
+              className="pill-nav-btn p-2.5 rounded-full transition-colors cursor-pointer
                 bg-slate-100 border border-slate-200 text-slate-800 hover:bg-slate-200
                 dark:bg-[#14142b]/90 dark:border-white/10 dark:text-white dark:hover:bg-white/10"
               aria-label="Toggle Navigation Menu"
@@ -230,7 +223,7 @@ const Navbar = memo(() => {
                   <button
                     key={item.key}
                     onClick={() => handleNavClick(item.href)}
-                    className={`w-full py-3 px-4 rounded-xl text-start font-bold text-base transition-all cursor-pointer ${
+                    className={`pill-nav-btn w-full py-3 px-4 rounded-xl text-start font-bold text-base transition-all cursor-pointer ${
                       active
                         ? "bg-purple-100 text-purple-700 border border-purple-200 dark:bg-purple-600/30 dark:text-white dark:border-purple-500/40"
                         : "text-slate-700 hover:bg-slate-100 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
@@ -253,7 +246,7 @@ const Navbar = memo(() => {
                   <button
                     key={l}
                     onClick={() => { setLang(l); setMobileMenuOpen(false); }}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+                    className={`pill-nav-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
                       lang === l 
                         ? "bg-purple-600 text-white border-purple-400" 
                         : "bg-slate-100 border-slate-200 text-slate-700 dark:bg-white/5 dark:border-white/10 dark:text-white/80"
