@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ExternalLink, MessageCircle, Globe, ShoppingBag, Palette, Megaphone, LayoutGrid, ArrowRight } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import ScrollReveal from "./ScrollReveal";
+import sluiswebImg from "@/img/sluisweb.webp";
+import alislahImg from "@/img/alislah.webp";
 
 const WHATSAPP_NUMBER = "967780930635";
 type LangKey = "ar" | "en" | "zh";
@@ -33,6 +35,31 @@ interface Project {
 }
 
 const projects: Project[] = [
+  {
+    id: 9,
+    category: "website",
+    emoji: "⚡",
+    gradient: "from-[hsl(215,90%,35%)] to-[hsl(195,85%,25%)]",
+    image: sluiswebImg,
+    url: "https://sluisweb.nl",
+    title: { 
+      ar: "وكالة سلوِيس ويب الرقمية | SluisWeb", 
+      en: "SluisWeb Digital Agency", 
+      zh: "SluisWeb 数字代理机构" 
+    },
+    subtitle: { ar: "وكالة تطوير ويب هولندية", en: "Dutch Digital Agency", zh: "荷兰数字开发机构" },
+    description: { 
+      ar: "موقع رسمي وتصميم فاخر لوكالة رقمية هولندية متخصصة في تطوير المواقع والمتاجر الإلكترونية وتطبيقات الويب عالية الأداء مع تحسين محركات البحث SEO.", 
+      en: "Official website for a premium Dutch digital agency specializing in high-performance web development, e-commerce, and custom digital solutions.", 
+      zh: "荷兰高端数字代理机构官方网站，专注于高性能网站开发、电子商城及定制化数字解决方案。" 
+    },
+    results: [
+      { ar: "سرعة تحميل 100% وأداء استثنائي", en: "100% load speed & peak performance", zh: "100% 加载速度与卓越性能" },
+      { ar: "تصميم هولندي فاخر وتجربة مستخدم مبتكرة", en: "Premium Dutch design & conversion UI", zh: "荷兰高端设计与高转化 UI" },
+      { ar: "حماية وأمان كامل مع دعم 24/7", en: "Full security & 24/7 dedicated support", zh: "全面安全防护与 24/7 专属支持" },
+    ],
+    tech: ["React", "TypeScript", "Tailwind CSS", "Next.js", "SEO"],
+  },
   {
     id: 1,
     category: "ecommerce",
@@ -70,18 +97,27 @@ const projects: Project[] = [
   {
     id: 3,
     category: "website",
-    emoji: "🏠",
-    image: "/img/Screenshot 2026-03-16 040406.webp",
-    gradient: "from-[hsl(275,85%,30%)] to-[hsl(230,85%,30%)]",
-    title: { ar: "موقع شركة عقارية", en: "Real Estate Website", zh: "房地产网站" },
-    subtitle: { ar: "موقع ويب", en: "Website", zh: "网站" },
-    description: { ar: "موقع عقاري احترافي مع جولات افتراضية ثلاثية الأبعاد وخرائط تفاعلية", en: "Professional real estate website with 3D virtual tours and interactive maps", zh: "专业房地产网站，配有3D虚拟游览和交互地图" },
+    emoji: "🏗️",
+    image: alislahImg,
+    url: "https://alislah.vercel.app/",
+    gradient: "from-[hsl(215,85%,30%)] to-[hsl(230,85%,25%)]",
+    title: { 
+      ar: "مؤسسة الإصلاح المعماري للمقاولات", 
+      en: "Al-Islah Architectural Contracting Est.", 
+      zh: "Al-Islah 建筑承包机构" 
+    },
+    subtitle: { ar: "مقاولات عامة وحلول معمارية", en: "General Contracting", zh: "建筑与工程承包" },
+    description: { 
+      ar: "موقع رسمي لمؤسسة مقاولات عامة سعودية متخصصة في المباني السكنية والتجارية، المستودعات، التشطيبات الفاخرة والترميم.", 
+      en: "Official website for a Saudi general contracting firm specializing in residential & commercial buildings, warehouses, luxury finishes, and renovation.", 
+      zh: "沙特通用建筑承包机构官方网站，专注于住宅与商业建筑、仓库、高端装修与翻新工程。" 
+    },
     results: [
-      { ar: "زيادة 200% في العملاء المحتملين", en: "200% increase in leads", zh: "线索增长200%" },
-      { ar: "متوسط وقت على الموقع 6 دقائق", en: "6 min average session time", zh: "平均会话时间6分钟" },
-      { ar: "أول صفحة جوجل محلياً", en: "First page Google local", zh: "谷歌本地首页排名" },
+      { ar: "تنفيذ مشاريع سكنية وتجارية متكاملة", en: "Turnkey residential & commercial projects", zh: "一站式住宅与商业项目交付" },
+      { ar: "التزام كامل بأعلى معايير الجودة والسلامة", en: "100% compliance with safety & quality", zh: "100% 符合质量与安全标准" },
+      { ar: "إدارة وتخطيط هندسي احترافي للمشاريع", en: "Professional engineering project management", zh: "专业工程项目管理与规划" },
     ],
-    tech: ["Three.js", "WordPress", "Google Maps", "SEO"],
+    tech: ["React", "TypeScript", "Tailwind CSS", "Vite"],
   },
   {
     id: 4,
