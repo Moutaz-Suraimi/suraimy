@@ -7,6 +7,7 @@ import {
   Search, Cpu, TrendingUp, ChevronDown, Globe, Menu, X
 } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
+import Navbar from "./Navbar";
 
 const WHATSAPP = "https://wa.me/967780930635";
 
@@ -121,156 +122,8 @@ const HeroSection = memo(({ isIntroActive = false }: HeroSectionProps) => {
       className="relative min-h-screen flex flex-col justify-between overflow-hidden bg-transparent text-foreground pb-16 pt-24 lg:pt-32"
     >
 
-      {/* --- Horizontal Top Navbar --- */}
-      <header className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 transition-all duration-300 md:px-12 ${
-        isScrolled
-          ? "py-4 bg-background/95 dark:bg-background/95 md:bg-background/80 md:dark:bg-background/75 backdrop-blur-none md:backdrop-blur-lg border-b border-border/30 shadow-lg"
-          : "py-5 bg-transparent"
-      }`}>
-        {/* Logo */}
-        <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => handleNavClick("#home")}>
-          <img
-            src="/favicon-192x192.png"
-            alt="Suriix Logo"
-            width={40}
-            height={40}
-            className="w-10 h-10 rounded-full object-cover border border-primary/20 shadow-sm"
-          />
-          <span className="font-display font-bold text-2xl tracking-wide bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Suriix
-          </span>
-        </div>
-
-        {/* Center menu links - hidden on mobile */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <button
-              key={item.key}
-              onClick={() => handleNavClick(item.href)}
-              className="relative text-sm font-medium text-foreground/80 hover:text-primary transition-colors cursor-pointer"
-            >
-              {t(item.key)}
-            </button>
-          ))}
-        </nav>
-
-        {/* Action Controls & CTA */}
-        <div className="hidden md:flex items-center gap-4">
-          <ThemeToggle />
-          
-          {/* Language Selector */}
-          <div className="relative">
-            <button
-              onClick={() => setLangMenuOpen(!langMenuOpen)}
-              aria-haspopup="listbox"
-              aria-expanded={langMenuOpen}
-              aria-label="Select language"
-              className="p-2 glass rounded-xl border border-border/50 hover:bg-secondary/40 text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
-            >
-              <Globe className="w-4 h-4" />
-              <span className="uppercase">{lang}</span>
-              <ChevronDown className="w-3.5 h-3.5" />
-            </button>
-            <AnimatePresence>
-              {langMenuOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute top-12 right-0 glass-strong border border-border/50 rounded-xl overflow-hidden min-w-[120px] shadow-2xl z-50"
-                >
-                  {langOrder.map((l) => (
-                    <button
-                      key={l}
-                      onClick={() => { setLang(l); setLangMenuOpen(false); }}
-                      className={`w-full px-4 py-2.5 text-sm text-start font-medium transition-colors cursor-pointer ${
-                        lang === l ? "text-primary bg-primary/10" : "text-foreground hover:bg-secondary/50"
-                      }`}
-                    >
-                      {langLabels[l]}
-                    </button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          <a
-            href={WHATSAPP}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-2xl font-bold text-sm text-white bg-gradient-to-r from-primary to-accent hover:opacity-95 transition-opacity shadow-[0_8px_20px_rgba(139,92,246,0.25)] dark:shadow-[0_8px_20px_rgba(139,92,246,0.15)] cursor-pointer"
-          >
-            {t("hero.btn.start")}
-            <ArrowUpRight className="w-4 h-4" />
-          </a>
-        </div>
-
-        {/* Mobile menu toggle */}
-        <div className="flex md:hidden items-center gap-3">
-          <ThemeToggle />
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-xl bg-secondary/50 border border-border/50 text-foreground hover:bg-secondary/80 transition-colors cursor-pointer"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-      </header>
-
-      {/* Mobile Menu Drawer */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed top-[72px] left-0 right-0 z-40 glass border-b border-border/50 p-6 flex flex-col gap-4 shadow-xl md:hidden"
-          >
-            <div className="flex flex-col gap-3">
-              {navItems.map((item) => (
-                <button
-                  key={item.key}
-                  onClick={() => handleNavClick(item.href)}
-                  className="w-full py-2.5 text-start font-semibold text-lg text-foreground/80 hover:text-primary transition-colors cursor-pointer"
-                >
-                  {t(item.key)}
-                </button>
-              ))}
-            </div>
-            
-            <div className="h-px bg-border/50 my-2" />
-            
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">{t("legal.privacy.title")}</span>
-              <div className="flex gap-2">
-                {langOrder.map((l) => (
-                  <button
-                    key={l}
-                    onClick={() => { setLang(l); setMobileMenuOpen(false); }}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border ${
-                      lang === l ? "bg-primary/20 text-primary border-primary/30" : "bg-secondary/40 border-border"
-                    }`}
-                  >
-                    {l.toUpperCase()}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <a
-              href={WHATSAPP}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-white bg-primary text-center shadow-lg"
-            >
-              {t("hero.btn.start")}
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* --- Floating Dark Pill Top Navbar --- */}
+      <Navbar />
 
       {/* --- Main Hero Content --- */}
       <div className="container mx-auto px-6 md:px-12 grid grid-cols-12 gap-8 lg:gap-12 relative z-10 w-full flex-grow items-center">
