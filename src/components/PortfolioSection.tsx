@@ -275,7 +275,7 @@ const LightboxModal = ({
             </>
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/20 to-black/80 pointer-events-none" />
-          <span className="absolute top-4 start-4 px-3 py-1.5 rounded-full text-xs font-semibold glass text-white border border-white/10 z-20">
+          <span className="absolute top-4 start-4 px-3 py-1.5 rounded-full text-xs font-semibold bg-black/60 backdrop-blur-md text-white border border-white/20 shadow-sm z-20 max-w-[85%] truncate">
             {project.subtitle[lang]}
           </span>
         </div>
@@ -404,13 +404,13 @@ const ProjectCard = ({
 
         {/* External link icon on hover */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-          <div className="w-10 h-10 rounded-full glass flex items-center justify-center border border-white/20">
+          <div className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center border border-white/20 text-white shadow-sm">
             <ExternalLink className="w-4 h-4 text-white" />
           </div>
         </div>
 
         {/* Category badge */}
-        <span className="absolute top-3 start-3 px-2.5 py-1 rounded-full text-xs font-medium glass text-white border border-white/10 z-20">
+        <span className="absolute top-3 start-3 px-2.5 py-1 rounded-full text-xs font-medium bg-black/60 backdrop-blur-md text-white border border-white/20 shadow-sm z-20 max-w-[85%] truncate">
           {project.subtitle[lang]}
         </span>
       </div>
