@@ -123,9 +123,9 @@ export const translations: Translations = {
     zh: "助力企业实现数字化增长。",
   },
   "hero.desc": {
-    ar: "في Suriix | سوريكس نقدم لك مواقع إنترنت احترافية، هوية بصرية قوية، وأنظمة أتمتة ذكية تساعد عملك على النمو والانتشار بشكل أسرع.",
-    en: "At Suriix, we provide professional websites, strong brand identities, and smart automation systems that help your business grow and scale faster.",
-    zh: "在 Suriix，我们为您提供专业的网站、强大的品牌视觉形象和智能自动化系统，助力您的业务更快速地增长和扩张。",
+    ar: "سوريكس Suriix تقدم حلولًا رقمية متكاملة لنمو الأعمال، تشمل تصميم وتطوير المواقع والمتاجر الإلكترونية والتسويق الرقمي والتصميم الهادف لرفع التحويلات والمبيعات.",
+    en: "Suriix provides integrated digital solutions for business growth, including website design, e-commerce development, digital marketing, and UI/UX design.",
+    zh: "Suriix 为业务增长提供一站式数字解决方案，包括网页设计、电商独立站开发、数字营销与 UI/UX 品牌设计。",
   },
   "hero.btn.start": {
     ar: "ابدأ مشروعك الآن",

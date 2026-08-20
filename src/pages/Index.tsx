@@ -112,9 +112,9 @@ const Index = () => {
       {
         "@type": "Organization",
         "@id": "https://suriix.com/#organization",
-        "name": "Suriix | سوريكس",
-        "alternateName": ["سوريكس", "Suriix", "Suriix Digital", "وكالة سوريكس الرقمية"],
-        "url": "https://suriix.com/",
+        "name": "Suriix",
+        "alternateName": "سوريكس",
+        "url": "https://suriix.com",
         "logo": {
           "@type": "ImageObject",
           "url": "https://suriix.com/favicon-192x192.png",
@@ -123,7 +123,7 @@ const Index = () => {
         },
         "image": "https://suriix.com/favicon-192x192.png",
         "description": lang === "ar"
-          ? "Suriix | سوريكس هي وكالة رقمية رائدة متخصصة في تصميم المواقع، وتطوير المتاجر الإلكترونية، وتصميم الهوية البصرية، وحلول الأتمتة المبتكرة المدعومة بالذكاء الاصطناعي."
+          ? "سوريكس Suriix تقدم حلولًا رقمية متكاملة لنمو الأعمال، تشمل تصميم وتطوير المواقع والمتاجر الإلكترونية والتسويق الرقمي والتصميم."
           : lang === "zh"
           ? "Suriix 是一家顶尖的数字化代理商，专注于高转化率网页设计、企业出海电商独立站开发、品牌视觉升级与人工智能系统定制服务。"
           : "Suriix is a premier digital agency specializing in professional web design, customized e-commerce development, branding, and AI-driven business automation.",

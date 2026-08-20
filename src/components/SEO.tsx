@@ -27,19 +27,19 @@ const metaDefaults: Record<
 > = {
   "/": {
     title: {
-      ar: "SURIix | تصميم مواقع ومتاجر إلكترونية احترافية",
-      en: "SURIix | Professional Web Design & E-Commerce Solutions",
-      zh: "SURIix | 专业网页设计与智能电商独立站开发",
+      ar: "Suriix | سوريكس - حلول رقمية متكاملة لنمو الأعمال",
+      en: "Suriix | Professional Web Design & E-Commerce Solutions",
+      zh: "Suriix | 专业网页设计与智能电商独立站开发",
     },
     description: {
-      ar: "SURIix وكالة رقمية متخصصة في تصميم مواقع الإنترنت الاحترافية، وتطوير المتاجر الإلكترونية، وبناء الهوية البصرية، والحلول البرمجية المدعومة بالذكاء الاصطناعي. تأسست على يد المهندس معتز وائل نبيل الصريمي.",
-      en: "SURIix is a premier digital agency specializing in professional web design, customized e-commerce development, branding, and AI-driven business automation. Founded by Eng. Moutaz Wael Nabeel Al-Suraimi.",
-      zh: "SURIix 是一家顶尖的数字化代理商，专注于高转化率网页设计、企业出海电商独立站开发、品牌视觉升级与人工智能系统定制服务。由 Eng. Moutaz Wael Nabeel Al-Suraimi 创立。",
+      ar: "سوريكس Suriix تقدم حلولًا رقمية متكاملة لنمو الأعمال، تشمل تصميم وتطوير المواقع والمتاجر الإلكترونية والتسويق الرقمي والتصميم.",
+      en: "Suriix is a premier digital agency specializing in professional web design, customized e-commerce development, branding, and AI-driven business automation. Founded by Eng. Moutaz Wael Nabeel Al-Suraimi.",
+      zh: "Suriix 是一家顶尖的数字化代理商，专注于高转化率网页设计、企业出海电商独立站开发、品牌视觉升级与人工智能系统定制服务。由 Eng. Moutaz Wael Nabeel Al-Suraimi 创立。",
     },
     keywords: {
-      ar: "تصميم مواقع, تصميم متاجر إلكترونية, برمجة مواقع, هوية بصرية, تسويق رقمي, وكالة رقمية, SURIix, سوريكس, معتز الصريمي, مهندس معتز وائل نبيل الصريمي",
-      en: "web design, e-commerce development, website programming, visual identity, digital marketing, digital agency, SURIix, SURIix Agency, Moutaz Al-Suraimi, Moutaz Wael Nabeel Al-Suraimi",
-      zh: "网页设计, 电商独立站, 网站开发, 品牌视觉, 数字营销, 数字化代理商, SURIix",
+      ar: "تصميم مواقع, تصميم متاجر إلكترونية, برمجة مواقع, هوية بصرية, تسويق رقمي, وكالة رقمية, Suriix, سوريكس, معتز الصريمي, مهندس معتز وائل نبيل الصريمي",
+      en: "web design, e-commerce development, website programming, visual identity, digital marketing, digital agency, Suriix, Suriix Agency, Moutaz Al-Suraimi, Moutaz Wael Nabeel Al-Suraimi",
+      zh: "网页设计, 电商独立站, 网站开发, 品牌视觉, 数字营销, 数字化代理商, Suriix",
     },
   },
   "/about": {
@@ -238,9 +238,9 @@ const globalEntityGraph = {
     {
       "@type": "Organization",
       "@id": "https://suriix.com/#organization",
-      name: "SURIix",
-      legalName: "SURIix Digital Agency",
-      alternateName: ["Suriix", "سوريكس", "SURIix Agency"],
+      name: "Suriix",
+      legalName: "Suriix Digital Agency",
+      alternateName: "سوريكس",
       url: "https://suriix.com",
       logo: {
         "@type": "ImageObject",
@@ -250,7 +250,7 @@ const globalEntityGraph = {
       },
       image: "https://suriix.com/favicon-192x192.png",
       description:
-        "SURIix is a premier digital agency specializing in professional web design, customized e-commerce development, branding, and AI-driven business automation. Founded by Eng. Moutaz Wael Nabeel Al-Suraimi (المهندس معتز وائل نبيل الصريمي).",
+        "سوريكس Suriix تقدم حلولًا رقمية متكاملة لنمو الأعمال، تشمل تصميم وتطوير المواقع والمتاجر الإلكترونية والتسويق الرقمي والتصميم.",
       foundingDate: "2023",
       founder: { "@id": "https://suriix.com/#founder" },
       contactPoint: [
