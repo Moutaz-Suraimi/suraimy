@@ -95,10 +95,10 @@ const ReadyWebsitesSection = () => {
               <div className="relative h-56 overflow-hidden bg-muted/20 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent z-10" />
                 <Badge 
-                  className={`absolute top-4 ${isAr ? 'left-4' : 'right-4'} z-20 ${
-                    product.status === 'Available' ? 'bg-green-500/20 text-green-400 border-green-500/50' :
-                    product.status === 'Limited' ? 'bg-orange-500/20 text-orange-400 border-orange-500/50' :
-                    'bg-red-500/20 text-red-400 border-red-500/50'
+                  className={`absolute top-4 ${isAr ? 'left-4' : 'right-4'} z-20 font-bold backdrop-blur-md shadow-md px-3 py-1 text-xs ${
+                    product.status === 'Available' ? 'bg-slate-950/90 text-emerald-400 border border-emerald-500/60' :
+                    product.status === 'Limited' ? 'bg-slate-950/90 text-amber-400 border border-amber-500/60' :
+                    'bg-slate-950/90 text-rose-400 border border-rose-500/60'
                   }`}
                   variant="outline"
                 >

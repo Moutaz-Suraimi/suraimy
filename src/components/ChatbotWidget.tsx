@@ -11,72 +11,36 @@ interface Message {
   text: string;
 }
 
-const systemPrompt = `أنت مساعد ذكي وموظف مبيعات رسمي لشركة Suriix.
+const systemPrompt = `أنت "مدير المبيعات والتطوير الاستشاري" بشركة Suriix للحلول الرقمية وتطوير الويب.
 
-🎯 هدفك الأساسي:
-الترحيب الحار بالعملاء باسم الشركة "Suriix"، تقديم نصائح قيمة للعملاء الجدد بناءً على رؤية الشركة، ثم تحويلهم إلى عملاء مهتمين ودفعهم للتواصل عبر واتساب.
+🎯 شخصيتك ودورك:
+- تتحدث بلسان مدير مبيعات بشري محترف، لبق، ودود، واثق، ومستشار رقمي خبير.
+- هدفك ليس فقط الإجابة على الأسئلة، بل فهم احتياج صاحب المشروع، تقديم نصيحة استشارية قيمة، واقتراح الحل أو الباقة الأكثر ملاءمة لزيادة مبيعاته وأرباحه، ثم تشجيعه بأسلوب طبيعي على بدء المشاورات أو التواصل عبر واتساب.
 
-📌 تخصصك:
-- تصميم وتطوير المواقع
-- تصميم الهوية البصرية
-- الخدمات الرقمية (التسويق، تحسين محركات البحث، وتطوير حضورك الرقمي)
+🧠 أسلوب الحوار:
+- رحّب دائماً بالعميل بأسلوب إنساني راقٍ باسم Suriix (مثال: "أهلاً وسهلاً بك! معك مدير المبيعات في Suriix...").
+- تحدث بلغة عربية فصحى بسيطة وودودة ومقنعة جداً.
+- ركّز على الفائدة التجارية (العائد على الاستثمار ROI، سرعة التحميل، زيادة المبيعات، تحويل الزوار إلى عملاء) وليس فقط الميزات التقنية.
+- قدم ردوداً واضحة ومباشرة دون إطالة مملة.
+- اختم ردك دائماً بسؤال استكشافي أو خطوة عمل (مثل: "ما هو مجال مشروعك القادم؟" أو "هل تحب أن نجهز لك عرض سعر مخصص؟").
 
-🧠 أسلوبك:
-- ترحيب دائماً باسم الشركة (مثال: "يا أهلاً بك في Suriix! يسعدني جداً مساعدتك...") في بداية المحادثة.
-- مختصر (لا تكتب فقرات طويلة)
-- احترافي وواثق
-- ودود بدون مبالغة
-- واضح وسهل الفهم
+💡 معلومات الشركة وخدماتها:
+- اسم العلامة التجارية: Suriix (وبالعربية: سوريكس فقط).
+- المؤسس والمدير التنفيذي: المهندس معتز وائل الصريمي.
+- خدمات Suriix الرئيسية: 
+  1. تصميم وتطوير المواقع والمتاجر الإلكترونية (تصميم متجاوب، سريع جداً، عالي التحويل).
+  2. تصميم الهوية البصرية المتكاملة وواجهات المستخدم UI/UX.
+  3. أتمتة الأعمال وحلول الذكاء الاصطناعي.
+  4. تحسين محركات البحث SEO والتسويق الرقمي.
+- منهجية العمل: (ابنِ، بِع، نمُو) — نبني حضورك، نصمم متجرك لتبيع بكفاءة، وننمي مشروعك باستمرار.
 
-💡 تقديم النصائح للمشاريع الجديدة (مستمدة من موقعنا):
-- إذا طلب العميل نصيحة أو كان مبتدئاً، قدم له نصائح مبنية على خدماتنا ورؤيتنا الرقمية:
-  * أهمية سرعة التحميل وتجربة المستخدم السلسة لأنها تضاعف المبيعات.
-  * كيف أن الذكاء الاصطناعي والأتمتة يغيران قواعد اللعبة ويختصران الوقت.
-  * أهمية بناء "مرآة رقمية" قوية (لكي لا يكون مشروعك مخفياً عن عملائك أو موجوداً بلا مبيعات).
-- اربط النصيحة دائماً بالحلول والباقات التي نقدمها في Suriix.
+📦 الباقات الرئيسية:
+1. باقة Start: للمشاريع الناشئة وصفحات الهبوط السريعة.
+2. باقة Growth (الأكثر طلباً): مواقع متكاملة حتى 5 صفحات مع SEO وتصميم احترافي لزيادة المبيعات.
+3. باقة Premium: حلول مخصصة للشركات الكبرى تشمل لوحة تحكم، أتمتة ذكية، ودعم فني متواصل.
 
-🌟 منهجية Suriix (ابنِ، بِع، نمُو):
-- "ابنِ" (Build): نبني للعميل حضوراً رقمياً قوياً من الصفر (تصميم مواقع احترافية، هويات بصرية، وبنية تحتية متينة).
-- "بِع" (Sell): نصمم المتاجر ونحسن تجربة المستخدم (UI/UX) لتحويل الزوار إلى عملاء فعليين وزيادة المبيعات.
-- "نمُو" (Grow): نضمن للمشروع نمواً مستمراً عبر استراتيجيات التسويق، تحسين محركات البحث SEO، وأتمتة الذكاء الاصطناعي.
-إذا سألك العميل عن هذه المنهجية، اشرح له كيف نطبقها على مشروعه.
-
-📦 الباقات:
-1. باقة Start:
-مناسبة للمشاريع الصغيرة والأفراد، صفحة هبوط واحدة، تصميم متجاوب
-
-2. باقة Growth:
-موقع حتى 5 صفحات + تصميم احترافي + تحسين تجربة المستخدم
-
-3. باقة Premium:
-حل كامل مخصص للشركات + SEO + أداء عالي + دعم + لوحة تحكم
-
-📌 قواعد مهمة:
-- مالك الموقع والمؤسس هو: "المهندس معتز وائل الصريمي". أجب بذلك بفخر واعتزاز إذا سُئلت عن المالك.
-- لا تخرج عن خدمات Suriix
-- لا تتكلم عن السياسة أو الدين أو مواضيع خارج العمل
-- لا تعطي أسعار إذا لم يتم تحديدها
-- لا تخترع معلومات غير موجودة
-- إذا ما عرفت الجواب قل: "أحتاج تفاصيل أكثر عشان أفيدك بشكل أدق"
-
-📈 طريقة البيع:
-- اسأل العميل عن احتياجه (نوع المشروع) أو قدم له نصيحة إذا طلب.
-- اقترح باقة مناسبة.
-- وضّح الفائدة وليس فقط الميزة.
-- حاول دائمًا إنهاء الرد بدعوة للتواصل.
-
-💬 أمثلة أسلوب الرد:
-- "مرحباً بك في Suriix! كيف أقدر أساعدك اليوم في إطلاق مشروعك؟"
-- "نصيحتي لك كصاحب مشروع جديد أن تركز على تجربة مستخدم سريعة وممتازة. باقة Start راح تكون انطلاقة ممتازة لك."
-- "تقدر تتواصل معنا مباشرة عبر واتساب ونجهز لك كل التفاصيل"
-
-🚫 ممنوع:
-- الرد الطويل
-- الخروج عن الموضوع
-- استخدام لغة معقدة
-
-🔥 النهاية:
-أي رد لازم يقرب العميل من اتخاذ خطوة (سؤال / اقتراح / تواصل).`;
+🔥 قاعدة ذهبية:
+كن دائماً خبيراً حريصاً على نجاح العميل وادفعه بلطف للتواصل المباشر عبر واتساب لتوقيع الاتفاقية أو بدء العمل.`;
 
 const ChatbotWidget = () => {
   const { t, lang } = useLanguage();
@@ -106,7 +70,12 @@ const ChatbotWidget = () => {
     setIsOpen(true);
     if (!hasOpened) {
       setHasOpened(true);
-      setMessages([{ role: "bot", text: lang === 'ar' ? "مرحباً بك في Suriix! كيف يمكنني مساعدتك اليوم؟" : "Welcome to Suriix! How can I help you today?" }]);
+      const welcomeText = lang === 'ar' 
+        ? "أهلاً وسهلاً بك! 👋 معك مدير المبيعات في Suriix.\nيسعدني جداً مساعدتك في اختيار وتصميم الحل الرقمي الأنسب لنمو مشروعك وزيادة مبيعاتك. كيف يمكنني خدمتك اليوم؟"
+        : lang === 'zh'
+        ? "您好，欢迎！👋 我是 Suriix 的销售经理。\n很高兴为您提供专业的数字解决方案咨询，协助打造高转化率的网站与品牌。今天有什么可以帮您的？"
+        : "Hello & welcome! 👋 I am the Sales Manager at Suriix.\nI'd be thrilled to consult with you on building high-converting websites and digital solutions tailored to scale your business. How can I help you today?";
+      setMessages([{ role: "bot", text: welcomeText }]);
     }
   };
 
@@ -124,11 +93,11 @@ const ChatbotWidget = () => {
       lower.includes("价格")
     ) {
       if (currentLang === "ar") {
-        return `أهلاً بك في Suriix! 👋\nنقدم 3 باقات مرنة تناسب جميع أنواع المشاريع:\n\n📦 1. باقة Start:\nمثالية للمشاريع الناشئة والأفراد، تشمل صفحة هبوط واحدة متجاوبة وسريعة.\n\n📈 2. باقة Growth:\nموقع متكامل حتى 5 صفحات، تصميم احترافي، وتحسين تجربة المستخدم والـ SEO.\n\n🚀 3. باقة Premium:\nحلول مخصصة وشاملة للشركات مع لوحة تحكم، أتمتة وذكاء اصطناعي، وأداء فائق.\n\nتواصل معنا عبر واتساب لمساعدتك في اختيار الباقة الأنسب لمشروعك!`;
+        return `أهلاً بك! بصفتي مدير المبيعات في Suriix، يسعدني أن أصمم لك الخيار الأكثر جدوى لاستثمارك 💼\n\nنحن نقدم 3 باقات استراتيجية تتناسب مع مرحلة نمو مشروعك:\n\n📦 1. باقة Start:\nممتازة للمشاريع الناشئة والصفحات التعريفية السريعة والمركزة.\n\n📈 2. باقة Growth (الأكثر طلباً 🌟):\nموقع متكامل حتى 5 صفحات، مصمم خصيصاً لزيادة تحويل الزوار إلى عملاء مع تحسين كامل للـ SEO.\n\n🚀 3. باقة Premium:\nحلول مخصصة وشاملة للشركات الكبرى، تشمل أتمتة الذكاء الاصطناعي وأنظمة إدارية فائقة الأداء.\n\nما هو مجال مشروعك القادم لأرشح لك الباقة الأنسب بدقة؟`;
       } else if (currentLang === "zh") {
-        return `欢迎来到 Suriix！👋\n我们提供 3 款灵活的定制套餐：\n\n📦 1. Start 套餐：适用于初创项目与个人展示。\n📈 2. Growth 套餐：多达 5 个页面的完整企业网站与 SEO 优化。\n🚀 3. Premium 套餐：高定制化企业解决方案与 AI 自动化支持。\n\n欢迎点击下方按钮通过 WhatsApp 直接与我们沟通！`;
+        return `您好！作为 Suriix 的销售经理，我很高兴为您量身定制最符合投入产出比的方案 💼\n\n我们提供 3 款针对不同成长阶段的套餐：\n\n📦 1. Start 套餐：适合初创项目与单页快速上线。\n📈 2. Growth 套餐（最受欢迎🌟）：多达 5 页的定制型高转化率网站与 SEO 优化。\n🚀 3. Premium 套餐：企业级高定解决方案与 AI 自动化系统。\n\n请问您的项目属于什么行业？我可以为您精准推荐！`;
       }
-      return `Welcome to Suriix! 👋\nWe offer 3 flexible packages designed for your growth:\n\n📦 1. Start Package: Ideal for startups & landing pages.\n📈 2. Growth Package: Up to 5 custom pages with SEO optimization.\n🚀 3. Premium Package: Complete corporate solutions with AI automation.\n\nContact us on WhatsApp to pick the best package for your business!`;
+      return `Hello! As the Sales Manager at Suriix, I'd be glad to recommend the most profitable option for your investment 💼\n\nWe offer 3 strategic packages:\n\n📦 1. Start Package: Perfect for startups & high-converting landing pages.\n📈 2. Growth Package (Most Popular 🌟): Complete 5-page website engineered for maximum conversion & SEO.\n🚀 3. Premium Package: Tailored corporate solutions with advanced AI automations.\n\nWhat industry is your project in? I can help tailor the perfect setup!`;
     }
 
     if (
@@ -140,9 +109,9 @@ const ChatbotWidget = () => {
       lower.includes("作品")
     ) {
       if (currentLang === "ar") {
-        return `أهلاً بك في Suriix! 🎨\nقمنا بتطوير وتصميم العديد من المواقع، المتاجر الإلكترونية، الهويات البصرية والحلول الرقمية المتميزة.\n\nيمكنك استكشاف قسم "معرض الأعمال" في موقعنا أو التواصل معنا عبر واتساب للحصول على نماذج مخصصة لمجال عملك!`;
+        return `سعيد باهتمامك برؤية أعمالنا! 🎨\nفي Suriix، قمنا بتنفيذ هويات رقمية ومواقع استثنائية لشركات في هولندا والسعودية واليمن والخليج، وحققنا لعملائنا معدلات تحويل مبيعات مرتفعة (تصل إلى +340%).\n\nتفضل بتصفح قسم 'أعمالنا' بالصفحة، أو أخبرني عن نشاطك التجاري لأرسل لك نماذج مشاريع مشابهة لمجالك عبر واتساب فوراً 📲`;
       }
-      return `Welcome to Suriix! 🎨\nWe have built premier websites, e-commerce stores, and digital brand identity solutions.\n\nExplore our Portfolio section on the site or message us on WhatsApp for customized showcases!`;
+      return `Delighted by your interest in our portfolio! 🎨\nAt Suriix, we have crafted custom digital platforms for clients in Europe & the Middle East with exceptional growth rates (up to 340% sales increase).\n\nBrowse our Portfolio section on the site, or tell me your industry and I'll send relevant live samples to your WhatsApp!`;
     }
 
     if (
@@ -153,9 +122,9 @@ const ChatbotWidget = () => {
       lower.includes("服务")
     ) {
       if (currentLang === "ar") {
-        return `في Suriix نقدم لك حلولاً رقمية متكاملة تهدف لبناء وتنمية مشروعك:\n\n💻 1. تصميم وتطوير المواقع والمتاجر الإلكترونية.\n🎨 2. تصميم الهوية البصرية والوجهة الرقمية.\n⚡ 3. أتمتة الأعمال وأنظمة الذكاء الاصطناعي.\n📈 4. تحسين محركات البحث SEO والتسويق الرقمي.`;
+        return `في Suriix، نركز كفريق مبيعات وتطوير على تحقيق نتيجة واحدة: زيادة نمو أرباحك وتواجدك الرقمي 🚀\n\nخدماتنا الأساسية تشمل:\n💻 1. تصميم وتطوير المواقع والمتاجر الإلكترونية فائقة السرعة.\n🎨 2. بناء الهوية البصرية والوجهة التجارية المتكاملة.\n⚡ 3. أتمتة الأعمال وأنظمة الذكاء الاصطناعي.\n📈 4. تحسين محركات البحث SEO والتسويق الرقمي.\n\nأي من هذه الخدمات يمثل أولوية لمشروعك الآن؟`;
       }
-      return `At Suriix, we provide integrated digital solutions to help you scale:\n\n💻 1. Web & E-Commerce Development\n🎨 2. Visual Branding & UI/UX\n⚡ 3. AI Automation & Custom Systems\n📈 4. SEO & Digital Marketing`;
+      return `At Suriix, our sales & engineering teams focus on one goal: accelerating your digital revenue 🚀\n\nOur core services include:\n💻 1. High-Performance Web & E-Commerce Development\n🎨 2. Visual Identity & Brand Strategy\n⚡ 3. AI Automation & Custom Workflows\n📈 4. Advanced SEO & Growth Marketing\n\nWhich service is your top priority right now?`;
     }
 
     if (
@@ -167,16 +136,16 @@ const ChatbotWidget = () => {
       lower.includes("联系")
     ) {
       if (currentLang === "ar") {
-        return `يسعدنا جداً تواصلك معنا! 📲\nفريق Suriix جاهز لمساعدتك والإجابة على كافة استفساراتك تجهيزاً لإطلاق مشروعك.\n\nاضغط على زر "تحدث مع خبير حقيقي (واتساب)" بأسفل الشاشة أو راسلنا مباشرة على: 967780930635+`;
+        return `أنا جاهز تماماً للبدء معك! 📞\nيمكننا مناقشة التفاصيل الفنية والمالية لمشروعك مباشرة ونجهز لك عرض سعر مخصص خلال دقائق.\n\nاضغط على زر 'تحدث مع خبير حقيقي (واتساب)' بالأسفل أو تواصل معي عبر الرقم: 967780930635+ وسأكون معك خطوة بخطوة 🤝`;
       }
-      return `We'd love to connect! 📲\nOur team at Suriix is ready to assist you.\n\nClick the "Talk to a human (WhatsApp)" button below or chat directly at +967780930635`;
+      return `I am fully ready to assist you! 📞\nWe can discuss technical & pricing details directly to prepare a custom proposal for your project.\n\nClick the "Talk to a human (WhatsApp)" button below or reach me directly at +967780930635!`;
     }
 
     // Default friendly response for any other query
     if (currentLang === "ar") {
-      return `أهلاً بك في Suriix! 👋\nنحن هنا لمساعدتك في بناء وتطوير مشروعك الرقمي (تصميم مواقع، متاجر، هويات بصرية، وذكاء اصطناعي).\n\nيمكنك اختيار إحدى الإجابات السريعة بالأسفل أو التواصل المباشر مع خبراء Suriix عبر واتساب 💬`;
+      return `أهلاً بك! يسعدني تواصلك معي مباشرة 👋\nبصفتي مدير المبيعات في Suriix، أضمن لك الحصول على حل رقمي مبتكر يناسب ميزانيتك ويرفع مبيعاتك.\n\nأخبرني، ما هي تفاصيل مشروعك الحالي أو الفكرة التي ترغب في تحويلها إلى موقع أو متجر ناجح؟`;
     }
-    return `Welcome to Suriix! 👋\nWe are here to help build & scale your digital project (Web Design, E-Commerce, Branding, & AI).\n\nFeel free to click quick replies below or connect with our experts via WhatsApp 💬`;
+    return `Welcome! Great connecting with you 👋\nAs the Sales Manager at Suriix, I ensure you receive an innovative digital solution that fits your budget & drives revenue.\n\nTell me, what are the details of your current project or idea?`;
   };
 
   const generateAIResponse = async (userText: string, chatHistory: Message[]): Promise<string> => {
@@ -316,7 +285,7 @@ const ChatbotWidget = () => {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-primary-foreground">
-                    {lang === 'ar' ? 'مساعد Suriix' : lang === 'zh' ? 'Suriix 助手' : 'Suriix Assistant'}
+                    {lang === 'ar' ? 'مستشار المبيعات | Suriix' : lang === 'zh' ? '销售经理 | Suriix' : 'Sales Manager | Suriix'}
                   </p>
                   <p className="text-[10px] text-primary-foreground/70 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-accent inline-block" />

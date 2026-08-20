@@ -154,10 +154,10 @@ const ReadyWebsiteDetails = () => {
                 className="w-full h-auto rounded-xl shadow-2xl object-cover"
               />
               <Badge 
-                className={`absolute top-8 ${isAr ? 'left-8' : 'right-8'} z-20 text-sm px-3 py-1 ${
-                  product.status === 'Available' ? 'bg-green-500/20 text-green-400 border-green-500/50' :
-                  product.status === 'Limited' ? 'bg-orange-500/20 text-orange-400 border-orange-500/50' :
-                  'bg-red-500/20 text-red-400 border-red-500/50'
+                className={`absolute top-8 ${isAr ? 'left-8' : 'right-8'} z-20 text-sm px-3.5 py-1.5 font-bold backdrop-blur-md shadow-md ${
+                  product.status === 'Available' ? 'bg-slate-950/90 text-emerald-400 border border-emerald-500/60' :
+                  product.status === 'Limited' ? 'bg-slate-950/90 text-amber-400 border border-amber-500/60' :
+                  'bg-slate-950/90 text-rose-400 border border-rose-500/60'
                 }`}
                 variant="outline"
               >
