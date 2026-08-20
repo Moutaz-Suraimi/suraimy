@@ -110,6 +110,75 @@ const ChatbotWidget = () => {
     }
   };
 
+  const getSmartLocalResponse = (text: string, currentLang: string): string => {
+    const lower = text.toLowerCase().trim();
+
+    if (
+      lower.includes("سعر") ||
+      lower.includes("أسعار") ||
+      lower.includes("باقة") ||
+      lower.includes("باقات") ||
+      lower.includes("pricing") ||
+      lower.includes("package") ||
+      lower.includes("套餐") ||
+      lower.includes("价格")
+    ) {
+      if (currentLang === "ar") {
+        return `أهلاً بك في Suriix! 👋\nنقدم 3 باقات مرنة تناسب جميع أنواع المشاريع:\n\n📦 1. باقة Start:\nمثالية للمشاريع الناشئة والأفراد، تشمل صفحة هبوط واحدة متجاوبة وسريعة.\n\n📈 2. باقة Growth:\nموقع متكامل حتى 5 صفحات، تصميم احترافي، وتحسين تجربة المستخدم والـ SEO.\n\n🚀 3. باقة Premium:\nحلول مخصصة وشاملة للشركات مع لوحة تحكم، أتمتة وذكاء اصطناعي، وأداء فائق.\n\nتواصل معنا عبر واتساب لمساعدتك في اختيار الباقة الأنسب لمشروعك!`;
+      } else if (currentLang === "zh") {
+        return `欢迎来到 Suriix！👋\n我们提供 3 款灵活的定制套餐：\n\n📦 1. Start 套餐：适用于初创项目与个人展示。\n📈 2. Growth 套餐：多达 5 个页面的完整企业网站与 SEO 优化。\n🚀 3. Premium 套餐：高定制化企业解决方案与 AI 自动化支持。\n\n欢迎点击下方按钮通过 WhatsApp 直接与我们沟通！`;
+      }
+      return `Welcome to Suriix! 👋\nWe offer 3 flexible packages designed for your growth:\n\n📦 1. Start Package: Ideal for startups & landing pages.\n📈 2. Growth Package: Up to 5 custom pages with SEO optimization.\n🚀 3. Premium Package: Complete corporate solutions with AI automation.\n\nContact us on WhatsApp to pick the best package for your business!`;
+    }
+
+    if (
+      lower.includes("أعمال") ||
+      lower.includes("سابقة") ||
+      lower.includes("معرض") ||
+      lower.includes("portfolio") ||
+      lower.includes("project") ||
+      lower.includes("作品")
+    ) {
+      if (currentLang === "ar") {
+        return `أهلاً بك في Suriix! 🎨\nقمنا بتطوير وتصميم العديد من المواقع، المتاجر الإلكترونية، الهويات البصرية والحلول الرقمية المتميزة.\n\nيمكنك استكشاف قسم "معرض الأعمال" في موقعنا أو التواصل معنا عبر واتساب للحصول على نماذج مخصصة لمجال عملك!`;
+      }
+      return `Welcome to Suriix! 🎨\nWe have built premier websites, e-commerce stores, and digital brand identity solutions.\n\nExplore our Portfolio section on the site or message us on WhatsApp for customized showcases!`;
+    }
+
+    if (
+      lower.includes("خدم") ||
+      lower.includes("ماذا تقدم") ||
+      lower.includes("service") ||
+      lower.includes("what do you do") ||
+      lower.includes("服务")
+    ) {
+      if (currentLang === "ar") {
+        return `في Suriix نقدم لك حلولاً رقمية متكاملة تهدف لبناء وتنمية مشروعك:\n\n💻 1. تصميم وتطوير المواقع والمتاجر الإلكترونية.\n🎨 2. تصميم الهوية البصرية والوجهة الرقمية.\n⚡ 3. أتمتة الأعمال وأنظمة الذكاء الاصطناعي.\n📈 4. تحسين محركات البحث SEO والتسويق الرقمي.`;
+      }
+      return `At Suriix, we provide integrated digital solutions to help you scale:\n\n💻 1. Web & E-Commerce Development\n🎨 2. Visual Branding & UI/UX\n⚡ 3. AI Automation & Custom Systems\n📈 4. SEO & Digital Marketing`;
+    }
+
+    if (
+      lower.includes("تواصل") ||
+      lower.includes("اتصل") ||
+      lower.includes("واتس") ||
+      lower.includes("contact") ||
+      lower.includes("whatsapp") ||
+      lower.includes("联系")
+    ) {
+      if (currentLang === "ar") {
+        return `يسعدنا جداً تواصلك معنا! 📲\nفريق Suriix جاهز لمساعدتك والإجابة على كافة استفساراتك تجهيزاً لإطلاق مشروعك.\n\nاضغط على زر "تحدث مع خبير حقيقي (واتساب)" بأسفل الشاشة أو راسلنا مباشرة على: 967780930635+`;
+      }
+      return `We'd love to connect! 📲\nOur team at Suriix is ready to assist you.\n\nClick the "Talk to a human (WhatsApp)" button below or chat directly at +967780930635`;
+    }
+
+    // Default friendly response for any other query
+    if (currentLang === "ar") {
+      return `أهلاً بك في Suriix! 👋\nنحن هنا لمساعدتك في بناء وتطوير مشروعك الرقمي (تصميم مواقع، متاجر، هويات بصرية، وذكاء اصطناعي).\n\nيمكنك اختيار إحدى الإجابات السريعة بالأسفل أو التواصل المباشر مع خبراء Suriix عبر واتساب 💬`;
+    }
+    return `Welcome to Suriix! 👋\nWe are here to help build & scale your digital project (Web Design, E-Commerce, Branding, & AI).\n\nFeel free to click quick replies below or connect with our experts via WhatsApp 💬`;
+  };
+
   const generateAIResponse = async (userText: string, chatHistory: Message[]): Promise<string> => {
     try {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
@@ -160,22 +229,17 @@ const ChatbotWidget = () => {
       const data = await response.json();
       
       if (!response.ok) {
-        console.error("API Error Response:", data);
-        if (response.status === 429) {
-          return lang === 'ar' 
-            ? "عذراً، أواجه ضغطاً كبيراً في الرسائل حالياً 😅! يرجى الانتظار دقيقة أو التحدث مع خبير حقيقي عبر واتساب." 
-            : "Sorry, I'm receiving too many messages right now 😅! Please wait a minute or talk to a human on WhatsApp.";
-        }
-        return lang === 'ar' ? "عذراً، حدث خطأ في النظام. يرجى التواصل معنا عبر واتساب." : "Sorry, a system error occurred. Please contact us via WhatsApp.";
+        console.warn("API Call status not ok, falling back to smart local response:", data);
+        return getSmartLocalResponse(userText, lang);
       }
 
       if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
         return data.candidates[0].content.parts[0].text;
       }
-      return lang === 'ar' ? "عذراً، حدث خطأ في النظام. يرجى التواصل معنا عبر واتساب." : "Sorry, a system error occurred. Please contact us via WhatsApp.";
+      return getSmartLocalResponse(userText, lang);
     } catch (error) {
-      console.error("AI Error:", error);
-      return lang === 'ar' ? "عذراً، أواجه مشكلة في الاتصال حالياً. يرجى مراسلتنا عبر الواتساب." : "Sorry, I'm having connection issues right now. Please message us on WhatsApp.";
+      console.warn("AI Network Error, using smart local response:", error);
+      return getSmartLocalResponse(userText, lang);
     }
   };
 
