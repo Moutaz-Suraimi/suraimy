@@ -30,6 +30,7 @@ const FAQ               = lazy(() => import("./pages/FAQ"));
 const Blog              = lazy(() => import("./pages/Blog"));
 const NotFound          = lazy(() => import("./pages/NotFound"));
 const SuriixStore       = lazy(() => import("./pages/SuriixStore"));
+const Subscriptions     = lazy(() => import("./pages/Subscriptions"));
 
 // Minimal fallback — avoids layout shift while lazy chunk loads.
 // Uses the same background color as the page so no flash occurs.
@@ -78,6 +79,7 @@ const App = () => (
                   <Route path="/portfolio"           element={<Portfolio />} />
                   <Route path="/faq"                 element={<FAQ />} />
                   <Route path="/blog"                element={<Blog />} />
+                  <Route path="/subscriptions"       element={<Subscriptions />} />
                   <Route path="*"                    element={<NotFound />} />
                 </Routes>
               </Suspense>

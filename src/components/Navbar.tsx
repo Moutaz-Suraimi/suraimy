@@ -18,12 +18,14 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { key: "nav.home", href: "/", labelAr: "الرئيسية", labelEn: "Home", labelZh: "首页" },
   { key: "nav.store", href: "/store", labelAr: "متجر سوريكس", labelEn: "Suriix Store", labelZh: " سوريكس 商店" },
+  { key: "nav.subscriptions", href: "/subscriptions", labelAr: "الاشتراكات", labelEn: "Subscriptions", labelZh: "订阅" },
   { key: "nav.packages", href: "/packages", labelAr: "الباقات", labelEn: "Packages", labelZh: "套餐" },
   { key: "nav.portfolio", href: "/portfolio", labelAr: "أعمالنا", labelEn: "Portfolio", labelZh: "案例" },
   { key: "nav.solutions", href: "/solutions", labelAr: "الحلول", labelEn: "Solutions", labelZh: "解决方案" },
   { key: "nav.about", href: "/about", labelAr: "من نحن", labelEn: "About Us", labelZh: "关于我们" },
   { key: "nav.contact", href: "/contact", labelAr: "تواصل معنا", labelEn: "Contact", labelZh: "联系" },
 ];
+
 
 const Navbar = memo(() => {
   const { lang, setLang, langLabels, langOrder } = useLanguage();
@@ -94,14 +96,14 @@ const Navbar = memo(() => {
           </div>
 
           {/* Center Navigation Links - Desktop */}
-          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <div className="hidden lg:flex items-center gap-3 xl:gap-5">
             {NAV_ITEMS.map((item) => {
               const active = isLinkActive(item.href);
               return (
                 <button
                   key={item.key}
                   onClick={() => handleNavClick(item.href)}
-                  className={`pill-nav-btn relative text-sm font-semibold transition-all duration-200 ${
+                  className={`pill-nav-btn relative text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
                     active
                       ? "text-purple-700 dark:text-white font-bold"
                       : "text-slate-600 hover:text-slate-900 dark:text-white/70 dark:hover:text-white"
