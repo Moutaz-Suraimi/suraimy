@@ -446,7 +446,7 @@ const SUBS: Sub[] = [
       zh: "访问最新的GPT-4模型，具备更多高级功能和卓越性能。",
     },
     logo: "", category: "ذكاء اصطناعي", duration: "شهر / سنة", accountType: "حساب خاص",
-    price: "$20.00 شهرياً",
+    price: "",
   },
   {
     id: "microsoft", name: "Microsoft 365", popular: true, color: "#0078d4",
@@ -456,7 +456,7 @@ const SUBS: Sub[] = [
       zh: "完整的办公工具套件，全面提升您的工作效率和组织能力。",
     },
     logo: "", category: "إنتاجية ومكاتب", duration: "شهر / سنة", accountType: "حساب خاص",
-    price: "$9.99 شهرياً",
+    price: "",
   },
   {
     id: "canva", name: "Canva Pro", popular: true, color: "#00c4cc",
@@ -466,7 +466,7 @@ const SUBS: Sub[] = [
       zh: "简单快速的专业设计工具，完美适合社交媒体内容创作。",
     },
     logo: "", category: "تصميم وإبداع", duration: "شهر / سنة", accountType: "حساب خاص",
-    price: "$12.99 شهرياً",
+    price: "",
   },
   {
     id: "adobe", name: "Adobe Creative Cloud", color: "#ff0000",
@@ -485,7 +485,7 @@ const SUBS: Sub[] = [
       zh: "高级开发者工具，支持专业代码项目管理与协作。",
     },
     logo: "", category: "برمجة وتطوير", duration: "شهر / سنة", accountType: "حساب خاص",
-    price: "$4.00 شهرياً",
+    price: "",
   },
   {
     id: "figma", name: "Figma Pro", color: "#f24e1e",
@@ -495,7 +495,7 @@ const SUBS: Sub[] = [
       zh: "专业设计与团队协作工具，具有独特的交互功能。",
     },
     logo: "", category: "تصميم وإبداع", duration: "شهر / سنة", accountType: "حساب خاص",
-    price: "$12.00 شهرياً",
+    price: "",
   },
   {
     id: "spotify", name: "Spotify Premium", color: "#1db954",
