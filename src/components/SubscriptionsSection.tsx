@@ -53,6 +53,11 @@ interface LangT {
   orderViaWhatsApp: string;
   instantDeliveryText: string;
   modalClose: string;
+  guaranteeTitle: string;
+  guaranteeDesc: string;
+  heroDelivery: string;
+  customServiceBadge: string;
+  waOrderMsg: (subName: string) => string;
   cats: Record<string, string>;
 }
 
@@ -98,6 +103,11 @@ const I18N: Record<Lang, LangT> = {
     orderViaWhatsApp: "اطلب هذا الاشتراك الآن عبر واتساب",
     instantDeliveryText: "تسليم فوري بعد الدفع",
     modalClose: "إغلاق",
+    guaranteeTitle: "الضمان",
+    guaranteeDesc: "ضمان كامل ومستمر",
+    heroDelivery: "تسليم خلال دقائق",
+    customServiceBadge: "خدمة حسب الطلب",
+    waOrderMsg: (subName) => `مرحباً، أريد الاشتراك في خدمة ${subName} — عبر منصة Suriix`,
     cats: {
       "الكل": "الكل",
       "ذكاء اصطناعي": "الذكاء الاصطناعي",
@@ -149,6 +159,11 @@ const I18N: Record<Lang, LangT> = {
     orderViaWhatsApp: "Order This Subscription on WhatsApp",
     instantDeliveryText: "Instant activation after confirmation",
     modalClose: "Close",
+    guaranteeTitle: "Warranty",
+    guaranteeDesc: "Full & continuous guarantee",
+    heroDelivery: "Delivery in minutes",
+    customServiceBadge: "On-demand Service",
+    waOrderMsg: (subName) => `Hello, I would like to subscribe to ${subName} — via Suriix platform`,
     cats: {
       "الكل": "All",
       "ذكاء اصطناعي": "AI Tools",
@@ -200,6 +215,11 @@ const I18N: Record<Lang, LangT> = {
     orderViaWhatsApp: "通过 WhatsApp 立即订购此服务",
     instantDeliveryText: "确认后极速开通交付",
     modalClose: "关闭",
+    guaranteeTitle: "质保保障",
+    guaranteeDesc: "全程无忧正品保障",
+    heroDelivery: "数分钟内极速交付",
+    customServiceBadge: "按需专属定制",
+    waOrderMsg: (subName) => `你好，我想订阅 ${subName} — 通过 Suriix 平台`,
     cats: {
       "الكل": "全部",
       "ذكاء اصطناعي": "人工智能",
@@ -1245,7 +1265,7 @@ const SubscriptionDetailModal = ({
   }, [onClose]);
 
   const waMsg = `${WA_BASE}?text=${encodeURIComponent(
-    `مرحباً، أريد الاشتراك في خدمة ${sub.name} — عبر منصة Suriix`
+    t.waOrderMsg(sub.name)
   )}`;
 
   return (
@@ -1375,9 +1395,9 @@ const SubscriptionDetailModal = ({
 
             <div className="p-2.5 rounded-xl bg-secondary/40 border border-border/30 flex flex-col gap-0.5 text-center sm:text-start">
               <span className="text-muted-foreground text-[11px] flex items-center justify-center sm:justify-start gap-1">
-                <Sparkles className="w-3 h-3 text-primary" /> الضمان
+                <Sparkles className="w-3 h-3 text-primary" /> {t.guaranteeTitle}
               </span>
-              <span className="font-bold text-foreground truncate">ضمان كامل ومستمر</span>
+              <span className="font-bold text-foreground truncate">{t.guaranteeDesc}</span>
             </div>
           </div>
 
@@ -1419,7 +1439,7 @@ const SubCard = ({
   lang: Lang;
   onOpenDetails: (s: Sub) => void;
 }) => {
-  const waMsg = `${WA_BASE}?text=${encodeURIComponent(`مرحباً، أريد الاشتراك في خدمة ${sub.name} — عبر منصة Suriix`)}`;
+  const waMsg = `${WA_BASE}?text=${encodeURIComponent(t.waOrderMsg(sub.name))}`;
 
   return (
     <motion.div
@@ -1753,11 +1773,11 @@ const SubscriptionsSection: React.FC<Props> = () => {
               <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between text-[11px] text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                  ضمان كامل ومستمر
+                  {t.guaranteeDesc}
                 </span>
                 <span className="flex items-center gap-1.5 font-bold text-primary">
                   <Zap className="w-3.5 h-3.5 text-amber-500" />
-                  تسليم خلال دقائق
+                  {t.heroDelivery}
                 </span>
               </div>
             </div>
@@ -1987,7 +2007,7 @@ const SubscriptionsSection: React.FC<Props> = () => {
           <div className="relative z-10 text-start">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3">
               <Sparkles className="w-3.5 h-3.5" />
-              خدمة حسب الطلب
+              {t.customServiceBadge}
             </div>
             <h3 className="text-2xl sm:text-3xl font-black text-foreground mb-2">
               {t.ctaTitle}
