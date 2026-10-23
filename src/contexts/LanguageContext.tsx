@@ -57,8 +57,8 @@ export const translations: Translations = {
   },
   // Nav
   "nav.home": { ar: "الرئيسية", en: "Home", zh: "首页" },
-  "nav.store": { ar: "متجر سوريكس", en: "Suriix Store", zh: "Suriix Store" },
-  "nav.about": { ar: "من نحن", en: "About", zh: "关于我们" },
+  "nav.store": { ar: "المتجر", en: "Store", zh: "商店" },
+  "nav.about": { ar: "من نحن", en: "About", zh: "关于" },
   "nav.mirror": { ar: "المرآة الرقمية", en: "Digital Mirror", zh: "数字镜像" },
   "nav.solutions": { ar: "الحلول", en: "Solutions", zh: "解决方案" },
   "nav.packages": { ar: "الباقات", en: "Packages", zh: "套餐" },
